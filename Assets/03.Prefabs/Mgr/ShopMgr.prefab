@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7400506762234984197
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7400506762234984196}
+  - component: {fileID: 7400506762234984195}
+  m_Layer: 0
+  m_Name: ShopMgr
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7400506762234984196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7400506762234984197}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7400506762234984195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7400506762234984197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56ac33fa29228b140a9710cd57c94f99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShopPanel: {fileID: 0}
+  m_PlayerInventoryUI: {fileID: 0}
+  m_SellCoin_Txt: {fileID: 0}
+  m_SellCoin: 0
+  m_BuyItemRootTr: {fileID: 0}
+  m_SellItemRootTr: {fileID: 0}
+  m_UserSellItemRootPrefab: {fileID: 6202848522396680253, guid: 510703623321e384d9bd5510259388f1, type: 3}
+  m_ShopSellItemRootPrefab: {fileID: 1802418088953756279, guid: b32394b864c88564aa8f4ba346ee816f, type: 3}
+  m_SellUserItemList: []
+  m_ClearBtn: {fileID: 0}
+  m_AllSelBtn: {fileID: 0}
+  m_UserAllCancelBtn: {fileID: 0}
+  m_BackBtn: {fileID: 0}
+  m_LogBoxPanel: {fileID: 0}
+  m_LogBox: {fileID: 0}
+  m_LogBoxTxt: {fileID: 0}
+  m_LogOkBtn: {fileID: 0}

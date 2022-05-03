@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4790180507300187916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4790180507300187954}
+  - component: {fileID: 4790180507300187955}
+  m_Layer: 0
+  m_Name: QuestMgr
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4790180507300187954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4790180507300187916}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.4371848, y: 9.320746, z: 4.5720153}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4790180507300187955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4790180507300187916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3610b3ee3ff73c4e8c10d2db322ee73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_QuestPanel: {fileID: 0}
+  m_QuestDlgBox: {fileID: 0}
+  m_QuestName: {fileID: 0}
+  m_QuestInfo: {fileID: 0}
+  m_QuestStatus: {fileID: 0}
+  m_QuestReward: {fileID: 0}
+  m_BackBtn: {fileID: 0}
+  m_OkBtn: {fileID: 0}
+  QuestListScrollTr: {fileID: 0}
+  m_QuestItem: {fileID: 6494377391953368278, guid: 2bcc16cd195267c48af04a2b51d2b7fc, type: 3}
+  m_CurQuest:
+    m_QuestId: -1
+    m_QuestType: 0
+    m_QuestName: 
+    m_QuestInfo: 
+    m_RewardCoin: 0
+    m_RewardExp: 0
+    m_RewardItem: 0
+    m_RewardItemCount: 0
+    m_RewardItemData:
+      m_ItemCode: -1
+      m_SlotNum: -1
+      m_ItemType: 0
+      m_Name: 
+      m_ItemInfo: 
+      m_Price: 100
+      m_Grade: 
+      m_DropMeshPos: {x: 0, y: 0, z: 0}
+      m_CurCount: 1
+      m_MaxCount: 99
+      m_ItemSprite: {fileID: 0}
+      m_ItemMesh: {fileID: 0}
+      m_ItemMatrl: {fileID: 0}
+    bIsSuccess: 0
