@@ -1,0 +1,44 @@
+No,ItemType,ItemName,ItemInfo,Price,DropItemPosX,DropItemPosY,DropItemPosZ,ItemSprite,ItemMesh,ItemMaterial,PartType,AddType,AttPw,DefPw,MaxStar
+int,int,string,string,int,float,float,float,int,int,string,int,int,int,int ,int
+1,2,사냥꾼의 벨트,,100,0.0,0.2,0.0,belts,Belt1,BodyParts,5,0,0,5,5
+2,2,오거 벨트,,200,0.0,0.2,0.0,belts,Belt2,BodyParts,5,0,0,7,5
+3,2,가벼운 벨트,,300,0.0,0.2,0.0,belts,Belt3,BodyParts,5,0,0,5,5
+4,2,가죽상의,기본 방어구,400,0.0,0.0,0.0,armor,Cloth1,Costumes,4,0,0,8,5
+5,2,가죽상의(개조),,500,0.0,0.0,0.0,armor,Cloth2,Costumes,4,0,0,6,5
+6,2,후드,,100,0.0,0.0,0.0,cloaks,Cloth3,Costumes,4,0,0,5,5
+7,2,후드(진),,200,0.0,0.0,0.0,cloaks,Cloth4,Costumes,4,0,0,5,5
+8,2,갑옷,,300,0.0,0.0,0.0,plate_armor,Cloth5,Costumes,4,0,0,6,5
+9,2,판금갑옷,,400,0.0,0.0,0.0,plate_armor,Cloth6,Costumes,4,0,0,5,5
+10,2,짱짱쎈 갑옷,,500,0.0,0.0,0.0,plate_armor,Cloth7,Costumes,4,0,0,10,5
+11,2,머리장식1,머리장식,100,0.0,-0.6,0.0,helmets,Crown1,HeadParts,2,0,0,3,5
+12,2,머리장식2,,200,0.0,-0.6,0.0,helmets,Crown2,HeadParts,2,0,0,4,5
+13,2,머리장식3,,300,0.0,-0.6,0.0,helmets,Crown3,HeadParts,2,0,0,5,5
+14,2,머리장식4,,400,0.0,-0.6,0.0,helmets,Crown4,HeadParts,2,0,0,6,5
+15,2,가죽장갑,가죽으로 만든 장갑,500,0.0,0.0,0.0,gloves,Glove1,BodyParts,6,0,0,1,5
+16,2,장갑,,100,0.0,0.0,0.0,gloves,Glove2,BodyParts,6,0,0,2,5
+17,2,용장갑,,200,0.0,0.0,0.0,gloves,Glove3,BodyParts,6,0,0,3,5
+18,2,뱀장갑,,300,0.0,0.0,0.0,gloves,Glove4,BodyParts,6,0,0,4,5
+19,2,장갑(개조),,400,0.0,0.0,0.0,gloves,Glove5,BodyParts,6,0,0,5,5
+20,2,장갑2,,500,0.0,0.0,0.0,gloves,Glove6,BodyParts,6,0,0,6,5
+21,2,가죽모자,가죽으로 만든 모자,100,0.0,-0.6,0.0,helmets,Hat1,HeadParts,2,1,0,1,5
+22,2,모자,,200,0.0,-0.6,0.0,helmets,Hat2,HeadParts,2,1,0,2,5
+23,2,모자2,,300,0.0,-0.6,0.0,helmets,Hat3,HeadParts,2,1,0,3,5
+24,2,헬멧,,400,0.0,-0.6,0.0,helmets,Helm1,HeadParts,2,1,0,4,5
+25,2,단단한 헬멧,단단한 헬멧,500,0.0,-0.6,0.0,helmets,Helm2,HeadParts,2,1,0,5,5
+26,2,가벼운 헬멧,,100,0.0,-0.6,0.0,helmets,Helm3,HeadParts,2,1,0,5,5
+27,2,헬 투 더 멧,,200,0.0,-0.6,0.0,helmets,Helm4,HeadParts,2,1,0,6,5
+28,2,헬메메메멧,,300,0.0,-0.6,0.0,helmets,Helm5,HeadParts,2,2,0,5,5
+29,2,헬멧1,,400,0.0,-0.6,0.0,helmets,Helm6,HeadParts,2,2,0,2,5
+30,2,헬멧2,,500,0.0,-0.6,0.0,helmets,Helm7,HeadParts,2,2,0,3,5
+31,2,가죽신발,가죽으로 만든 신발,100,0.0,0.8,0.0,boots,Shoe1,BodyParts,7,0,0,4,5
+32,2,신발1,,200,0.0,0.8,0.0,boots,Shoe2,BodyParts,7,0,0,8,5
+33,2,가벼운신발,,300,0.0,0.8,0.0,boots,Shoe3,BodyParts,7,0,0,1,5
+34,2,무거운신발,,400,0.0,0.8,0.0,boots,Shoe4,BodyParts,7,0,0,5,5
+35,2,투명같은신발,,500,0.0,0.8,0.0,boots,Shoe5,BodyParts,7,0,0,5,5
+36,2,신발2,,100,0.0,0.8,0.0,boots,Shoe6,BodyParts,7,0,0,3,5
+37,2,어깨견장,,200,0.0,-0.2,0.0,shoulders,ShoulderPad1,BodyParts,3,0,0,7,5
+38,2,견갑,,300,0.0,-0.2,0.0,shoulders,ShoulderPad2,BodyParts,3,0,0,6,5
+39,2,(진)견갑,,400,0.0,-0.2,0.0,shoulders,ShoulderPad3,BodyParts,3,0,0,9,5
+40,2,기니견갑,,500,0.0,-0.2,0.0,shoulders,ShoulderPad4,BodyParts,3,0,0,1,5
+41,2,견장,,100,0.0,-0.2,0.0,shoulders,ShoulderPad5,BodyParts,3,0,0,3,5
+42,2,판금 견장,판금으로 만든 견장,200,0.0,-0.2,0.0,shoulders,ShoulderPad6,BodyParts,3,0,0,1,5
