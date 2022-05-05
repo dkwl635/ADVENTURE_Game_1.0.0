@@ -37,7 +37,16 @@ public class MouseMgr : MonoBehaviour
 
     private void Awake()
     {
-        Inst = this;
+        if (Inst != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            Inst = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
 
         gr = GameObject.Find("UICanvas").GetComponent<GraphicRaycaster>();
         m_Point = new PointerEventData(null);

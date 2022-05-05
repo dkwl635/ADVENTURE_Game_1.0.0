@@ -34,7 +34,17 @@ public class ItemMgr : MonoBehaviour
 
     private void Awake()
     {
-        Inst = this;
+        if (Inst != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            Inst = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+
 
         NomarlItemTable = new List<Dictionary<string, object>>();
         EquipmentTable = CSVReader.Read("EquipmentDataTable");

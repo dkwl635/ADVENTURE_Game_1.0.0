@@ -40,7 +40,16 @@ public class UpgradeMgr : MonoBehaviour
     bool bIsUpgrade = true;
     void Awake()
     {
-        Inst = this;
+        if (Inst != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            Inst = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
         m_UpgradeEffect = m_UpgradeUI_Panel.GetComponentInChildren<Animator>();
     }
     void Start()

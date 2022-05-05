@@ -61,8 +61,16 @@ public class SkillMgr : MonoBehaviour
 
     private void Awake()
     {
-        if (Inst == null)
+        if (Inst != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
             Inst = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
 
         if (player == null)
             player = GameObject.Find("Player").GetComponent<Player>();

@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
     //장착중인 장비 아이템
     [HideInInspector] public Dictionary<PartType, EquipmentPart> m_PlayerPartItem = new Dictionary<PartType, EquipmentPart>();
     [HideInInspector] public Weapon weapon = null;                                 //지니고 있는 무기 정보
-    //[HideInInspector] public WeaponData weapondata = null;                    //지니고 있는 무기 정보
+   
 
     //능력치
     public Status m_PlayerStatus;
@@ -146,6 +146,17 @@ public class Player : MonoBehaviour
         SetHpUI();
         SetExpUI();
     }
+
+    private void OnEnable()
+    {
+        if(weapon.m_WeaponData != null)
+        {
+            animator.SetBool("UseWeapon", true);
+        }
+        else
+            animator.SetBool("UseWeapon", false);
+
+    }
     private void Update()
     {      
         MouseInput();   //마우스 피킹
@@ -239,8 +250,7 @@ public class Player : MonoBehaviour
             return;
      
         if (hitInfo.collider.CompareTag("GROUND"))
-        {
-            Debug.Log(hitInfo.point);
+        {   
             nv.SetDestination(hitInfo.point);                               
             CursorMarkOn(hitInfo.point);    //마크 커서 On
         }
@@ -305,13 +315,7 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    #region ---------------Nav Move---------------
-   void OnNav()
-    {
-
-    }
-
-    #endregion
+ 
 
     public void SetHpUI()
     {
@@ -342,7 +346,7 @@ public class Player : MonoBehaviour
         pos.x = pos.x +(Random.Range(-20.0f,20.0f));
 
         InGameMgr.Inst.SpanwDamageTxt(pos, m_BuffDamage, TxtType.Damage ); //데미지 숫자 이펙트
-        m_PlayerStatus.m_CurHp -= m_BuffDamage;          //데미지 적용
+        m_PlayerStatus.m_CurHp -= m_BuffDamage;//데미지 적용
 
         if(m_PlayerStatus.m_CurHp <= 0)
         {
@@ -365,9 +369,7 @@ public class Player : MonoBehaviour
             m_PlayerStatus.m_NextExp += 20;
             //레벨업
         }    
-        
-        
-
+             
         SetExpUI();
     }
 

@@ -49,6 +49,7 @@ public class SpawnMgr : MonoBehaviour
 
         m_KillGage.fillAmount = (float)m_MonseterKillCount / (float)m_BossSpawnCount;
 
+        SetMonster();
     }
 
     void AddMonsterKillCount()
@@ -79,32 +80,39 @@ public class SpawnMgr : MonoBehaviour
         bSpawnMon = !bSpawnMon;
     }
 
-    void SpawnBossBtn()
-    {       
-            SpawnBoss();  
-    }
 
-    void SpawnMonster()
+
+   void SetMonster()
     {
         m_MonterList = new MonsterCtrl[m_MaxMonConunt];
         for (int i = 0; i < m_MaxMonConunt; i++)
-        { 
+        {
             m_MonterList[i] = Instantiate(m_MonsterPrefab, transform).GetComponent<MonsterCtrl>();
             m_MonterList[i].transform.position = m_MonsterSpawnPos[i + 1].position;
             m_MonterList[i].m_SpawnPos = m_MonsterSpawnPos[i + 1].position;
             m_MonterList[i].DieEvent += AddMonsterKillCount;
+            m_MonterList[i].Init();
+            m_MonterList[i].gameObject.SetActive(false);
+
         }
+    }
+
+    void SpawnMonster()
+    {
+       if(m_MonterList.Length >0)
+            for (int i = 0; i < m_MonterList.Length; i++)
+            {
+                m_MonterList[i].gameObject.SetActive(true);               
+                m_MonterList[i].Spawn();
+            }
     }
 
     void DeSpawnMonster()
     {
         for (int i = 0; i < m_MaxMonConunt; i++)
         {
-            m_MonterList[i].ObjDestory();
-            m_MonterList[i] = null;
-        }
-
-        m_MonterList = null;
+            m_MonterList[i].gameObject.SetActive(false);
+        }     
     }
 
     void SpawnBoss()

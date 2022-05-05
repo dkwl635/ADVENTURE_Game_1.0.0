@@ -23,8 +23,8 @@ public class BossMonster : MonsterCtrl
         animator = GetComponent<Animator>();                                          //에니메이션              
         navMeshAgent = GetComponent<NavMeshAgent>();   //네비메쉬
 
-        m_HpBarObj = InGameMgr.Inst.SetHpBarObj();           //체력바 생성
-        m_HpBarCtrl = m_HpBarObj.GetComponent<MonHpBarCtrl>();         //체력바 컴포넌트
+        //m_HpBarObj = InGameMgr.Inst.SetHpBarObj();           //체력바 생성
+        //m_HpBarCtrl = m_HpBarObj.GetComponent<MonHpBarCtrl>();         //체력바 컴포넌트
         m_Skin = GetComponentInChildren<SkinnedMeshRenderer>(); //스킨 찾아오기
 
         navMeshAgent.stoppingDistance = m_AttackDist - 0.1f;
@@ -46,7 +46,7 @@ public class BossMonster : MonsterCtrl
  
     public override void ObjDestory()
     {       
-        Destroy(m_HpBarObj);
+        //Destroy(m_HpBarObj);
         Destroy(this.gameObject);
     }
     

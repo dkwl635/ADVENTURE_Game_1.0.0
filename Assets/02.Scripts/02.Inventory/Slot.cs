@@ -105,15 +105,11 @@ public class Slot : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         MouseMgr.Inst.OnMouesEnterSlot(this);
-
-        Debug.Log("마우스 들어옴");
     }
 
 
     public void OnDisable()
-    {
-        Debug.Log("사라진다.");
-        Debug.Log(this.name);
+    {     
         MouseMgr.Inst.OnMouesExitSlot(this);
     }
 

@@ -30,8 +30,8 @@ public enum MonsterState
     public MonsterState m_MonsterState;
 
     //체력 UI를 저장하는 변수
-    [HideInInspector] public GameObject m_HpBarObj = null;             //체력바 오브젝트
-    [HideInInspector] public MonHpBarCtrl m_HpBarCtrl = null;         //체력바 UI 컨트롤용
+    //public GameObject m_HpBarObj = null;             //체력바 오브젝트
+    public MonHpBarCtrl m_HpBarCtrl = null;         //체력바 UI 컨트롤용
 
     //몬스터 스탯
     public Status m_MonsterStatus;
@@ -63,6 +63,7 @@ public enum MonsterState
     public Event DieEvent;
 
 
+    public virtual void Init() { }
 
     public virtual void Spawn() { }               //스폰 하는 함수 
     public virtual void OnDamge(int a_Damage = 0, Player a_Attacker = null) { }  //데미지를 받는 함수

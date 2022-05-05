@@ -8,6 +8,18 @@ public class MonHpBarCtrl : MonoBehaviour
     public GameObject m_HpBarObj = null;
     public Image m_Hpbar = null;
 
+    Transform cam; 
+
+    private void Start()
+    {
+        cam = Camera.main.transform;
+    }
+
+    private void Update()
+    {
+        transform.LookAt(cam);
+    }
+
 
     public void SetHpBar(float a_CurHp, float a_MaxHp)
     {

@@ -54,8 +54,16 @@ public class TalkMgr : MonoBehaviour
     public List<Sprite> m_SpritList = new List<Sprite>();
     private void Awake()
     {
-        if (Inst == null)
+        if (Inst != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
             Inst = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
 
         m_Btns = m_TalkBtnGroup.GetComponentsInChildren<Button>(true);
 

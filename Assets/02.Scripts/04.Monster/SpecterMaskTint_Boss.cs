@@ -26,8 +26,8 @@ public class SpecterMaskTint_Boss : MonsterCtrl
         animator = GetComponent<Animator>();                                          //에니메이션              
         navMeshAgent = GetComponent<NavMeshAgent>();   //네비메쉬
         
-        m_HpBarObj = InGameMgr.Inst.SetHpBarObj();           //체력바 생성
-        m_HpBarCtrl = m_HpBarObj.GetComponent<MonHpBarCtrl>();         //체력바 컴포넌트
+        //m_HpBarObj = InGameMgr.Inst.SetHpBarObj();           //체력바 생성
+        //m_HpBarCtrl = m_HpBarObj.GetComponent<MonHpBarCtrl>();         //체력바 컴포넌트
         m_Skin = GetComponentInChildren<SkinnedMeshRenderer>(); //스킨 찾아오기
 
         navMeshAgent.stoppingDistance = m_AttackDist - 0.1f;
@@ -47,7 +47,7 @@ public class SpecterMaskTint_Boss : MonsterCtrl
     private void LateUpdate()
     {
         //체력바 위치 선정
-        m_HpBarObj.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 4.0f);
+        //m_HpBarObj.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 4.0f);
     }
 
 
@@ -248,7 +248,7 @@ public class SpecterMaskTint_Boss : MonsterCtrl
     public override void OnDamge(int a_Damage = 0 , Player a_Attacker = null)
     {
         m_MonsterStatus.m_CurHp -= a_Damage; //데미지 적용
-        InGameMgr.Inst.SpanwDamageTxt(m_HpBarObj.transform.position, a_Damage, TxtType.Damage); //데미지 숫자 이펙트
+        InGameMgr.Inst.SpanwDamageTxt(m_HpBarCtrl.gameObject.transform.position, a_Damage, TxtType.Damage); //데미지 숫자 이펙트
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //hpbar 적용
         
         if(navMeshAgent != null)
@@ -300,7 +300,7 @@ public class SpecterMaskTint_Boss : MonsterCtrl
 
     public override void ObjDestory()
     {       
-        Destroy(m_HpBarObj);
+        //Destroy(m_HpBarObj);
         Destroy(this.gameObject);
     }
     

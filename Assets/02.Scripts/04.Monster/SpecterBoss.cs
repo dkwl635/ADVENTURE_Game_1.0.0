@@ -22,7 +22,7 @@ public class SpecterBoss : BossMonster
     private void LateUpdate()
     {
         //체력바 위치 선정
-        m_HpBarObj.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 4.0f);
+       // m_HpBarObj.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 4.0f);
     }
     public override IEnumerator Think()
     {
@@ -221,7 +221,7 @@ public class SpecterBoss : BossMonster
     public override void OnDamge(int a_Damage = 0, Player a_Attacker = null)
     {
         m_MonsterStatus.m_CurHp -= a_Damage; //데미지 적용
-        InGameMgr.Inst.SpanwDamageTxt(m_HpBarObj.transform.position, a_Damage, TxtType.Damage); //데미지 숫자 이펙트
+        InGameMgr.Inst.SpanwDamageTxt(m_HpBarCtrl.gameObject.transform.position, a_Damage, TxtType.Damage); //데미지 숫자 이펙트
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //hpbar 적용
 
         if (navMeshAgent != null)

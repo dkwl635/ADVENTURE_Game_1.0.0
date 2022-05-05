@@ -13,36 +13,43 @@ public class Specter : MonsterCtrl
 
     public List<int> m_DropList;
 
+
+    public override void Init()
+    {
+        boxCollider = GetComponentInChildren<BoxCollider>();                    //충돌체
+        animator = GetComponent<Animator>();                                          //애니메이터             
+        navMeshAgent = GetComponent<NavMeshAgent>();   //네비
+     
+        m_Skin = GetComponentInChildren<SkinnedMeshRenderer>(); //스킨 머터리얼 적용을 위한
+        m_OrginMtrl = m_Skin.material;                                             //원래 머터리얼
+
+        m_Target = GameObject.Find("Player").transform;           //타겟
+
+        if (navMeshAgent.speed == 0)
+            navMeshAgent.speed = m_Speed;
+    }
     private void Start()
     {
         boxCollider = GetComponentInChildren<BoxCollider>();                    //충돌체
         animator = GetComponent<Animator>();                                          //애니메이터             
         navMeshAgent = GetComponent<NavMeshAgent>();   //네비
-       
-        m_HpBarObj = InGameMgr.Inst.SetHpBarObj();           //체력바
-        m_HpBarCtrl = m_HpBarObj.GetComponent<MonHpBarCtrl>();    //체력바 컨트롤      
+
+        //if (m_HpBarObj)
+        //    m_HpBarCtrl = m_HpBarObj.GetComponent<MonHpBarCtrl>();    //체력바 컨트롤      
 
         m_Skin = GetComponentInChildren<SkinnedMeshRenderer>(); //스킨 머터리얼 적용을 위한
         m_OrginMtrl = m_Skin.material;                                             //원래 머터리얼
 
         m_Target = GameObject.Find("Player").transform;           //타겟
 
-        //navMeshAgent.updatePosition = false;
         if (navMeshAgent.speed == 0)
             navMeshAgent.speed = m_Speed;
-
-
-        Spawn();     
-    }
-    private void LateUpdate()
-    {
-        m_HpBarObj.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 3.0f);      
     }
     
     private void FixedUpdate()
     {
-        Action_FixedUpdate();
         Think_FixedUpdate();
+        Action_FixedUpdate();
     }
 
     public void Think_FixedUpdate()
@@ -56,13 +63,12 @@ public class Specter : MonsterCtrl
             return;
         }
 
-
+        //스폰 지점에서 일정거리 멀어지면
         if (Vector3.Distance(transform.position, m_SpawnPos) > 15.0f)
         {
             m_MonsterState = MonsterState.GoBack;
             return;
         }
-       
      
 
         //상태 적용
@@ -202,7 +208,7 @@ public class Specter : MonsterCtrl
             m_Attacker = a_Attacker;
 
         m_MonsterStatus.m_CurHp -= a_Damage; //데미지 적용
-        InGameMgr.Inst.SpanwDamageTxt(m_HpBarObj.transform.position, a_Damage, TxtType.Damage); //데미지 텍스트 출력
+        InGameMgr.Inst.SpanwDamageTxt(m_HpBarCtrl.gameObject.transform.position, a_Damage, TxtType.Damage); //데미지 텍스트 출력
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //체력바 적용
 
         OnOffNav(false);
@@ -240,7 +246,7 @@ public class Specter : MonsterCtrl
             DieEvent();
 
         m_MonsterState = MonsterState.Die;  //상태 전환
-        m_HpBarObj.SetActive(false);     //체력바 끄기
+        m_HpBarCtrl.gameObject.SetActive(false);     //체력바 끄기
         animator.SetTrigger("Die");         //애니메이션 적용      
         boxCollider.enabled = false; //충돌체 끄기    
         OnOffNav(false);
@@ -284,7 +290,7 @@ public class Specter : MonsterCtrl
 
     public override void ObjDestory()   //오브젝트 제거용
     {
-        Destroy(m_HpBarObj);
+        //Destroy(m_HpBarObj);
         Destroy(this.gameObject);
     }
 }

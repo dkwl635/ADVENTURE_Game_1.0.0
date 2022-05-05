@@ -25,7 +25,18 @@ public class InGameMgr : MonoBehaviour
 
     private void Awake()
     {
-        Inst = this;
+        if (Inst != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }     
+        else
+        {
+            Inst = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+         
+
 
         Application.targetFrameRate = 60;
         
@@ -37,6 +48,7 @@ public class InGameMgr : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("테스트 무기 떨구기");
         ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f,0,-18.68f), 101, 1); //아이템 떨구기
     }
 

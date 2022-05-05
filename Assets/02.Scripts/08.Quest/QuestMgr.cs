@@ -34,7 +34,16 @@ public class QuestMgr : MonoBehaviour
     
     private void Awake()
     {
-        Inst = this;
+        if (Inst != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            Inst = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
 
         m_Player = GameObject.Find("Player").GetComponent<Player>();
         m_CurQuest = null;

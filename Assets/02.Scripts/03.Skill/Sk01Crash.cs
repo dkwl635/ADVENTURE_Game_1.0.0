@@ -42,7 +42,7 @@ public class Sk01Crash : Skill
       
         m_Ring.SetActive(true);
         m_tempPos = playerTr.position + a_MouesDir * m_Distance;
-        m_tempPos.y = 0.02f;
+        m_tempPos.y += 0.02f;
         m_Ring.transform.position = m_tempPos;
 
     }

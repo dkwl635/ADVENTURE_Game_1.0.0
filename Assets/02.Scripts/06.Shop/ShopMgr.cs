@@ -70,8 +70,17 @@ public class ShopMgr : MonoBehaviour
     
     private void Awake()
     {
-        if (Inst == null)
+        if (Inst != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
             Inst = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+
 
         if (m_LogBox != null)
             m_LogBoxRextTr = m_LogBox.GetComponent<RectTransform>();

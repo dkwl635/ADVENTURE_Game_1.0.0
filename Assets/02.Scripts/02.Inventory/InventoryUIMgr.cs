@@ -39,6 +39,17 @@ public class InventoryUIMgr : MonoBehaviour
 
     private void Awake()
     {
+        if (Inst != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            Inst = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+
         Inst = this;
         Player = GameObject.FindObjectOfType<Player>();
         PlayerInventory = GameObject.FindObjectOfType<PlayerInventory>();

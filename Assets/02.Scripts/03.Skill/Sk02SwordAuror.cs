@@ -29,7 +29,7 @@ public class Sk02SwordAuror : Skill
 
         m_SkillMark.SetActive(true);
         m_tempPos = playerTr.position + a_MouesDir * m_ZOffset;
-        m_tempPos.y = 0.02f;
+        m_tempPos.y += 0.02f;
         m_SkillMark.transform.SetPositionAndRotation(m_tempPos, Quaternion.LookRotation(a_MouesDir));
         m_SkillMark.transform.position = m_tempPos;
     }

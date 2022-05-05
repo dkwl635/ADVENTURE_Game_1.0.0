@@ -10,7 +10,6 @@ public class DontDestroyOnLoadMgr : MonoBehaviour
     public GameObject Player;
     public GameObject PlayerMark;
     public GameObject UI;
-    public GameObject Mgr;
 
    
 
@@ -24,7 +23,6 @@ public class DontDestroyOnLoadMgr : MonoBehaviour
             DontDestroyOnLoad(Player);
             DontDestroyOnLoad(PlayerMark);
             DontDestroyOnLoad(Cam);
-            DontDestroyOnLoad(Mgr);
             DontDestroyOnLoad(this.gameObject);
         }
         else
@@ -32,9 +30,9 @@ public class DontDestroyOnLoadMgr : MonoBehaviour
             Destroy(UI);
             Destroy(Player);
             Destroy(PlayerMark);
-            Destroy(Cam);
-            Destroy(Mgr);
+            Destroy(Cam);          
             Destroy(this.gameObject);
+            
         }
         
              

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +14,11 @@ public class EffectPoolMgr : MonoBehaviour
 
     private void Awake()
     {
-        if (Inst == null)
+        if (Inst != null)
+            return;
+        else
             Inst = this;
+
 
         m_EffectPool["HitEffect"] = new Stack<GameObject>();
     }

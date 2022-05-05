@@ -99,7 +99,7 @@ public class NormalAttack : Skill
                     break;
             }                           
         }
-
+        yield return null;
         if (combo.Equals(1))
         {
             attack = true;
@@ -148,9 +148,8 @@ public class NormalAttack : Skill
             }   
           
         }
-
-
-        if(combo.Equals(2))
+        yield return null;
+        if (combo.Equals(2))
         {
             attack = true;
     
@@ -189,7 +188,10 @@ public class NormalAttack : Skill
             }
           
         }
-                                  
+
+
+        yield return null;
+
         player.bIsAttack = false;
         yield break;
     }
