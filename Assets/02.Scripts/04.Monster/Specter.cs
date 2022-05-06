@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Specter : MonsterCtrl
+public class Specter : NomalMonster
 { 
     bool bInvincibility = false;
     float m_AttackDelay = 0.0f;  //1.5f 공격 대기시간
@@ -23,11 +23,17 @@ public class Specter : MonsterCtrl
         m_Skin = GetComponentInChildren<SkinnedMeshRenderer>(); //스킨 머터리얼 적용을 위한
         m_OrginMtrl = m_Skin.material;                                             //원래 머터리얼
 
-        m_Target = GameObject.Find("Player").transform;           //타겟
+       
 
         if (navMeshAgent.speed == 0)
             navMeshAgent.speed = m_Speed;
     }
+
+    private void OnEnable()
+    {
+        m_Target = GameObject.Find("Player").transform;           //타겟
+    }
+
     private void Start()
     {
         boxCollider = GetComponentInChildren<BoxCollider>();                    //충돌체
@@ -46,13 +52,8 @@ public class Specter : MonsterCtrl
             navMeshAgent.speed = m_Speed;
     }
     
-    private void FixedUpdate()
-    {
-        Think_FixedUpdate();
-        Action_FixedUpdate();
-    }
-
-    public void Think_FixedUpdate()
+  
+    public override void Think_FixedUpdate()
     {
         if (m_MonsterStatus.m_CurHp <= 0)
             return;
@@ -84,7 +85,7 @@ public class Specter : MonsterCtrl
 
                     
     }
-    public void Action_FixedUpdate()
+    public override void Action_FixedUpdate()
     {
        
         if (m_MonsterState == MonsterState.Idle)//가만히 있을때
@@ -208,7 +209,8 @@ public class Specter : MonsterCtrl
             m_Attacker = a_Attacker;
 
         m_MonsterStatus.m_CurHp -= a_Damage; //데미지 적용
-        InGameMgr.Inst.SpanwDamageTxt(m_HpBarCtrl.gameObject.transform.position, a_Damage, TxtType.Damage); //데미지 텍스트 출력
+        Vector2 canvaspos = Camera.main.WorldToScreenPoint(m_HpBarCtrl.gameObject.transform.position);
+        InGameMgr.Inst.SpanwDamageTxt(canvaspos, a_Damage, TxtType.Damage); //데미지 텍스트 출력
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //체력바 적용
 
         OnOffNav(false);
@@ -275,8 +277,8 @@ public class Specter : MonsterCtrl
             return;
 
         if (bOnOff == true)  //On
-        {   
-            navMeshAgent.isStopped = false;
+        {         
+            navMeshAgent.isStopped = false;      
             navMeshAgent.SetDestination(m_Target.position);        
         }
         else//Off

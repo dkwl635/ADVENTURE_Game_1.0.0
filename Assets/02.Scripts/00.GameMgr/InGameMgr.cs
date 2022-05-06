@@ -54,13 +54,13 @@ public class InGameMgr : MonoBehaviour
 
     void InitObjPool()
     {
-        //if (m_DamageTxtObj != null)
-        //    for (int i = 0; i < m_ObjPoolInit; i++)
-        //{
-        //    GameObject textObj = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform);
-        //    textObj.SetActive(false);
-        //    ObjPoolStacks[m_DamageTxt].Push(textObj);
-        //}
+        if (m_DamageTxtObj != null)
+            for (int i = 0; i < m_ObjPoolInit; i++)
+        {
+            GameObject textObj = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform);
+            textObj.SetActive(false);
+            ObjPoolStacks[m_DamageTxt].Push(textObj);
+        }
 
         //FX ObjectPool
         for (int i = 0; i < FX_PrefabList.Count; i++)

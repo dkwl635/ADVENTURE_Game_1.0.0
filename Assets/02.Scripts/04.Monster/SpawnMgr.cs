@@ -12,7 +12,7 @@ public class SpawnMgr : MonoBehaviour
     public Transform[] m_MonsterSpawnPos = null;    //몬스터들의 스폰 위치 정보
     public Transform m_BossSpawnPos = null;    //보스몬스터들의 스폰 위치 정보
 
-    private MonsterCtrl[] m_MonterList;             //소환된 몬스터를 관리하기 위한 리스트
+    private NomalMonster[] m_MonterList;             //소환된 노말몬스터를 관리하기 위한 리스트
     private MonsterCtrl m_Boss;             //소환된 보스몬스터를 관리
 
     private GameObject m_Player; //플레이어 감지 
@@ -31,14 +31,17 @@ public class SpawnMgr : MonoBehaviour
     
      int m_MonseterKillCount = 0;
     [SerializeField] int m_BossSpawnCount = 10;
-    
 
-   
 
 
     void Start()
     {
-        m_MonsterSpawnPos = transform.GetComponentsInChildren<Transform>();
+        GameObject[] spanwpos = GameObject.FindGameObjectsWithTag("MONSTERSPAWN");
+        m_MonsterSpawnPos = new Transform[spanwpos.Length];
+        for (int i = 0; i < spanwpos.Length; i++)
+        {
+            m_MonsterSpawnPos[i] = spanwpos[i].transform;
+        }
 
         if (m_BossSpawnBtn != null)
         {
@@ -50,6 +53,18 @@ public class SpawnMgr : MonoBehaviour
         m_KillGage.fillAmount = (float)m_MonseterKillCount / (float)m_BossSpawnCount;
 
         SetMonster();
+
+
+    }
+
+    private void FixedUpdate()
+    {
+        if(bSpawnMon)
+        for (int i = 0; i < m_MonterList.Length; i++)
+        {
+            m_MonterList[i].Think_FixedUpdate();
+            m_MonterList[i].Action_FixedUpdate();
+        }
     }
 
     void AddMonsterKillCount()
@@ -84,10 +99,10 @@ public class SpawnMgr : MonoBehaviour
 
    void SetMonster()
     {
-        m_MonterList = new MonsterCtrl[m_MaxMonConunt];
+        m_MonterList = new NomalMonster[m_MaxMonConunt];
         for (int i = 0; i < m_MaxMonConunt; i++)
         {
-            m_MonterList[i] = Instantiate(m_MonsterPrefab, transform).GetComponent<MonsterCtrl>();
+            m_MonterList[i] = Instantiate(m_MonsterPrefab, transform).GetComponent<NomalMonster>();
             m_MonterList[i].transform.position = m_MonsterSpawnPos[i + 1].position;
             m_MonterList[i].m_SpawnPos = m_MonsterSpawnPos[i + 1].position;
             m_MonterList[i].DieEvent += AddMonsterKillCount;
@@ -99,7 +114,7 @@ public class SpawnMgr : MonoBehaviour
 
     void SpawnMonster()
     {
-       if(m_MonterList.Length >0)
+       if(m_MonterList.Length > 0)
             for (int i = 0; i < m_MonterList.Length; i++)
             {
                 m_MonterList[i].gameObject.SetActive(true);               
@@ -134,6 +149,7 @@ public class SpawnMgr : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             SpawnMonster();
+            bSpawnMon = true;
         }
     }
 
@@ -142,6 +158,7 @@ public class SpawnMgr : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             DeSpawnMonster();
+            bSpawnMon = false;
         }
     }
 

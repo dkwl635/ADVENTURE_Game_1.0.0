@@ -64,7 +64,6 @@ public enum MonsterState
 
 
     public virtual void Init() { }
-
     public virtual void Spawn() { }               //스폰 하는 함수 
     public virtual void OnDamge(int a_Damage = 0, Player a_Attacker = null) { }  //데미지를 받는 함수
     public virtual void Die() { }     //죽으면 호출되는 함수

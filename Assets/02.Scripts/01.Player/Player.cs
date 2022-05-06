@@ -244,14 +244,14 @@ public class Player : MonoBehaviour
     public void MousePicking(RaycastHit hitInfo) //마우스 위치 마크
     {
         m_CacLenVec = hitInfo.point - transform.position;       //거리 계산을 위한
-        m_CacLenVec.y = 0;
+        //m_CacLenVec.y = 0;
 
         if (m_CacLenVec.magnitude < 0.5f)    // 현재 목표 까지의 거리가 0.5 보다 작으면
             return;
      
         if (hitInfo.collider.CompareTag("GROUND"))
         {   
-            nv.SetDestination(hitInfo.point);                               
+            nv.SetDestination(hitInfo.point + (Vector3.up));                               
             CursorMarkOn(hitInfo.point);    //마크 커서 On
         }
         else if(hitInfo.collider.CompareTag("NPC"))
@@ -296,7 +296,7 @@ public class Player : MonoBehaviour
             }          
             
             m_CacLenVec = nv.destination - transform.position; // 거리 계산
-            m_CacLenVec.y = 0.0f;
+            //m_CacLenVec.y = 0.0f;
            
             if (m_CacLenVec.magnitude < 0.5f)
             {

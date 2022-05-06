@@ -12,8 +12,6 @@ public class DontDestroyOnLoadMgr : MonoBehaviour
     public GameObject UI;
 
    
-
-
     private void Awake()
     {
         if(inst == null)

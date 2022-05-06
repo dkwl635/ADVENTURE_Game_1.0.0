@@ -12,10 +12,9 @@ public class QuestMgr : MonoBehaviour
     Dictionary<int, Quest> DicQuest = new Dictionary<int, Quest>();
     Dictionary<Quest, GameObject> DicQuestItem = new Dictionary<Quest, GameObject>(); //퀘스트 목록를 보여주는 오브젝트
     List<Quest> m_AllQuestList = new List<Quest>(); //퀘스트 목록
+
     List<TalkQuest> m_TalkQuestList = new List<TalkQuest>();    //대화로 하는 퀘스트
     List<KillQuest> m_KillQuestList = new List<KillQuest>();    //잡아야 하는 퀘스트
-
-  
 
     public GameObject m_QuestPanel = null;
     public GameObject m_QuestDlgBox = null;
@@ -153,6 +152,18 @@ public class QuestMgr : MonoBehaviour
 
         InstantiateQuestItem(DicQuest[a_QuestId]);
 
+        //퀘스트르 받으면 퀘스트를 주는 NPC의 머리 오브젝트 없애기
+        QuestHelp[] questHelps = FindObjectsOfType<QuestHelp>();
+        for (int i = 0; i < questHelps.Length; i++)
+        {
+            if(questHelps[i].m_Quest_ID == a_QuestId)
+            {
+                questHelps[i].OffQuestObj();
+                break;
+            }
+        }
+
+
         return true;
     }
 
@@ -236,6 +247,19 @@ public class QuestMgr : MonoBehaviour
 
         m_QuestDlgBox.SetActive(false);
         m_CurQuest = null;
+    }
+
+    //이미 받은 퀘스트 라면
+    public bool CheckQuest(int a_Id)
+    {
+
+        if (m_AllQuestList.Contains(DicQuest[a_Id]))
+        {
+            return true;
+        }
+
+        return false;
+      
     }
 
 }

@@ -71,7 +71,7 @@ public class PlayerInventory : MonoBehaviour
 
              if(AddNewItem(newItem.m_ItemData))
             {
-                m_AddItemData.Add(newItem.m_ItemData);
+                
                 Destroy(other.gameObject);
             }
         }
@@ -87,7 +87,7 @@ public class PlayerInventory : MonoBehaviour
 
             if (AddNewItem(newItem.m_ItemData))
             {
-                m_AddItemData.Add(newItem.m_ItemData);
+               
                 Destroy(collision.gameObject);
             }
         }
@@ -115,6 +115,8 @@ public class PlayerInventory : MonoBehaviour
                 m_PlayerEquipmentItemInven[idx] = a_NewItemData;
                 a_NewItemData.m_SlotNum = idx;
                 InventoryUIMgr.Inst.SetEquipSlot(idx, a_NewItemData);
+                m_AddItemData.Add(a_NewItemData);
+
                 return true;
             }
            
@@ -149,6 +151,7 @@ public class PlayerInventory : MonoBehaviour
                 {//기존 갯수 + 새로운 갯수  <= 최대 갯수
                     oldItemData.m_CurCount += a_NewItemData.m_CurCount;
                     InventoryUIMgr.Inst.m_ItemSlots[idx].RefreshSlot();
+                    m_AddItemData.Add(a_NewItemData);
                     return true;    //새로운 카운트 해주고 추가 성공 리턴
                 }              
             }
@@ -165,6 +168,7 @@ public class PlayerInventory : MonoBehaviour
                 m_PlayerItemInven[idx] = a_NewItemData; //아이템 추가\
                 a_NewItemData.m_SlotNum = idx;
                 InventoryUIMgr.Inst.SetItemSlot(idx, a_NewItemData);
+                m_AddItemData.Add(a_NewItemData);
                 return true;
             }
         }
@@ -448,7 +452,6 @@ public class PlayerInventory : MonoBehaviour
   
     void SendItemMsg_Update()
     {
- 
         if (m_UpdateAddItemTime < 0)
         {
             if (m_AddItemData.Count > 0)
