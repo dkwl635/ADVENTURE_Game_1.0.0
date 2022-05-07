@@ -34,7 +34,7 @@ public enum SlotNum //특수 슬롯 번호
     UseItem2= 302,
 }
 
-public class Slot : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
+public class Slot : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler ,IBeginDragHandler,   IDragHandler, IEndDragHandler , IPointerClickHandler
 {
     public SlotType m_SlotType = SlotType.None;
 
@@ -107,15 +107,34 @@ public class Slot : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler
         MouseMgr.Inst.OnMouesEnterSlot(this);
     }
 
-
     public void OnDisable()
     {     
         MouseMgr.Inst.OnMouesExitSlot(this);
     }
-
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        MouseMgr.Inst.DragStartSlot(this);
+    }
     public void OnPointerExit(PointerEventData eventData)
     {
         MouseMgr.Inst.OnMouesExitSlot(this);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        MouseMgr.Inst.DragIngSlot();
+    }
+
+
+
+    public void OnEndDrag(PointerEventData eventData)
+    {       
+        MouseMgr.Inst.DragEndSlot();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        MouseMgr.Inst.ClickSlot(this);
     }
 }
 

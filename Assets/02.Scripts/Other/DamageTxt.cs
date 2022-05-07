@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public enum TxtType
 {
+    PlayerDamage,
     Damage,
     Heal,
 
@@ -36,10 +37,12 @@ public class DamageTxt : MonoBehaviour
     public void OnDamageText(int a_Value , TxtType a_Damage = TxtType.Damage)
     {
         m_Value = a_Value;
-        if(a_Damage == TxtType.Damage)
+        if (a_Damage == TxtType.Damage)
             m_DamageValueTxt.color = Color.black;
-        else if(a_Damage == TxtType.Heal)
+        else if (a_Damage == TxtType.Heal)
             m_DamageValueTxt.color = Color.green;
+        else if (a_Damage == TxtType.PlayerDamage)
+            m_DamageValueTxt.color = Color.gray;
 
         m_DamageValueTxt.text = m_Value.ToString();
         gameObject.SetActive(true); 

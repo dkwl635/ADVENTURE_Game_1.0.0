@@ -38,11 +38,7 @@ public class Specter : NomalMonster
     {
         boxCollider = GetComponentInChildren<BoxCollider>();                    //충돌체
         animator = GetComponent<Animator>();                                          //애니메이터             
-        navMeshAgent = GetComponent<NavMeshAgent>();   //네비
-
-        //if (m_HpBarObj)
-        //    m_HpBarCtrl = m_HpBarObj.GetComponent<MonHpBarCtrl>();    //체력바 컨트롤      
-
+        navMeshAgent = GetComponent<NavMeshAgent>();   //네비       
         m_Skin = GetComponentInChildren<SkinnedMeshRenderer>(); //스킨 머터리얼 적용을 위한
         m_OrginMtrl = m_Skin.material;                                             //원래 머터리얼
 
@@ -158,8 +154,9 @@ public class Specter : NomalMonster
                     //공격
                     RaycastHit[] hits = Physics.BoxCastAll(transform.position, Vector3.one * 0.5f, transform.forward, transform.rotation, 1.0f, 1 << LayerMask.NameToLayer("PLAYER"));
                     if (hits.Length > 0) // 타겟 충돌체 찾기
-                    {                                          
+                    {
                         Player player = hits[0].collider.GetComponent<Player>();
+                        m_AttackEff.SetActive(true);
                         player.OnDamge(m_MonsterStatus.m_AttPw);  //데미지적용
                     }
                 }
@@ -167,6 +164,7 @@ public class Specter : NomalMonster
          
             if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
             {
+                m_AttackEff.SetActive(false);
                 m_AttackDelay = 1.5f;
                 m_MonsterState = MonsterState.Idle; //상태 전환
             }

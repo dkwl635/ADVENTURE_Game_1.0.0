@@ -49,12 +49,13 @@ public class UpgradeMgr : MonoBehaviour
         {
             Inst = this;
             DontDestroyOnLoad(this.gameObject);
+            this.gameObject.transform.SetParent(GameObject.FindObjectOfType<DontDestroyOnLoadMgr>().gameObject.transform);
         }
         m_UpgradeEffect = m_UpgradeUI_Panel.GetComponentInChildren<Animator>();
     }
     void Start()
     {
-        m_UpgradeUseCoin.Add(0);
+        m_UpgradeUseCoin.Add(80);
         m_UpgradeUseCoin.Add(100);
         m_UpgradeUseCoin.Add(200);
         m_UpgradeUseCoin.Add(300);
@@ -64,7 +65,7 @@ public class UpgradeMgr : MonoBehaviour
         m_UpgradeUseCoin.Add(1000);
         m_UpgradeUseCoin.Add(1300);
 
-        m_UpgradePercentage.Add(0);
+        m_UpgradePercentage.Add(90);
         m_UpgradePercentage.Add(80);
         m_UpgradePercentage.Add(70);
         m_UpgradePercentage.Add(60);
@@ -74,7 +75,7 @@ public class UpgradeMgr : MonoBehaviour
         m_UpgradePercentage.Add(20);
         m_UpgradePercentage.Add(10);
 
-        m_AttackRise.Add(0);
+        m_AttackRise.Add(3);
         m_AttackRise.Add(5);
         m_AttackRise.Add(10);
         m_AttackRise.Add(12);
@@ -84,7 +85,7 @@ public class UpgradeMgr : MonoBehaviour
         m_AttackRise.Add(40);
         m_AttackRise.Add(50);
 
-        m_DefenceRise.Add(0);
+        m_DefenceRise.Add(1);
         m_DefenceRise.Add(2);
         m_DefenceRise.Add(5);
         m_DefenceRise.Add(8);

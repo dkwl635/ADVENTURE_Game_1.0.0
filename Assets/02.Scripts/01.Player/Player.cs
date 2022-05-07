@@ -345,7 +345,7 @@ public class Player : MonoBehaviour
         Vector2 pos = m_DamageTxtTr.position;
         pos.x = pos.x +(Random.Range(-20.0f,20.0f));
 
-        InGameMgr.Inst.SpanwDamageTxt(pos, m_BuffDamage, TxtType.Damage ); //데미지 숫자 이펙트
+        InGameMgr.Inst.SpanwDamageTxt(pos, m_BuffDamage, TxtType.PlayerDamage ); //데미지 숫자 이펙트
         m_PlayerStatus.m_CurHp -= m_BuffDamage;//데미지 적용
 
         if(m_PlayerStatus.m_CurHp <= 0)

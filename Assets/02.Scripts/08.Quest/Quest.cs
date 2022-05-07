@@ -31,6 +31,7 @@ public class Quest
 
     [HideInInspector] public ItemData m_RewardItemData = null;
 
+
     public bool bIsSuccess = false;    //성공인지 실패 인지
 
     protected virtual string QuestStatus()

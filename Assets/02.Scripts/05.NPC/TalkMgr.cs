@@ -63,6 +63,7 @@ public class TalkMgr : MonoBehaviour
         {
             Inst = this;
             DontDestroyOnLoad(this.gameObject);
+            this.gameObject.transform.SetParent(GameObject.FindObjectOfType<DontDestroyOnLoadMgr>().gameObject.transform);
         }
 
         m_Btns = m_TalkBtnGroup.GetComponentsInChildren<Button>(true);

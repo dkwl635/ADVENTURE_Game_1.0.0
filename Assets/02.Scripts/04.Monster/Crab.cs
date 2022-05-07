@@ -122,6 +122,7 @@ public class Crab : MonsterCtrl
                         Player player = hits[0].collider.GetComponent<Player>();
                         player.OnDamge(m_MonsterStatus.m_AttPw);  //데미지적용
 
+                        //때리는 이펙트
                         InGameMgr.Inst.SpawnFxEffect(m_AttackPos.transform.position, "FX_BloodSplatter");
                     }
                 }

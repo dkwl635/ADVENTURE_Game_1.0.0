@@ -9,6 +9,7 @@ public class Weapon : MonoBehaviour
     public Transform m_WeaponHandTr; //무기 핸드 위치 
     public MeshFilter m_MeshFiter; //보여주는 메쉬 정보
     public MeshRenderer m_MeshRenderer; //메쉬머터리얼 바꾸기 위해
+    public Transform m_EffPos;  //무기의 이펙트 위치
    
     
     public int m_WeaponPw { get { 

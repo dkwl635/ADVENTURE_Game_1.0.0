@@ -56,11 +56,16 @@ public class NormalAttack : Skill
         animator.SetInteger("Combo", combo);
 
         playerTr.LookAt(SkillMgr.Inst.m_MousePos);
-        if(combo.Equals(0))
-        {          
+        eff.transform.position = player.weapon.m_EffPos.position;
+        if (combo.Equals(0))
+        {
+
+            eff.SetActive(true);    
             while (true)
             {          
-                yield return null;             
+                yield return null;
+                eff.transform.position = player.weapon.m_EffPos.position;
+
                 if (!animator.GetCurrentAnimatorStateInfo(0).IsName("NormalAttack01"))//교체 시간 대기                   
                     continue;
                 
@@ -108,7 +113,8 @@ public class NormalAttack : Skill
             while (true)
             {
                 yield return null;
-               
+                eff.transform.position = player.weapon.m_EffPos.position;
+
                 if (!animator.GetCurrentAnimatorStateInfo(0).IsName("NormalAttack02"))//교체 시간 대기                                                
                     continue;
 
@@ -156,7 +162,8 @@ public class NormalAttack : Skill
             while (true)
             {
                 yield return null;
-               
+                eff.transform.position = player.weapon.m_EffPos.position;
+
                 if (!animator.GetCurrentAnimatorStateInfo(0).IsName("NormalAttack03"))//교체 시간 대기                                                
                     continue;
 
@@ -189,7 +196,7 @@ public class NormalAttack : Skill
           
         }
 
-
+        eff.SetActive(false);
         yield return null;
 
         player.bIsAttack = false;

@@ -70,6 +70,7 @@ public class SkillMgr : MonoBehaviour
         {
             Inst = this;
             DontDestroyOnLoad(this.gameObject);
+            this.gameObject.transform.SetParent(GameObject.FindObjectOfType<DontDestroyOnLoadMgr>().gameObject.transform);
         }
 
         if (player == null)

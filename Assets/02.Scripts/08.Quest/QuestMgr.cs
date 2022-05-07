@@ -42,25 +42,29 @@ public class QuestMgr : MonoBehaviour
         {
             Inst = this;
             DontDestroyOnLoad(this.gameObject);
+            this.gameObject.transform.SetParent(GameObject.FindObjectOfType<DontDestroyOnLoadMgr>().gameObject.transform);
         }
 
         m_Player = GameObject.Find("Player").GetComponent<Player>();
         m_CurQuest = null;
+
+        TestQuestMake();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    void TestQuestMake()
     {
         TalkQuest talkQuest1 = new TalkQuest();
         talkQuest1.m_QuestId = 1;
         talkQuest1.m_QuestType = QuestType.Talk;
         talkQuest1.m_GoalNpcName = "Luna";
         talkQuest1.m_GoalNPCId = 130;
-        talkQuest1.m_QuestName= "Luna와 대화 하기";
+        talkQuest1.m_QuestName = "Luna와 대화 하기";
         talkQuest1.m_QuestInfo = "옆에 있는 Luna 와 대화 하세요";
         talkQuest1.m_RewardCoin = 1000;
         talkQuest1.m_RewardExp = 1000;
-        talkQuest1.m_RewardItemData = ItemMgr.Inst.InstantiateItem(501, 10);
+        talkQuest1.m_RewardItem = 501;
+        talkQuest1.m_RewardItemCount = 10;
+        //talkQuest1.m_RewardItemData = ItemMgr.Inst.InstantiateItem(501, 10);
 
         KillQuest killQuest1 = new KillQuest();
         killQuest1.m_QuestId = 2;
@@ -69,14 +73,22 @@ public class QuestMgr : MonoBehaviour
         killQuest1.m_KillMonsterId = 1;
         killQuest1.m_GoalCount = 10;
         killQuest1.m_QuestName = "Specter를 잡아줘";
-        killQuest1.m_QuestInfo  = "몬스터 Specter를 10마리 잡아주세요";
+        killQuest1.m_QuestInfo = "몬스터 Specter를 10마리 잡아주세요";
         killQuest1.m_RewardCoin = 200000;
         killQuest1.m_RewardExp = 200000;
-        killQuest1.m_RewardItemData = ItemMgr.Inst.InstantiateItem(102, 1);
+        killQuest1.m_RewardItem = 102;
+        killQuest1.m_RewardItemCount = 1;
+        //killQuest1.m_RewardItemData = ItemMgr.Inst.InstantiateItem(102, 1);
 
-        DicQuest[1]= talkQuest1;
+        DicQuest[1] = talkQuest1;
         DicQuest[2] = killQuest1;
+    }
 
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
         if (m_BackBtn != null)
             m_BackBtn.onClick.AddListener(OffQuestUI);
 
@@ -142,11 +154,13 @@ public class QuestMgr : MonoBehaviour
         if(DicQuest[a_QuestId].m_QuestType.Equals(QuestType.Talk))
         {
             TalkQuest talkQuest  = DicQuest[a_QuestId] as TalkQuest;
+            talkQuest.m_RewardItemData = ItemMgr.Inst.InstantiateItem(DicQuest[a_QuestId].m_RewardItem, DicQuest[a_QuestId].m_RewardItemCount);
             m_TalkQuestList.Add(talkQuest);
         }
         else if(DicQuest[a_QuestId].m_QuestType.Equals (QuestType.Kill))
         {
             KillQuest killQuest = DicQuest[a_QuestId] as KillQuest;
+            killQuest.m_RewardItemData = ItemMgr.Inst.InstantiateItem(DicQuest[a_QuestId].m_RewardItem, DicQuest[a_QuestId].m_RewardItemCount);
             m_KillQuestList.Add(killQuest);
         }
 
@@ -249,7 +263,7 @@ public class QuestMgr : MonoBehaviour
         m_CurQuest = null;
     }
 
-    //이미 받은 퀘스트 라면
+    //이미 받은 퀘스트 라면 
     public bool CheckQuest(int a_Id)
     {
 

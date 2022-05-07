@@ -94,7 +94,7 @@ public class EquipmentItemData : ItemData   //장비 아이템 정보
     public EquipmentAddType m_AddType = EquipmentAddType.None;       //추가 셋팅이 필요한 타입
     public int m_AttPw = 1;            //공격력
     public int m_DefPw = 1;           //방어력
-    public int m_Star = 1;              //등급
+    public int m_Star = 0;              //등급
     public int m_MaxStar = 1;        //최대등급
 
 }

@@ -46,6 +46,7 @@ public class MouseMgr : MonoBehaviour
         {
             Inst = this;
             DontDestroyOnLoad(this.gameObject);
+            this.gameObject.transform.SetParent(GameObject.FindObjectOfType<DontDestroyOnLoadMgr>().gameObject.transform);
         }
 
         gr = GameObject.Find("UICanvas").GetComponent<GraphicRaycaster>();
@@ -80,74 +81,7 @@ public class MouseMgr : MonoBehaviour
         m_Screen_Height = Screen.height;
         m_Screen_Width = Screen.width;
     }
-
-    private void Update()
-    {
-        ClickSlot_Updata();
-        //OnMoues_Update();
-        DragStart_Update();
-        DragIng_Update();
-        DragEnd_Update();
-
-    }
-
-
-  
-    void OnMoues_Update()  //슬롯 위에 마우스 가 있으면
-    {
-        if (bIsDrag == false)
-        {
-            Slot nowSlot = RaycastSlot();
-            if (nowSlot == null || nowSlot.m_SlotImg.sprite == null)
-            {
-                m_ItemSlotUI.gameObject.SetActive(false);
-                return;
-            }
-
-
-            if (nowSlot.m_SlotType == SlotType.Item || nowSlot.m_SlotType == SlotType.Equipment || nowSlot.m_SlotType == SlotType.Part ||
-               nowSlot.m_SlotType == SlotType.UseItem || nowSlot.m_SlotType == SlotType.ShopItem)
-
-            {
-                if (nowSlot.m_ItemData == null)
-                    return;
-
-                m_ItemSlotUI.gameObject.SetActive(true);
-                m_OnImg.sprite = nowSlot.m_SlotImg.sprite;
-                m_OnCount.text = nowSlot.m_ItemCountTxt.text;
-                m_OnName.text = nowSlot.m_ItemData.m_Name;
-                m_OnStar.text = nowSlot.m_ItemData.m_Grade;
-                m_OnInfo.text = nowSlot.m_ItemData.m_ItemInfo;
-                m_ItemSlotUI.transform.SetAsLastSibling();
-                SetSizeRectTr(m_ItemSlotRectTr, m_ItemTxtTr);
-
-            }
-            else if (nowSlot.m_SlotType == SlotType.Skill || nowSlot.m_SlotType == SlotType.SkillRoot)
-            {
-                SkillSlot skillSlot = nowSlot as SkillSlot;
-                if (skillSlot == null)
-                    return;
-
-                if (skillSlot.m_Skill == null)
-                    return;
-
-                m_ItemSlotUI.gameObject.SetActive(true);
-                m_OnImg.sprite = skillSlot.m_SlotImg.sprite;
-                m_OnCount.text = "";
-                m_OnName.text = skillSlot.m_Skill.m_SkillName;
-                m_OnStar.text = skillSlot.m_Skill.m_Lv + " Lv";
-                m_OnInfo.text = skillSlot.m_Skill.m_SkillInfo;
-                m_ItemSlotUI.transform.SetAsLastSibling();
-                SetSizeRectTr(m_ItemSlotRectTr, m_ItemTxtTr);
-            }
-            else
-                m_ItemSlotUI.gameObject.SetActive(false);
-        }
-        else
-            m_ItemSlotUI.gameObject.SetActive(false);
-    }
-
-    public void OnMouesEnterSlot(Slot slot)
+    public void OnMouesEnterSlot(Slot slot) //슬롯 위에 마우스 가 있으면
     {
         if (bIsDrag == false)
         {
@@ -158,8 +92,7 @@ public class MouseMgr : MonoBehaviour
                 return;
             }
 
-
-            if (m_OnSlot.m_SlotType == SlotType.Item || m_OnSlot.m_SlotType == SlotType.Equipment || m_OnSlot.m_SlotType == SlotType.Part ||
+            if (m_OnSlot.m_SlotType == SlotType.Item || m_OnSlot.m_SlotType == SlotType.Part ||
                m_OnSlot.m_SlotType == SlotType.UseItem || m_OnSlot.m_SlotType == SlotType.ShopItem)
 
             {
@@ -168,13 +101,38 @@ public class MouseMgr : MonoBehaviour
 
                 m_ItemSlotUI.gameObject.SetActive(true);
                 m_OnImg.sprite = m_OnSlot.m_SlotImg.sprite;
-                m_OnCount.text = m_OnSlot.m_ItemCountTxt.text;
+                m_OnCount.text = m_OnSlot.m_ItemCountTxt.text;                           
                 m_OnName.text = m_OnSlot.m_ItemData.m_Name;
+
                 m_OnStar.text = m_OnSlot.m_ItemData.m_Grade;
                 m_OnInfo.text = m_OnSlot.m_ItemData.m_ItemInfo;
                 m_ItemSlotUI.transform.SetAsLastSibling();
                 SetSizeRectTr(m_ItemSlotRectTr, m_ItemTxtTr);
 
+            }
+            else if(m_OnSlot.m_SlotType == SlotType.Equipment)
+            {
+                if (m_OnSlot.m_ItemData == null)
+                    return;
+
+                EquipmentItemData equip = m_OnSlot.m_ItemData as EquipmentItemData;
+                if (equip.Equals(null))
+                    return;
+
+
+                m_ItemSlotUI.gameObject.SetActive(true);
+                m_OnImg.sprite = m_OnSlot.m_SlotImg.sprite;
+                m_OnCount.text = m_OnSlot.m_ItemCountTxt.text;
+
+                if(equip.m_Star > 0)
+                m_OnName.text =  "+" +equip.m_Star.ToString() + " " +   m_OnSlot.m_ItemData.m_Name;
+                else
+                    m_OnName.text = m_OnSlot.m_ItemData.m_Name;
+
+                m_OnStar.text = m_OnSlot.m_ItemData.m_Grade;
+                m_OnInfo.text = m_OnSlot.m_ItemData.m_ItemInfo;
+                m_ItemSlotUI.transform.SetAsLastSibling();
+                SetSizeRectTr(m_ItemSlotRectTr, m_ItemTxtTr);
             }
             else if (m_OnSlot.m_SlotType == SlotType.Skill || m_OnSlot.m_SlotType == SlotType.SkillRoot)
             {
@@ -200,7 +158,7 @@ public class MouseMgr : MonoBehaviour
        
     }
 
-    public void OnMouesExitSlot(Slot slot)
+    public void OnMouesExitSlot(Slot slot)//슬롯 위에 마우스 가 나가면
     {
         if(m_OnSlot == slot)
         {
@@ -209,99 +167,15 @@ public class MouseMgr : MonoBehaviour
         }
     }
 
-    public  void PointOnMoues()
-    {
-        if (bIsDrag == false)
-        {
-            Slot nowSlot = RaycastSlot();
-            if (nowSlot == null || nowSlot.m_SlotImg.sprite == null)
-            {
-                m_ItemSlotUI.gameObject.SetActive(false);
-                return;
-            }
-
-
-            if (nowSlot.m_SlotType == SlotType.Item || nowSlot.m_SlotType == SlotType.Equipment || nowSlot.m_SlotType == SlotType.Part ||
-               nowSlot.m_SlotType == SlotType.UseItem || nowSlot.m_SlotType == SlotType.ShopItem)
-
-            {
-                if (nowSlot.m_ItemData == null)
-                    return;
-
-                m_ItemSlotUI.gameObject.SetActive(true);
-                m_OnImg.sprite = nowSlot.m_SlotImg.sprite;
-                m_OnCount.text = nowSlot.m_ItemCountTxt.text;
-                m_OnName.text = nowSlot.m_ItemData.m_Name;
-                m_OnStar.text = nowSlot.m_ItemData.m_Grade;
-                m_OnInfo.text = nowSlot.m_ItemData.m_ItemInfo;
-                m_ItemSlotUI.transform.SetAsLastSibling();
-                SetSizeRectTr(m_ItemSlotRectTr, m_ItemTxtTr);
-
-            }
-            else if (nowSlot.m_SlotType == SlotType.Skill || nowSlot.m_SlotType == SlotType.SkillRoot)
-            {
-                SkillSlot skillSlot = nowSlot as SkillSlot;
-                if (skillSlot == null)
-                    return;
-
-                if (skillSlot.m_Skill == null)
-                    return;
-
-                m_ItemSlotUI.gameObject.SetActive(true);
-                m_OnImg.sprite = skillSlot.m_SlotImg.sprite;
-                m_OnCount.text = "";
-                m_OnName.text = skillSlot.m_Skill.m_SkillName;
-                m_OnStar.text = skillSlot.m_Skill.m_Lv + " Lv";
-                m_OnInfo.text = skillSlot.m_Skill.m_SkillInfo;
-                m_ItemSlotUI.transform.SetAsLastSibling();
-                SetSizeRectTr(m_ItemSlotRectTr, m_ItemTxtTr);
-            }
-            else
-                m_ItemSlotUI.gameObject.SetActive(false);
-        }
-        else
-            m_ItemSlotUI.gameObject.SetActive(false);
-    }
-
     //Drag  & Drop
-    void DragStart_Update()
+    public void DragStartSlot(Slot slot)
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            m_BeginSlot = RaycastSlot();
-
-            if (m_BeginSlot == null || m_BeginSlot.m_SlotImg.sprite == null)
-                return;
-
-            if (m_BeginSlot.m_SlotType == SlotType.None)
-                return;
-
-            if (m_BeginSlot.m_SlotImg.color.a == 0.5f)
-                return;
-
-            if (m_BeginSlot.m_SlotType == SlotType.Skill || m_BeginSlot.m_SlotType == SlotType.SkillRoot)//스킬 관련 슬롯일 경우
-            {
-                SkillSlot beginSkillSlot = m_BeginSlot as SkillSlot;
-                if (beginSkillSlot != null && beginSkillSlot.m_Skill.m_CurrTime > 0)//쿨타임 중일떄 
-                    return;
-            }
-
-            m_DragSlot.SetActive(true);
-            m_DragSlot.transform.SetAsLastSibling();
-            m_DragImg.sprite = m_BeginSlot.m_SlotImg.sprite;
-            m_DragCount.text = m_BeginSlot.m_ItemCountTxt.text;
-            bIsDrag = true;
-        }
-    }
-
-    public void DragStartSlot()
-    {
-        m_BeginSlot = RaycastSlot();
+        m_BeginSlot = slot;
 
         if (m_BeginSlot == null || m_BeginSlot.m_SlotImg.sprite == null)
             return;
 
-        if (m_BeginSlot.m_SlotType == SlotType.None)
+        if (m_BeginSlot.m_SlotType == SlotType.None || m_BeginSlot.m_SlotType == SlotType.ShopItem)
             return;
 
         if (m_BeginSlot.m_SlotImg.color.a == 0.5f)
@@ -320,43 +194,13 @@ public class MouseMgr : MonoBehaviour
         m_DragCount.text = m_BeginSlot.m_ItemCountTxt.text;
         bIsDrag = true;
     }
-
-    void DragIng_Update()
+    public void DragIngSlot()
     {
         if (m_DragSlot.activeSelf)
         {
             m_DragSlot.transform.position = Input.mousePosition;        
         }
     }
-
-    
-
-    void DragEnd_Update()
-    {
-        if (Input.GetMouseButtonUp(0) && bIsDrag)
-        {
-            m_EndSlot = RaycastSlot();
-            if (m_EndSlot != null)
-            {               
-                ChangSlot(m_BeginSlot, m_EndSlot);
-            }
-            else if (m_BeginSlot.m_SlotType == SlotType.Skill)
-            {               
-                SkillSlot beginSkillSlot = m_BeginSlot as SkillSlot;
-                if (beginSkillSlot != null && beginSkillSlot.m_Skill != null)
-                    beginSkillSlot.SetSlot(null);//빈칸으로 만들기
-            }
-            else if (m_BeginSlot.m_SlotType == SlotType.UseItem)
-            {             
-                m_BeginSlot.SetSlot(null);//빈칸으로 만들기
-            }
-
-            m_BeginSlot = null;
-            bIsDrag = false;
-            m_DragSlot.SetActive(false);
-        }           
-    }
-
     public void DragEndSlot()
     {
         m_EndSlot = RaycastSlot();
@@ -379,28 +223,8 @@ public class MouseMgr : MonoBehaviour
         bIsDrag = false;
         m_DragSlot.SetActive(false);
     }
-    //Drag  & Drop
-    void ClickSlot_Updata()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            m_BeginSlot = RaycastSlot();
-
-            if (m_BeginSlot != null)
-                ClickSlot(m_BeginSlot);
-        }
-    }
-
-    public void ClickSlot()
-    {
-        m_BeginSlot = RaycastSlot();
-
-        if (m_BeginSlot != null)
-            ClickSlot(m_BeginSlot);
-    }
-
-
-    Slot RaycastSlot()
+    //Drag  & Dr
+    Slot RaycastSlot() //밑에 있는 슬롯 체크
     {
         m_Point.position = Input.mousePosition;
         m_RayResult.Clear();
@@ -416,7 +240,6 @@ public class MouseMgr : MonoBehaviour
         }
         return null;
     }
-
     void SetSizeRectTr(RectTransform a_BoxTr, RectTransform a_TxtTr)
     {
         //패널 크기 조정
@@ -443,7 +266,6 @@ public class MouseMgr : MonoBehaviour
 
 
     }
-
     void ChangSlot(Slot a_BeginSlot, Slot a_EndSlot)//슬롯의 타입별 적용 방법
 
     {
@@ -544,9 +366,8 @@ public class MouseMgr : MonoBehaviour
         else
             return;
     }
-
     //슬롯 클릭 할 때
-    void ClickSlot(Slot a_BeginSlot)
+   public  void ClickSlot(Slot a_BeginSlot)
     {
         if (a_BeginSlot.m_ItemData == null)
             return;

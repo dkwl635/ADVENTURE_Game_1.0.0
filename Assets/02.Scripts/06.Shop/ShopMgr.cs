@@ -79,6 +79,7 @@ public class ShopMgr : MonoBehaviour
         {
             Inst = this;
             DontDestroyOnLoad(this.gameObject);
+            this.gameObject.transform.SetParent(GameObject.FindObjectOfType<DontDestroyOnLoadMgr>().gameObject.transform);
         }
 
 
@@ -208,13 +209,7 @@ public class ShopMgr : MonoBehaviour
     }
     //상점 UI 끄기
     public void OffShop()
-    {
-        //if (m_UserSellRoots.Count > 0)   //유저가 판매 아이템이 하나라도 있으면
-        //    return;
-
-        Debug.Log(m_SellUserItemList.Count);
-        Debug.Log(m_ShopSellRoots.Count);
-
+    { 
         for (int i = 0; i < m_SellUserItemList.Count;)
         {         
             OffSellItemBox(m_SellUserItemList[i]);
@@ -225,14 +220,12 @@ public class ShopMgr : MonoBehaviour
             Destroy(m_ShopSellRoots[i]);
         }
 
-        Debug.Log("1");
-
         //딕셔너리, 리스트 초기화
         m_ShopSellRoots.Clear();
         m_UserSellRoots.Clear();
         m_UserSellSlot.Clear();
 
-        Debug.Log("2");
+   
         //UI 끄기
         m_ShopPanel.SetActive(false);
         InventoryUIMgr.Inst.m_InventoryUI_Panel.SetActive(false);

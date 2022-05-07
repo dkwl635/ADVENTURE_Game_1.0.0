@@ -11,12 +11,21 @@ public class QuestHelp : MonoBehaviour
 
     void Start()
     {
+        if(QuestMgr.Inst.CheckQuest(m_Quest_ID))
+        {
+            m_QuestObj.SetActive(false);
+            return;
+        }
+
+
         m_MyNPC = GetComponent<NPC>();
         if (m_MyNPC != null)
         {
             m_MyNPC.Talk += OpenQuest;
         }
     }
+
+  
 
     public void OpenQuest(Player a_player)
     {
