@@ -122,7 +122,7 @@ public class ItemMgr : MonoBehaviour
         if (dropitem == null)
             return;
 
-        dropObj.transform.position = a_ItemPos; //위치 설정
+        dropObj.transform.position = a_ItemPos + Vector3.up * 2; //위치 설정
         dropitem.InitDropItem(InstantiateItem(a_ItemCode, a_ItemCount));    //아이템을 만들고 설정 시키기
        
       
