@@ -26,6 +26,7 @@ public class SpawnMgr : MonoBehaviour
 
     
     public Button m_BossSpawnBtn = null;
+    public GameObject m_KillGageObj = null;
     public Image m_KillGage = null;
     UnityEngine.UI.Outline outline = null;
     
@@ -140,7 +141,11 @@ public class SpawnMgr : MonoBehaviour
         m_Boss = Instantiate(m_BossPrefab, transform).GetComponent<BossMonster>();
         m_Boss.transform.position = m_BossSpawnPos.transform.position;
         m_Boss.m_SpawnPos = m_BossSpawnPos.transform.position;
-      
+
+        m_MonseterKillCount = 0;
+        m_KillGage.fillAmount = (float)m_MonseterKillCount / (float)m_BossSpawnCount;
+        m_KillGageObj.SetActive(false);
+
     }
 
 
@@ -150,6 +155,7 @@ public class SpawnMgr : MonoBehaviour
         {
             SpawnMonster();
             bSpawnMon = true;
+            m_KillGageObj.SetActive(true);
         }
     }
 
@@ -159,6 +165,7 @@ public class SpawnMgr : MonoBehaviour
         {
             DeSpawnMonster();
             bSpawnMon = false;
+            m_KillGageObj.SetActive(false);
         }
     }
 

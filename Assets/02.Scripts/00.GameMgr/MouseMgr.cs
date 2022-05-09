@@ -81,6 +81,12 @@ public class MouseMgr : MonoBehaviour
         m_Screen_Height = Screen.height;
         m_Screen_Width = Screen.width;
     }
+
+    private void LateUpdate()
+    {
+        SetSizeRectTr();
+    }
+
     public void OnMouesEnterSlot(Slot slot) //슬롯 위에 마우스 가 있으면
     {
         if (bIsDrag == false)
@@ -107,8 +113,7 @@ public class MouseMgr : MonoBehaviour
                 m_OnStar.text = m_OnSlot.m_ItemData.m_Grade;
                 m_OnInfo.text = m_OnSlot.m_ItemData.m_ItemInfo;
                 m_ItemSlotUI.transform.SetAsLastSibling();
-                SetSizeRectTr(m_ItemSlotRectTr, m_ItemTxtTr);
-
+                
             }
             else if(m_OnSlot.m_SlotType == SlotType.Equipment)
             {
@@ -132,7 +137,7 @@ public class MouseMgr : MonoBehaviour
                 m_OnStar.text = m_OnSlot.m_ItemData.m_Grade;
                 m_OnInfo.text = m_OnSlot.m_ItemData.m_ItemInfo;
                 m_ItemSlotUI.transform.SetAsLastSibling();
-                SetSizeRectTr(m_ItemSlotRectTr, m_ItemTxtTr);
+               
             }
             else if (m_OnSlot.m_SlotType == SlotType.Skill || m_OnSlot.m_SlotType == SlotType.SkillRoot)
             {
@@ -150,7 +155,7 @@ public class MouseMgr : MonoBehaviour
                 m_OnStar.text = skillSlot.m_Skill.m_Lv + " Lv";
                 m_OnInfo.text = skillSlot.m_Skill.m_SkillInfo;
                 m_ItemSlotUI.transform.SetAsLastSibling();
-                SetSizeRectTr(m_ItemSlotRectTr, m_ItemTxtTr);
+               
             }
             else
                 m_ItemSlotUI.gameObject.SetActive(false);
@@ -240,31 +245,33 @@ public class MouseMgr : MonoBehaviour
         }
         return null;
     }
-    void SetSizeRectTr(RectTransform a_BoxTr, RectTransform a_TxtTr)
+    void SetSizeRectTr()
     {
-        //패널 크기 조정
-        m_TempSize = a_BoxTr.sizeDelta;
-        m_TempSize.y = 180 + a_TxtTr.sizeDelta.y;
-        a_BoxTr.sizeDelta = m_TempSize;
-
-        m_TempSize = (Vector2)Input.mousePosition;
-        if (m_TempSize.y - a_BoxTr.rect.height < 0)
+        if(m_ItemSlotUI.activeSelf)
         {
-            m_TempSize.y = a_BoxTr.rect.height;
+            //패널 크기 조정
+            m_TempSize = m_ItemSlotRectTr.sizeDelta;
+            m_TempSize.y = 180 + m_ItemTxtTr.sizeDelta.y;
+            m_ItemSlotRectTr.sizeDelta = m_TempSize;
+
+            m_TempSize = (Vector2)Input.mousePosition;
+            if (m_TempSize.y - m_ItemSlotRectTr.rect.height < 0)
+            {
+                m_TempSize.y = m_ItemSlotRectTr.rect.height;
+            }
+            else if (m_TempSize.y > m_Screen_Height)
+            {
+                m_TempSize.y = m_Screen_Height;
+            }
+
+            if (m_TempSize.x + m_ItemSlotRectTr.rect.width > m_Screen_Width)
+            {
+                m_TempSize.x = m_TempSize.x - m_ItemSlotRectTr.rect.width;
+            }
+
+            m_ItemSlotRectTr.position = m_TempSize;
         }
-        else if (m_TempSize.y > m_Screen_Height)
-        {
-            m_TempSize.y = m_Screen_Height;
-        }
-
-        if (m_TempSize.x + a_BoxTr.rect.width > m_Screen_Width)
-        {
-            m_TempSize.x = m_TempSize.x - a_BoxTr.rect.width;
-        }
-
-        a_BoxTr.position = m_TempSize;
-
-
+    
     }
     void ChangSlot(Slot a_BeginSlot, Slot a_EndSlot)//슬롯의 타입별 적용 방법
 

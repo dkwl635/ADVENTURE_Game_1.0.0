@@ -111,15 +111,18 @@ public class Slot : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler ,IB
     {     
         MouseMgr.Inst.OnMouesExitSlot(this);
     }
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        MouseMgr.Inst.DragStartSlot(this);
-    }
     public void OnPointerExit(PointerEventData eventData)
     {
         MouseMgr.Inst.OnMouesExitSlot(this);
     }
 
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (!Input.GetMouseButton(0))
+            return;
+       MouseMgr.Inst.DragStartSlot(this);
+    }
+   
     public void OnDrag(PointerEventData eventData)
     {
         MouseMgr.Inst.DragIngSlot();
