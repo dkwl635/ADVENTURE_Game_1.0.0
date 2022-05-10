@@ -169,12 +169,15 @@ public class InventoryUIMgr : MonoBehaviour
     void SetUserInfo()
     {
         m_UserInfoText.text = "";
-        m_UserInfoText.text += "Player Hp : " + Player.m_PlayerStatus.m_MaxHp ;
-        m_UserInfoText.text += "\n\n";
-        m_UserInfoText.text += "Player AttackPw : " + Player.m_PlayerAttPw + "\n"; 
-        m_UserInfoText.text += "Player DefencePw : " + Player.m_PlayerDefPw + "\n";
-        m_UserInfoText.text += "\n\n";
-        m_UserInfoText.text += "Player SkillPoint : " + Player.m_SkillPoint+"\n";
+        m_UserInfoText.text += "최대 체력 : " + Player.m_PlayerStatus.m_MaxHp + "\n";
+        m_UserInfoText.text += "\n";
+        m_UserInfoText.text += "기본 공격력 : " + Player.m_PlayerStatus.m_AttPw + "\n"; 
+        m_UserInfoText.text += "총 공격력 : " + Player.m_PlayerAttPw + "\n";
+        m_UserInfoText.text += "\n";
+       m_UserInfoText.text += "기본 방어력 : " + Player.m_PlayerStatus.m_DefPw + "\n";
+        m_UserInfoText.text += "총 방어력 : " + Player.m_PlayerDefPw + "\n";
+        m_UserInfoText.text += "\n";
+        m_UserInfoText.text += "총 스킬 포인트 : " + Player.m_SkillPoint+"\n";
 
     }
 

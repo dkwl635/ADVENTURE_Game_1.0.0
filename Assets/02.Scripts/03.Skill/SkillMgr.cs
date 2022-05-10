@@ -86,7 +86,7 @@ public class SkillMgr : MonoBehaviour
     void Start()
     {
         m_SkillPoint = 10;
-        m_SkillPoint_Txt.text = "SP : " + m_SkillPoint.ToString();
+       
 
         //스킬 이름별로 딕셔너리로 저장
         for (int i = 0; i < m_SkillList.Length; i++)
@@ -117,7 +117,7 @@ public class SkillMgr : MonoBehaviour
         KeyUp_Update();
 
 
-        m_SkillPoint_Txt.text = "SP : " + m_SkillPoint.ToString(); 
+        m_SkillPoint_Txt.text = "남은 스킬 포인트(SP) : " + m_SkillPoint.ToString();
 
         //기본 공격 
         //클릭시 발동
