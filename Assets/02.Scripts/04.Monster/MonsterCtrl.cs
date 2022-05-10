@@ -29,9 +29,9 @@ public enum MonsterState
     //상태
     public MonsterState m_MonsterState;
 
-    //체력 UI를 저장하는 변수
-    //public GameObject m_HpBarObj = null;             //체력바 오브젝트
+    //체력 UI를 저장하는 변수 
     public MonHpBarCtrl m_HpBarCtrl = null;         //체력바 UI 컨트롤용
+
 
     //몬스터 스탯
     public Status m_MonsterStatus;

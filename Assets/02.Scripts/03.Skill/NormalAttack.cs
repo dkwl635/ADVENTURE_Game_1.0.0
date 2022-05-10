@@ -45,7 +45,6 @@ public class NormalAttack : Skill
     }
 
    
-
     public override IEnumerator SkillStart()
     {
         dotValue = Mathf.Cos(Mathf.Deg2Rad * (angleRange / 2));
@@ -59,7 +58,6 @@ public class NormalAttack : Skill
         eff.transform.position = player.weapon.m_EffPos.position;
         if (combo.Equals(0))
         {
-
             eff.SetActive(true);    
             while (true)
             {          
@@ -195,8 +193,9 @@ public class NormalAttack : Skill
             }
           
         }
-
+        m_CurrTime = m_CoolTime;
         eff.SetActive(false);
+        
         yield return null;
 
         player.bIsAttack = false;

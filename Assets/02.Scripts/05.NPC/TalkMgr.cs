@@ -72,15 +72,14 @@ public class TalkMgr : MonoBehaviour
 
     private void Start()
     {
-        //talk  0 : 일반 대화 , 1  : 상점 대화 , 2: 퀘스트 대화
+        //talk  0 : 일반 대화 , + 퀘스트 ID
         m_TalkTable.Add(100 + 0, "안녕하세요.:0/반갑습니다. 여기는 상점입니다.:1/감사합니다.:2");
-        m_TalkTable.Add(100 + 1, "안녕하세요.:0/반갑습니다. 무언가를 파시나요.:2/감사합니다.:2");
         m_TalkTable.Add(110 + 0, "안녕하세요.:0/반갑습니다. 여기는 강화소입니다.:2/감사합니다.:2");
-        m_TalkTable.Add(110 + 1, "안녕하세요.:0/반갑습니다. 무언가를 파시나요.:2/감사합니다.:2");
-        m_TalkTable.Add(120 + 0, "안녕하세요.:0/Ludo 입니다..:2/저기있는 Luna에게 얘기를 들어 주세요.:2");
-        m_TalkTable.Add(120 + 2, "안녕하세요.:0/Ludo 입니다..:2/저기있는 Luna에게 얘기를 들어 주세요.:2/잘부탁드립니다.:2");
-        m_TalkTable.Add(130 + 0, "안녕하세요.:0/Luna 입니다..:2/저기 있는 유령몬스터 10마리만 잡아 주세요:2");
-        m_TalkTable.Add(130 + 2, "안녕하세요.:0/Luna 입니다..:2/저기 있는 유령몬스터 10마리만 잡아 주세요:2/감사합니다.:2");
+        m_TalkTable.Add(120 + 0, "안녕하세요.:0/Ludo 입니다..:2");
+        m_TalkTable.Add(120 + 1, "안녕하세요.:0/Ludo 입니다..:2/저기있는 Luna에게 얘기를 들어 주세요.:2/잘부탁드립니다.:2");
+        m_TalkTable.Add(130 + 0, "안녕하세요.:0/Luna 입니다..:2/저기 포탈을 타면 사냥터에 갈 수 있습니다.:2");
+        m_TalkTable.Add(130 + 2, "안녕하세요.:0/부탁이있습니다..:2/저기 있는 유령몬스터 10마리만 잡아 주세요:2/감사합니다.:2");
+        m_TalkTable.Add(130 + 3, "안녕하세요.:0/이번에는 좀더 강한..:2/유령들의 왕을 잡아주세요:2/부탁드리겠습니다.:2");
 
         m_TalkBtnGroup.SetActive(false);
 
@@ -212,11 +211,7 @@ public class TalkMgr : MonoBehaviour
     }
     //상점 버튼 함수
     void ShopBtn()
-    {  
-        //OnOffTalkBtn(false);
-        //SetTalkList(m_TalkTable[m_ID + 1]);
-        //m_CurrTalkType = TalkType.Shop;
-        //PrintMsg();
+    {          
         ShopMgr.Inst.OpenShop();
     }
 
@@ -229,7 +224,7 @@ public class TalkMgr : MonoBehaviour
     void QuestBtn()
     {
         OffTalkBtnGroup();
-        SetTalkList(m_TalkTable[m_NpcID + 2]);
+        SetTalkList(m_TalkTable[m_NpcID + m_QuestID]);
         m_CurrTalkType = TalkType.Quest;
         m_OpenBox = true;
         m_PortraitImg.gameObject.SetActive(true);
@@ -256,7 +251,7 @@ public class TalkMgr : MonoBehaviour
             m_NexTalkBtn.gameObject.SetActive(true);
         }
 
-
+        //퀘스트 대화 일 경우
         if (m_CurrTalkType.Equals(TalkType.Quest))
         {        
             if (m_TalkIdx == m_TalkList.Count - 2)

@@ -55,6 +55,7 @@ public class UpgradeMgr : MonoBehaviour
     }
     void Start()
     {
+        #region 업그레이드 비용, 확률 강화 상승치 테이블 작성
         m_UpgradeUseCoin.Add(80);
         m_UpgradeUseCoin.Add(100);
         m_UpgradeUseCoin.Add(200);
@@ -94,7 +95,7 @@ public class UpgradeMgr : MonoBehaviour
         m_DefenceRise.Add(30);
         m_DefenceRise.Add(40);
         m_DefenceRise.Add(50);
-
+        #endregion
 
         if (m_UpgradeBtn != null)
             m_UpgradeBtn.onClick.AddListener(UpgradeBtn);
@@ -152,9 +153,7 @@ public class UpgradeMgr : MonoBehaviour
     }
     public void SetUpgradeItem(Slot a_Slot)
     {
-       // if (!(a_Slot.m_SlotType == SlotType.Equipment || a_Slot.m_SlotType == SlotType.Item))
-       //     return;
-
+      
         if (!bIsUpgrade) //강화 중 이면 
             return;
 
@@ -196,11 +195,13 @@ public class UpgradeMgr : MonoBehaviour
         SetText();
     }
     void SetText()
-    {
+    {       
         Button_Text.text = "강화";
         BeforeItemInfo_Text.text = "";
         AfterItemInfo_Text.text = "";
         Need_Text.text = "";
+        UpgradeInfo_Text.text = "";
+
         if (m_CurItem == null)
             return;
      
@@ -242,8 +243,14 @@ public class UpgradeMgr : MonoBehaviour
         if (!bIsUpgrade)
             return;
 
-        if (m_CurItem.m_Star == m_CurItem.m_MaxStar)
+        if (m_CurItem.m_Star == m_CurItem.m_MaxStar)//최대 강화치 확인
             return;
+
+        if (m_Player.m_PlayerInventory.m_Coin < m_UpgradeUseCoin[m_CurItem.m_Star])//코인 확인
+            return;
+
+
+        m_Player.m_PlayerInventory.m_Coin -= m_UpgradeUseCoin[m_CurItem.m_Star];
 
         int rand = Random.Range(0, 101);    
 

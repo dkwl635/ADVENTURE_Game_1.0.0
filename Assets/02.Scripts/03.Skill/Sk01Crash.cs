@@ -7,7 +7,7 @@ public class Sk01Crash : Skill
     Collider playerColl = null;
     public GameObject m_Ring = null;
     public GameObject m_Wave = null;
-    private float m_radus = 1.0f;                //반지름
+    private float m_radus = 1.5f;                //반지름
     private Vector3 m_tempPos = Vector3.zero;    //계산용
     private float m_Distance = 2.0f;                    //거리
 
@@ -42,7 +42,7 @@ public class Sk01Crash : Skill
       
         m_Ring.SetActive(true);
         m_tempPos = playerTr.position + a_MouesDir * m_Distance;
-        m_tempPos.y += 0.02f;
+        m_tempPos.y += 0.2f;
         m_Ring.transform.position = m_tempPos;
 
     }
@@ -69,14 +69,14 @@ public class Sk01Crash : Skill
             yield return null;     
         animator.speed = 1.0f;
 
-        // 공격범위안에 있는 콜리더 가져오기
-        RaycastHit[] hits = Physics.SphereCastAll(playerTr.position, m_radus, playerTr.forward, m_Distance, m_SkillTargetLayer);
         m_Show = false;
         m_Ring.SetActive(false); //사거리 비표시
-        m_Wave.transform.position = playerTr.position + (playerTr.forward * m_Distance);    //웨이브 이펙트 위치 잡기
+        m_Wave.transform.position = playerTr.position + (playerTr.forward * m_Distance);     //웨이브 이펙트 위치 잡기
         m_Wave.SetActive(true);    //웨이브 이펙트 보여주기
         playerColl.isTrigger = false;
 
+        // 공격범위안에 있는 콜리더 가져오기
+        RaycastHit[] hits = Physics.SphereCastAll(m_Wave.transform.position, m_radus,Vector3.up, 0, m_SkillTargetLayer);     
         rigidbody.mass = 1;
         if (hits.Length > 0) // 콜리더가 있다면
         {                          //데미지 적용

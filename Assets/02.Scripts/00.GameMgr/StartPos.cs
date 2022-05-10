@@ -8,14 +8,12 @@ public class StartPos : MonoBehaviour
    
     void Start()
     {
-
         StartCoroutine(SetPlayerPos());
     }
 
     IEnumerator SetPlayerPos()
     {
         yield return null;
-
         player = FindObjectOfType<Player>(true);
 
         if (player)

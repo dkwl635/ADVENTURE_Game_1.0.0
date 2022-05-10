@@ -13,7 +13,6 @@ public class Specter : NomalMonster
 
     public List<int> m_DropList;
 
-
     public override void Init()
     {
         boxCollider = GetComponentInChildren<BoxCollider>();                    //충돌체
@@ -230,14 +229,15 @@ public class Specter : NomalMonster
 
     public override void Spawn()
     {
-        m_MonsterStatus.m_CurHp = m_MonsterStatus.m_MaxHp;  
+        transform.position = m_SpawnPos;        //스폰위치적용       
+        m_MonsterStatus.m_CurHp = m_MonsterStatus.m_MaxHp;      //체력회복
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //체력바 적용
         boxCollider.enabled = true; //충돌체 켜기
-        navMeshAgent.enabled = true;
-        OnOffNav(true); //네비 켜기
-        transform.position = m_SpawnPos;        //스폰위치적용       
-        navMeshAgent.nextPosition = m_SpawnPos;
+        navMeshAgent.enabled = true;    //네비 켜기
+        OnOffNav(true); //네비 켜기   
+        navMeshAgent.nextPosition = m_SpawnPos; //네비 위치 정보 초기화
         m_MonsterState = MonsterState.Idle;   //상태 전화
+        m_AttackEff.SetActive(false);
     }
 
     public override void Die()
@@ -277,11 +277,10 @@ public class Specter : NomalMonster
         if (bOnOff == true)  //On
         {         
             navMeshAgent.isStopped = false;      
-            navMeshAgent.SetDestination(m_Target.position);        
+            navMeshAgent.SetDestination(m_Target.position);                   
         }
         else//Off
-        {              
-           
+        {                     
             navMeshAgent.SetDestination(transform.position);
             navMeshAgent.velocity = Vector3.zero;
             navMeshAgent.isStopped = true;     

@@ -128,8 +128,6 @@ public class Slot : MonoBehaviour ,IPointerEnterHandler, IPointerExitHandler ,IB
         MouseMgr.Inst.DragIngSlot();
     }
 
-
-
     public void OnEndDrag(PointerEventData eventData)
     {       
         MouseMgr.Inst.DragEndSlot();

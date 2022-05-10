@@ -22,7 +22,6 @@ public class DropItem : MonoBehaviour
         m_ItemMesh.mesh = a_ItemData.m_ItemMesh;    //메쉬 적용
         m_ItemMeshRenderer.material = a_ItemData.m_ItemMatrl;   //메테리얼 적용
         m_Mesh.transform.localPosition = a_ItemData.m_DropMeshPos;
-        m_SphereCollider.center = a_ItemData.m_DropMeshPos;
 
         m_Force.y = 400.0f;
         m_Force.x = Random.Range(-1,2) * Random.Range(80, 150);

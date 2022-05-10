@@ -20,16 +20,16 @@ int,int,string,string,int,float,float,float,int,int,string,int,int,int,int ,int
 18,2,뱀장갑,뱀의 가죽으로 만든 장갑,300,0.0,0.0,0.0,gloves,Glove4,BodyParts,6,0,0,4,5
 19,2,장갑(개조),기본 장갑을 개조한 장갑,400,0.0,0.0,0.0,gloves,Glove5,BodyParts,6,0,0,5,5
 20,2,장갑2,장갑 2버전,500,0.0,0.0,0.0,gloves,Glove6,BodyParts,6,0,0,6,5
-21,2,가죽모자,가죽으로 만든 모자,100,0.0,-0.6,0.0,helmets,Hat1,HeadParts,2,1,0,1,5
-22,2,모자,기본적인 모자,200,0.0,-0.6,0.0,helmets,Hat2,HeadParts,2,1,0,2,5
-23,2,모자2,패션용 모자,300,0.0,-0.6,0.0,helmets,Hat3,HeadParts,2,1,0,3,5
-24,2,헬멧,멋진 헬멧,400,0.0,-0.6,0.0,helmets,Helm1,HeadParts,2,1,0,4,5
-25,2,단단한 헬멧,단단한 헬멧,500,0.0,-0.6,0.0,helmets,Helm2,HeadParts,2,1,0,5,5
-26,2,가벼운 헬멧,가벼운 헬멧,100,0.0,-0.6,0.0,helmets,Helm3,HeadParts,2,1,0,5,5
-27,2,헬 투 더 멧,지옥에서온 헬멧,200,0.0,-0.6,0.0,helmets,Helm4,HeadParts,2,1,0,6,5
-28,2,헬메메메멧,장난스러운 헬멧,300,0.0,-0.6,0.0,helmets,Helm5,HeadParts,2,2,0,5,5
-29,2,헬멧1,앞이 안보이는 헬멧,400,0.0,-0.6,0.0,helmets,Helm6,HeadParts,2,2,0,2,5
-30,2,헬멧2,뒤가 안보이는 헬멧,500,0.0,-0.6,0.0,helmets,Helm7,HeadParts,2,2,0,3,5
+21,2,가죽모자,가죽으로 만든 모자,100,0.0,-1.5,0.0,helmets,Hat1,HeadParts,2,1,0,1,5
+22,2,모자,기본적인 모자,200,0.0,-1.5,0.0,helmets,Hat2,HeadParts,2,1,0,2,5
+23,2,모자2,패션용 모자,300,0.0,-1.5,0.0,helmets,Hat3,HeadParts,2,1,0,3,5
+24,2,헬멧,멋진 헬멧,400,0.0,-1.5,0.0,helmets,Helm1,HeadParts,2,1,0,4,5
+25,2,단단한 헬멧,단단한 헬멧,500,0.0,-1.5,0.0,helmets,Helm2,HeadParts,2,1,0,5,5
+26,2,가벼운 헬멧,가벼운 헬멧,100,0.0,-1.5,0.0,helmets,Helm3,HeadParts,2,1,0,5,5
+27,2,헬 투 더 멧,지옥에서온 헬멧,200,0.0,-1.5,0.0,helmets,Helm4,HeadParts,2,1,0,6,5
+28,2,헬메메메멧,장난스러운 헬멧,300,0.0,-1.5,0.0,helmets,Helm5,HeadParts,2,2,0,5,5
+29,2,헬멧1,앞이 안보이는 헬멧,400,0.0,-1.5,0.0,helmets,Helm6,HeadParts,2,2,0,2,5
+30,2,헬멧2,뒤가 안보이는 헬멧,500,0.0,-1.5,0.0,helmets,Helm7,HeadParts,2,2,0,3,5
 31,2,가죽신발,가죽으로 만든 신발,100,0.0,0.8,0.0,boots,Shoe1,BodyParts,7,0,0,4,5
 32,2,신발1,기본 신발,200,0.0,0.8,0.0,boots,Shoe2,BodyParts,7,0,0,8,5
 33,2,가벼운신발,가볍게 만든 신발,300,0.0,0.8,0.0,boots,Shoe3,BodyParts,7,0,0,1,5

@@ -99,7 +99,25 @@ public class Outline : MonoBehaviour {
     needsUpdate = true;
   }
 
-  void OnEnable() {
+    public void MeshUpdate()
+    {
+        // Cache renderers
+        renderers = GetComponentsInChildren<Renderer>();
+
+        // Instantiate outline materials
+        outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
+        outlineFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineFill"));
+
+        outlineMaskMaterial.name = "OutlineMask (Instance)";
+        outlineFillMaterial.name = "OutlineFill (Instance)";
+
+        // Retrieve or generate smooth normals
+        LoadSmoothNormals();
+
+        needsUpdate = true;
+    }
+
+    void OnEnable() {
     foreach (var renderer in renderers) {
 
       // Append outline shaders

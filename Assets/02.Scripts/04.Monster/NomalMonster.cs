@@ -6,6 +6,7 @@ public class NomalMonster : MonsterCtrl
 {
     public GameObject m_AttackEff;
 
+
     public virtual void Think_FixedUpdate() { }
 
     public virtual void Action_FixedUpdate() { }

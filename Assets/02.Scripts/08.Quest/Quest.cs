@@ -15,16 +15,16 @@ public enum QuestType
 [System.Serializable]
 public class Quest 
 {
-    //퀘스트 완료시 ++ 해서 만약 퀘스트가 있다면 그 퀘스트를 받을 수 있다.
-
+   
     public int m_QuestId = -1;     //퀘스트 아이디
+    public int m_BeforeQuestId = -1; //선행퀘스트
     public QuestType m_QuestType = QuestType.None; //퀘스트 타입
     public string m_QuestName = "";
     public string m_QuestInfo = ""; //퀘스트 설명
     public string m_QuestStatus { get { return QuestStatus(); } }    //퀘스트 상태
 
     public int m_RewardCoin = 0;   //퀘스트 보상 코인
-    public int m_RewardExp = 0;
+    public int m_RewardExp = 0;     //퀘스트 보상 경험치
 
     public int m_RewardItem = 0; //퀘스트 보상 아이템 목록    //필요하다면
     public int m_RewardItemCount = 0; //퀘스트 보상 아이템 갯수 목록    //필요하다면
@@ -33,6 +33,7 @@ public class Quest
 
 
     public bool bIsSuccess = false;    //성공인지 실패 인지
+    public bool bEndQuest = false;
 
     protected virtual string QuestStatus()
     {
@@ -47,6 +48,7 @@ public class TalkQuest : Quest
     public string m_GoalNpcName = "";
     public int m_GoalNPCId = -1;   //목표 NPC ID
 
+    //대회 내용 퀘스트 확인용
     public void CheckQuest(int a_NPCId)
     {
         if (bIsSuccess.Equals(true))    //성공한 퀘스트라면

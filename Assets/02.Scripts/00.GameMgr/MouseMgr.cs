@@ -98,7 +98,7 @@ public class MouseMgr : MonoBehaviour
                 return;
             }
 
-            if (m_OnSlot.m_SlotType == SlotType.Item || m_OnSlot.m_SlotType == SlotType.Part ||
+            if (m_OnSlot.m_SlotType == SlotType.Item || 
                m_OnSlot.m_SlotType == SlotType.UseItem || m_OnSlot.m_SlotType == SlotType.ShopItem)
 
             {
@@ -115,7 +115,7 @@ public class MouseMgr : MonoBehaviour
                 m_ItemSlotUI.transform.SetAsLastSibling();
                 
             }
-            else if(m_OnSlot.m_SlotType == SlotType.Equipment)
+            else if(m_OnSlot.m_SlotType == SlotType.Equipment|| m_OnSlot.m_SlotType == SlotType.Part)
             {
                 if (m_OnSlot.m_ItemData == null)
                     return;
@@ -208,6 +208,9 @@ public class MouseMgr : MonoBehaviour
     }
     public void DragEndSlot()
     {
+        if (!m_DragSlot.activeSelf)
+            return;
+
         m_EndSlot = RaycastSlot();
         if (m_EndSlot != null)
         {

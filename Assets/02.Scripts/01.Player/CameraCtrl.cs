@@ -14,9 +14,7 @@ public class CameraCtrl : MonoBehaviour
     private float m_hSpeed = 5.0f;      //마우스 좌우 회전 속도 값
     private float m_vSpeed = 2.4f;      //마우스 상하 회전 속도 값
     private float m_vMinLimit = -7.0f;  //위 아래 각도 제한
-    private float m_vMaxLimit = 55.0f;  //위 아래 각도 제한
-    private float m_hMinLimit = -45.0f;  //상하 각도 제한
-    private float m_hMaxLimit = 45.0f;  //상하 각도 제한
+    private float m_vMaxLimit = 55.0f;  //위 아래 각도 제한  
     private float m_zoomSpeed = 1.0f;   //마우스 줌 속도
     private float m_MaxDist = 50.0f;    //마우스 줌 최대 거리
     private float m_MinDist = 3.0f;     // 마우스 줌 최소 거리

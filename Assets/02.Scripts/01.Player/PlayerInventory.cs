@@ -34,7 +34,7 @@ public class PlayerInventory : MonoBehaviour
     List<ItemData> m_AddItemData = new List<ItemData>();
     float m_UpdateAddItemTime = 0.2f;
 
-   
+    Outline outline;
 
     private void Awake()
     {
@@ -53,6 +53,7 @@ public class PlayerInventory : MonoBehaviour
         //코인 관련
         m_CoinMsgAnim = m_ColnMsgBox.GetComponent<Animation>();
 
+        outline = this.gameObject.GetComponentInChildren<Outline>();
     }
 
     void Update()
@@ -334,6 +335,8 @@ public class PlayerInventory : MonoBehaviour
                 }
             }
         }
+
+        outline.MeshUpdate();
     }
 
     public void OffEquipment(PartType a_PartType, int a_EndIdx)

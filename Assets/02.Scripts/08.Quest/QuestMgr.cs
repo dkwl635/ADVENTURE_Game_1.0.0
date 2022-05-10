@@ -9,9 +9,9 @@ public class QuestMgr : MonoBehaviour
 
     Player m_Player;
 
-    Dictionary<int, Quest> DicQuest = new Dictionary<int, Quest>();
+    Dictionary<int, Quest> DicQuest = new Dictionary<int, Quest>(); //모든 퀘스트가 있는 사전
     Dictionary<Quest, GameObject> DicQuestItem = new Dictionary<Quest, GameObject>(); //퀘스트 목록를 보여주는 오브젝트
-    List<Quest> m_AllQuestList = new List<Quest>(); //퀘스트 목록
+    List<Quest> m_AllQuestList = new List<Quest>(); //내가 받은 퀘스트 목록
 
     List<TalkQuest> m_TalkQuestList = new List<TalkQuest>();    //대화로 하는 퀘스트
     List<KillQuest> m_KillQuestList = new List<KillQuest>();    //잡아야 하는 퀘스트
@@ -74,14 +74,32 @@ public class QuestMgr : MonoBehaviour
         killQuest1.m_GoalCount = 10;
         killQuest1.m_QuestName = "Specter를 잡아줘";
         killQuest1.m_QuestInfo = "몬스터 Specter를 10마리 잡아주세요";
-        killQuest1.m_RewardCoin = 200000;
-        killQuest1.m_RewardExp = 200000;
+        killQuest1.m_RewardCoin = 10000;
+        killQuest1.m_RewardExp = 10000;
         killQuest1.m_RewardItem = 102;
         killQuest1.m_RewardItemCount = 1;
+        killQuest1.m_BeforeQuestId = 1;
+        
         //killQuest1.m_RewardItemData = ItemMgr.Inst.InstantiateItem(102, 1);
+
+        KillQuest killQuest2 = new KillQuest();
+        killQuest2.m_QuestId = 3;
+        killQuest2.m_QuestType = QuestType.Kill;
+        killQuest2.m_KillMonster = "SpecterBoss";
+        killQuest2.m_KillMonsterId = 2;
+        killQuest2.m_GoalCount = 1;
+        killQuest2.m_QuestName = "SpecterBoss를 잡아줘";
+        killQuest2.m_QuestInfo = "몬스터 SpecterBoss를 1마리 잡아주세요";
+        killQuest2.m_RewardCoin = 10000;
+        killQuest2.m_RewardExp = 10000;
+        killQuest2.m_RewardItem = 503;
+        killQuest2.m_RewardItemCount = 1;
+        killQuest2.m_BeforeQuestId = 2;
+
 
         DicQuest[1] = talkQuest1;
         DicQuest[2] = killQuest1;
+        DicQuest[3] = killQuest2;
     }
 
 
@@ -238,6 +256,7 @@ public class QuestMgr : MonoBehaviour
     void QuestClear()
     {
         RewardQuest(m_CurQuest);
+
     }
 
     void RewardQuest(Quest a_Quest)
@@ -255,25 +274,50 @@ public class QuestMgr : MonoBehaviour
         m_Player.m_PlayerInventory.AddCoin(a_Quest.m_RewardCoin);
         //경험치 보상
         m_Player.AddExp(a_Quest.m_RewardExp);
+        //퀘스트 종료
+        a_Quest.bEndQuest = true;
 
-        m_AllQuestList.Remove(a_Quest);
+        //퀘스트목록창UI 노드 삭제
+        //m_AllQuestList.Remove(a_Quest);
         DestoryQuestItem(a_Quest);
 
         m_QuestDlgBox.SetActive(false);
         m_CurQuest = null;
+
+        //씬에 있는 모든 QuestHelp를 돌며 퀘스트상태 갱신
+        QuestHelp[]  questHelps= FindObjectsOfType<QuestHelp>();
+        for (int i = 0; i < questHelps.Length; i++)
+        {         
+            questHelps[i].QuestSet();
+        }
+
     }
 
     //이미 받은 퀘스트 라면 
     public bool CheckQuest(int a_Id)
     {
-
         if (m_AllQuestList.Contains(DicQuest[a_Id]))
-        {
+        {            
             return true;
         }
 
-        return false;
-      
+        return false; 
     }
 
+    //선행퀘스트가 존재하고 그 퀘스트가 완료된 상태 확인
+    public bool ClearCheckQuest(int a_Id)
+    {
+        if (DicQuest[a_Id].m_BeforeQuestId.Equals(-1))
+            return true;
+        else
+        {             
+            int beQuId = DicQuest[a_Id].m_BeforeQuestId;
+
+            if (DicQuest[beQuId].bEndQuest)
+                return true;
+
+        }    
+
+        return false;
+    }
 }

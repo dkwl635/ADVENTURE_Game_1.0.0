@@ -16,23 +16,22 @@ public class SpawnMgr : MonoBehaviour
     private MonsterCtrl m_Boss;             //소환된 보스몬스터를 관리
 
     private GameObject m_Player; //플레이어 감지 
-
-
-    public Button m_SpawnMonsterBtn = null;         //일반몬스터 스폰 버튼
     bool bSpawnMon = false;                                 // 일반몬스터가 스폰 되었는지
-
-    public Button m_SpawnBossBtn = null;
-    bool bSpawnBoss = false;
-
-    
+   
     public Button m_BossSpawnBtn = null;
     public GameObject m_KillGageObj = null;
     public Image m_KillGage = null;
     UnityEngine.UI.Outline outline = null;
-    
-     int m_MonseterKillCount = 0;
+
+    public GameObject m_BossHpBar = null;
+    public MonHpBarCtrl m_BossHpCtrl = null;
+    bool bSpawnBoss = false;
+
+    int m_MonseterKillCount = 0;
     [SerializeField] int m_BossSpawnCount = 10;
 
+    public GameObject m_OutRing = null;
+    public GameObject m_InRing = null;
 
 
     void Start()
@@ -55,12 +54,13 @@ public class SpawnMgr : MonoBehaviour
 
         SetMonster();
 
+   
 
     }
 
     private void FixedUpdate()
     {
-        if(bSpawnMon)
+        if(bSpawnMon && !bSpawnBoss)
         for (int i = 0; i < m_MonterList.Length; i++)
         {
             m_MonterList[i].Think_FixedUpdate();
@@ -71,8 +71,7 @@ public class SpawnMgr : MonoBehaviour
     void AddMonsterKillCount()
     {
         m_MonseterKillCount++;
-        Debug.Log(m_MonseterKillCount);
-
+     
         m_KillGage.fillAmount = (float)m_MonseterKillCount / (float)m_BossSpawnCount;
 
         if (m_MonseterKillCount >= m_BossSpawnCount)
@@ -82,22 +81,7 @@ public class SpawnMgr : MonoBehaviour
     }
 
 
-    void SpawnMonBtn()
-    {
-        if(bSpawnMon)
-        {
-            DeSpawnMonster();
-        }
-        else
-        {
-            SpawnMonster();
-        }
-
-        bSpawnMon = !bSpawnMon;
-    }
-
-
-
+    
    void SetMonster()
     {
         m_MonterList = new NomalMonster[m_MaxMonConunt];
@@ -115,7 +99,11 @@ public class SpawnMgr : MonoBehaviour
 
     void SpawnMonster()
     {
-       if(m_MonterList.Length > 0)
+        m_KillGageObj.SetActive(true);
+        m_MonseterKillCount = 0;
+        m_KillGage.fillAmount = (float)m_MonseterKillCount / (float)m_BossSpawnCount;
+
+        if (m_MonterList.Length > 0)
             for (int i = 0; i < m_MonterList.Length; i++)
             {
                 m_MonterList[i].gameObject.SetActive(true);               
@@ -141,28 +129,57 @@ public class SpawnMgr : MonoBehaviour
         m_Boss = Instantiate(m_BossPrefab, transform).GetComponent<BossMonster>();
         m_Boss.transform.position = m_BossSpawnPos.transform.position;
         m_Boss.m_SpawnPos = m_BossSpawnPos.transform.position;
+        m_Boss.m_HpBarCtrl = this.m_BossHpCtrl;
+        m_BossHpCtrl.SetHpBar(m_Boss.m_MonsterStatus.m_CurHp, m_Boss.m_MonsterStatus.m_MaxHp);
+        
+        m_Boss.DieEvent = DieBoss;
 
         m_MonseterKillCount = 0;
         m_KillGage.fillAmount = (float)m_MonseterKillCount / (float)m_BossSpawnCount;
         m_KillGageObj.SetActive(false);
 
+        DeSpawnMonster();
+        bSpawnMon = false;
+        bSpawnBoss = true;
+
+    }
+
+    void DieBoss()
+    {      
+        bSpawnBoss = false;    
+        m_Boss = null;
+
+        m_OutRing.SetActive(true);
+        m_InRing.SetActive(false);
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (bSpawnBoss)
+            return;
+
+        if(other.CompareTag("Player") && !bSpawnMon)
         {
+            m_OutRing.SetActive(false);
+            m_InRing.SetActive(true);
             SpawnMonster();
             bSpawnMon = true;
-            m_KillGageObj.SetActive(true);
+           
         }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (!bSpawnMon)
+            return;
+    
         if (other.CompareTag("Player"))
         {
+            m_OutRing.SetActive(true);
+            m_InRing.SetActive(false);
+
             DeSpawnMonster();
             bSpawnMon = false;
             m_KillGageObj.SetActive(false);

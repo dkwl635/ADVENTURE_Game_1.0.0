@@ -21,7 +21,7 @@ public class Skill : MonoBehaviour
 
     //스킬 쿨타임
     public float m_CurrTime = -1.0f;
-    public float m_CoolTime = 1.5f;
+    public float m_CoolTime = 1.0f;
 
     static bool IsIput = false; //중복 키 입력을 막기 위해
 
