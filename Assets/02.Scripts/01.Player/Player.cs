@@ -11,7 +11,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public Animator animator = null;               //애니메이터
     [HideInInspector] public Rigidbody rigidbody = null;             
     [HideInInspector] public PlayerInventory m_PlayerInventory = null;     //플레이어 아이템 관련
-    
+
+    Outline m_MeshOutline = null;
     
     public bool bIsAttack = false; // 지금 공격 중인지 판단
     public bool bIsHit = false; //피격중인지.
@@ -101,14 +102,16 @@ public class Player : MonoBehaviour
     public Transform m_MsgBoxTr = null;
     public Transform m_DamageTxtTr = null;
     public GameObject m_MsgBoxPrefab = null;
-
+    public GameObject m_LvUpTxt = null; //레벨업 전용 텍스트
     //이펙트
-    public GameObject m_HitEffect = null;    
+
+    public ParticleSystem m_LevelEffect = null;
 
     public GameObject m_NpcObj = null; //지금 보고 있는 NPC
     public NPC m_Npc= null; //지금 보고 있는 NPC
     LayerMask m_NpcLayer = 1;
   
+
 
     private void Awake()
     {       
@@ -135,6 +138,8 @@ public class Player : MonoBehaviour
       
         m_NpcLayer = 1 << LayerMask.NameToLayer("NPC");
 
+        //m_MeshOutline 설정
+        m_MeshOutline = GetComponentInChildren<Outline>();
 
         //캐릭터 능력 설정
         m_PlayerStatus.SetStatue(1,10,1000, 10, 10, 20.0f);
@@ -160,6 +165,7 @@ public class Player : MonoBehaviour
     {      
         MouseInput();   //마우스 피킹
         CheckNpcUpdate();   //NPC 찾기
+       
     }
 
     private void FixedUpdate()
@@ -357,8 +363,11 @@ public class Player : MonoBehaviour
 
         SetHpUI();
 
-        //if(!bIsAttack)
-        //StartCoroutine(HitAction());
+        if(!bIsAttack && !bIsHit)
+        {        
+            StartCoroutine(HitAction());
+        }
+      
     }
 
     public void AddExp(int a_Exp)
@@ -366,32 +375,30 @@ public class Player : MonoBehaviour
         m_PlayerStatus.m_CurExp += a_Exp;
         if(m_PlayerStatus.m_CurExp >= m_PlayerStatus.m_NextExp)
         {
-            m_PlayerStatus.m_Lv++;
-            m_PlayerStatus.m_CurExp = 0;
-            m_PlayerStatus.m_NextExp += 20;
             //레벨업
-        }    
-             
+            m_PlayerStatus.LevelUp();
+            m_SkillPoint += 10;
+            SetHpUI();
+            m_LevelEffect.Play();
+            m_LvUpTxt.SetActive(false);
+            m_LvUpTxt.SetActive(true);
+        }                 
         SetExpUI();
+      
     }
 
     IEnumerator HitAction()
     {
-      
         animator.SetTrigger("Hit");
-        bIsHit = true;           
-      
+        bIsHit = true;
+
+        m_MeshOutline.OutlineColor = Color.red;
        
-        //GameObject hiteffect = Instantiate(m_HitEffect, transform); //데미지 피격이펙트 소환
-        //Destroy(hiteffect, 0.2f);                       //삭제
-
-        if (bIsHit)
-        {
-            yield return new WaitForSeconds(0.5f);
-            bIsHit = false;
-        }
-
-        yield return null;
+      
+       yield return new WaitForSeconds(0.5f);
+       m_MeshOutline.OutlineColor = Color.white;
+       bIsHit = false;
+        yield break;
     }
 
     void CheckNpcUpdate()

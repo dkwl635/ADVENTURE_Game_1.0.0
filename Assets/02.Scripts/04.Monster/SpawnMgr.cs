@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class SpawnMgr : MonoBehaviour
@@ -76,7 +77,7 @@ public class SpawnMgr : MonoBehaviour
 
         if (m_MonseterKillCount >= m_BossSpawnCount)
         {
-            outline.enabled = false;
+            outline.enabled = true;
         }
     }
 
@@ -87,7 +88,7 @@ public class SpawnMgr : MonoBehaviour
         m_MonterList = new NomalMonster[m_MaxMonConunt];
         for (int i = 0; i < m_MaxMonConunt; i++)
         {
-            m_MonterList[i] = Instantiate(m_MonsterPrefab, transform).GetComponent<NomalMonster>();
+            m_MonterList[i] = Instantiate(m_MonsterPrefab, transform).GetComponentInParent<NomalMonster>();
             m_MonterList[i].transform.position = m_MonsterSpawnPos[i + 1].position;
             m_MonterList[i].m_SpawnPos = m_MonsterSpawnPos[i + 1].position;
             m_MonterList[i].DieEvent += AddMonsterKillCount;
@@ -136,13 +137,46 @@ public class SpawnMgr : MonoBehaviour
 
         m_MonseterKillCount = 0;
         m_KillGage.fillAmount = (float)m_MonseterKillCount / (float)m_BossSpawnCount;
+        outline.enabled = false;
         m_KillGageObj.SetActive(false);
 
         DeSpawnMonster();
         bSpawnMon = false;
         bSpawnBoss = true;
 
+      
+        ////////////////////////////  
+        StartCoroutine(SpwnBossCo());
     }
+
+    IEnumerator SpwnBossCo()
+    {
+        yield return null;
+        m_Boss.boxCollider.enabled = false;
+        m_Boss.navMeshAgent.enabled = false;
+
+        m_Boss.transform.position -= Vector3.up * 3;
+
+        CameraCtrl camera = Camera.main.GetComponent<CameraCtrl>();
+
+        camera.Shake = true;
+
+        while (true)
+        {
+            yield return null;
+
+            if (Vector3.Magnitude(m_Boss.transform.position - m_BossSpawnPos.position) < 0.01f)
+            {
+                camera.Shake = false;
+                yield break;
+            }
+               
+
+            m_Boss.transform.position += Vector3.up * Time.deltaTime;        
+             
+        }
+    }
+
 
     void DieBoss()
     {      

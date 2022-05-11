@@ -18,10 +18,16 @@ public class MonHpBarCtrl : MonoBehaviour
         cam = Camera.main.transform;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if(bBlibord)
-        transform.LookAt(cam);
+        {
+            transform.localRotation = Quaternion.identity;
+           transform.LookAt(cam);
+        }
+
+
+        //transform.LookAt(cam);
     }
 
 

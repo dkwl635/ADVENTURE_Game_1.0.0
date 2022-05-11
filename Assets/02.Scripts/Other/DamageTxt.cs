@@ -9,6 +9,7 @@ public enum TxtType
     PlayerDamage,
     Damage,
     Heal,
+    LvUp,
 
 }
 
@@ -33,6 +34,8 @@ public class DamageTxt : MonoBehaviour
         }
 
     }
+
+
 
     public void OnDamageText(int a_Value , TxtType a_Damage = TxtType.Damage)
     {

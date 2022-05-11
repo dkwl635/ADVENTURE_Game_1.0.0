@@ -15,12 +15,14 @@ public class InGameMgr : MonoBehaviour
     public Canvas m_DamageCanvas = null;
     string m_DamageTxt = "DamageTxt";
     public GameObject m_DamageTxtObj;
+   
+
 
     [Header("FX")]
     public List<GameObject>FX_PrefabList = new List<GameObject>();
     Dictionary<string, GameObject> DicFxPrefab = new Dictionary<string, GameObject>();
 
-    Dictionary<string, Stack<GameObject>> ObjPoolStacks = new Dictionary<string, Stack<GameObject>>();
+    Dictionary<string, Stack<GameObject>> ObjPoolStacks = new Dictionary<string, Stack<GameObject>>();    
     public int m_ObjPoolInit = 20; //오브젝트 풀 첫 생성 갯수
 
     private void Awake()

@@ -32,6 +32,26 @@ public class CameraCtrl : MonoBehaviour
     private Vector3 m_BuffPos;                      //버퍼 위치값
     [HideInInspector] public Vector3 navVelocity = Vector3.zero;
 
+
+    bool bShake = false;
+
+    
+    public bool Shake
+    {
+        get
+        {
+            return bShake;
+        }
+
+        set
+        {
+            bShake = value;
+            m_orginPos = transform.position;
+        }
+    }
+    Vector3 m_orginPos = Vector3.zero;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,9 +76,16 @@ public class CameraCtrl : MonoBehaviour
     }
 
 
-    private void LateUpdate()
-    //private void Update()
+    private void LateUpdate() 
     {
+        if (Shake)
+        {
+            m_BuffPos = Random.insideUnitSphere * 1 + m_orginPos;
+          
+            transform.position = m_BuffPos;
+            return;
+        }  
+
         //입력 받아오기
         if (Input.GetMouseButton(2)) //마우스 우측버튼 누르고 있는 동안
         {
@@ -108,4 +135,6 @@ public class CameraCtrl : MonoBehaviour
 
         return Mathf.Clamp(a_Angle, a_Min, a_Max);
     }
+
+   
 }

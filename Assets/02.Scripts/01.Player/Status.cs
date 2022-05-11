@@ -29,6 +29,18 @@ public struct Status
         m_Critical = a_Critical;
     }
 
+    public void LevelUp()
+    {
+        m_Lv++;
+        m_CurExp = 0;
+        m_NextExp += 50;
+
+        m_MaxHp += 100;
+        m_CurHp = m_MaxHp;
+        m_AttPw += 5;
+        m_DefPw += 3;        
+    }
+
   
 
 

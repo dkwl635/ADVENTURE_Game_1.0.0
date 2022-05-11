@@ -231,7 +231,7 @@ public class MouseMgr : MonoBehaviour
         bIsDrag = false;
         m_DragSlot.SetActive(false);
     }
-    //Drag  & Dr
+    //Drag  & Drop
     Slot RaycastSlot() //밑에 있는 슬롯 체크
     {
         m_Point.position = Input.mousePosition;

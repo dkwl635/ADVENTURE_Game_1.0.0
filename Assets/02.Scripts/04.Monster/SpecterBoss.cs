@@ -207,6 +207,9 @@ public class SpecterBoss : BossMonster
         animator.speed = 1.0f;                  //애니메이션 속도 초기화
         boxCollider.enabled = false; //충돌체 끄기
         navMeshAgent.enabled = false;
+        //퀘스트 목록 확인
+        QuestMgr.Inst.CheckKillQuest(m_MonsterId);
+
         StopAllCoroutines();
         Invoke("ObjDestory", 2.0f);
     }
@@ -241,8 +244,15 @@ public class SpecterBoss : BossMonster
         //m_MonsterStatus.SetStatue(1, 0, 500, 30, 10);
         transform.position = m_SpawnPos;
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //HP바 적용
-        boxCollider.enabled = true; //충돌체 켜기        
+        boxCollider.enabled = true; //충돌체 켜기
+        navMeshAgent.enabled = true;    //네비 켜기
         m_MonsterState = MonsterState.Idle;   //상태 변경
+
+
+        StartCoroutine(Think());
+        StartCoroutine(Action());
+
+
     }
 
     void AllOffEffect()

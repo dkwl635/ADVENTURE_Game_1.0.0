@@ -11,15 +11,7 @@ public class Sk03DefUp : Skill
     public float m_DurationTime;    //지속시간
 
 
-    public override void BoolShowMark()  //사거리를 보여줄지 체크
-    {
-        return;
-    }
-    public override void ShowSkillMark(Vector3 a_MouesDir)
-    {
-        return;      
-    }
-
+   
     public override void UseSkill()  //스킬 사용 
     {//이스킬은 스킬사용중에도 움직일 수 있음
 

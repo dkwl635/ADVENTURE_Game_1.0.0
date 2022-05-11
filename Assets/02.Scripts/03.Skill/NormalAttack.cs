@@ -66,32 +66,34 @@ public class NormalAttack : Skill
 
                 if (!animator.GetCurrentAnimatorStateInfo(0).IsName("NormalAttack01"))//교체 시간 대기                   
                     continue;
-                
+
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)  // 특정 구간 전까지 반복   
-                {             
+                {
                     if (attack.Equals(true))
                     {
                         var hits = Physics.SphereCastAll(playerTr.position, distance, Vector3.up, 0.0f, m_SkillTargetLayer); // 공격범위안에 있는 콜리더 가져오기
                         if (hits.Length > 0) // 콜리더가 있다면
-                        {                         
+                        {
                             for (int i = 0; i < hits.Length; i++)
                             {
-                                direction = hits[i].transform.position - playerTr.position;                          
-                                 if (Vector3.Dot(direction.normalized, playerTr.forward) > dotValue)
+                                direction = hits[i].transform.position - playerTr.position;
+                                if (Vector3.Dot(direction.normalized, playerTr.forward) > dotValue)
                                 {
                                     MonsterCtrl monster = hits[i].collider.GetComponent<MonsterCtrl>();
                                     if (monster != null)
                                         monster.OnDamge(m_SkillDamage, player);
                                 }
                             }
-                        }                                     
-                    }
+                        }
                         attack = false;
+
                     }
+                }
                 
 
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.3f && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.95f)  // 특정 구간 전까지 반복   
                 {
+                 
                     if (Input.GetMouseButtonDown(0))
                     {
                         combo = 1;
