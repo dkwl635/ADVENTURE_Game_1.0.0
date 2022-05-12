@@ -15,6 +15,13 @@ public class Sk02SwordAuror : Skill
     {
         get { return (m_Damage * m_Lv) + player.m_PlayerAttPw * 0.8f; }
     }
+
+    public override string SkillInfoTxt()
+    {
+        return "\n기본 스킬데미지 : " + (m_Damage * m_Lv).ToString()
+            + "\n총 스킬 데미지 : " + m_SkillDamage.ToString();
+    }
+
     public override void ShowSkillMark(Vector3 a_MouesDir)
     {
         if (SkillMgr.Inst.bIsPushSkill == false)//false 로 변경될경우 스킬 중단

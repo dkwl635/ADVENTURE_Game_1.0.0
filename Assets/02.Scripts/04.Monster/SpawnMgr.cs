@@ -22,7 +22,7 @@ public class SpawnMgr : MonoBehaviour
     public Button m_BossSpawnBtn = null;
     public GameObject m_KillGageObj = null;
     public Image m_KillGage = null;
-    UnityEngine.UI.Outline outline = null;
+    public GameObject m_BackImg = null;
 
     public GameObject m_BossHpBar = null;
     public MonHpBarCtrl m_BossHpCtrl = null;
@@ -47,8 +47,8 @@ public class SpawnMgr : MonoBehaviour
         if (m_BossSpawnBtn != null)
         {
             m_BossSpawnBtn.onClick.AddListener(SpawnBoss);
-            outline = m_BossSpawnBtn.GetComponent<UnityEngine.UI.Outline>();
-            outline.enabled = false;
+
+            m_BackImg.SetActive(false);
         }
 
         m_KillGage.fillAmount = (float)m_MonseterKillCount / (float)m_BossSpawnCount;
@@ -67,6 +67,12 @@ public class SpawnMgr : MonoBehaviour
             m_MonterList[i].Think_FixedUpdate();
             m_MonterList[i].Action_FixedUpdate();
         }
+
+        if(m_BackImg.activeSelf)
+        {
+            m_BackImg.transform.Rotate(Vector3.forward, 10);
+        }
+
     }
 
     void AddMonsterKillCount()
@@ -77,7 +83,7 @@ public class SpawnMgr : MonoBehaviour
 
         if (m_MonseterKillCount >= m_BossSpawnCount)
         {
-            outline.enabled = true;
+            m_BackImg.SetActive(true);
         }
     }
 
@@ -89,8 +95,8 @@ public class SpawnMgr : MonoBehaviour
         for (int i = 0; i < m_MaxMonConunt; i++)
         {
             m_MonterList[i] = Instantiate(m_MonsterPrefab, transform).GetComponentInParent<NomalMonster>();
-            m_MonterList[i].transform.position = m_MonsterSpawnPos[i + 1].position;
-            m_MonterList[i].m_SpawnPos = m_MonsterSpawnPos[i + 1].position;
+            m_MonterList[i].transform.position = m_MonsterSpawnPos[i].position;
+            m_MonterList[i].m_SpawnPos = m_MonsterSpawnPos[i].position;
             m_MonterList[i].DieEvent += AddMonsterKillCount;
             m_MonterList[i].Init();
             m_MonterList[i].gameObject.SetActive(false);
@@ -137,7 +143,7 @@ public class SpawnMgr : MonoBehaviour
 
         m_MonseterKillCount = 0;
         m_KillGage.fillAmount = (float)m_MonseterKillCount / (float)m_BossSpawnCount;
-        outline.enabled = false;
+        m_BackImg.SetActive(false);
         m_KillGageObj.SetActive(false);
 
         DeSpawnMonster();
@@ -168,6 +174,7 @@ public class SpawnMgr : MonoBehaviour
             if (Vector3.Magnitude(m_Boss.transform.position - m_BossSpawnPos.position) < 0.01f)
             {
                 camera.Shake = false;
+                m_Boss.Spawn();     //움직여라
                 yield break;
             }
                

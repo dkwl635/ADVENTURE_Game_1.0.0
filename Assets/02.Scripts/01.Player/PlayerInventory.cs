@@ -485,7 +485,7 @@ public class PlayerInventory : MonoBehaviour
     {
         m_PlayerItemInven[a_Idx].m_CurCount -= a_Count;
         if (m_PlayerItemInven[a_Idx].m_CurCount <= 0)
-        {
+        {           
             m_PlayerItemInven[a_Idx] = null;
             InventoryUIMgr.Inst.SetItemSlot(a_Idx, null);
         }

@@ -10,8 +10,12 @@ public class Sk03DefUp : Skill
     int m_OrginDefPower = 0; //원래 방어력 저장용
     public float m_DurationTime;    //지속시간
 
+    public override string SkillInfoTxt()
+    {
+        return "\n방어력 상승치 : " + m_AddDefPw + "\n지속시간 : " + m_DurationTime.ToString() + "초";
+    }
 
-   
+
     public override void UseSkill()  //스킬 사용 
     {//이스킬은 스킬사용중에도 움직일 수 있음
 

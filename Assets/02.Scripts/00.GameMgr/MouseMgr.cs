@@ -87,6 +87,11 @@ public class MouseMgr : MonoBehaviour
         SetSizeRectTr();
     }
 
+    //private void OnEnable()
+    //{
+    //    SetSizeRectTr();
+    //}
+
     public void OnMouesEnterSlot(Slot slot) //슬롯 위에 마우스 가 있으면
     {
         if (bIsDrag == false)
@@ -111,7 +116,7 @@ public class MouseMgr : MonoBehaviour
                 m_OnName.text = m_OnSlot.m_ItemData.m_Name;
 
                 m_OnStar.text = m_OnSlot.m_ItemData.m_Grade;
-                m_OnInfo.text = m_OnSlot.m_ItemData.m_ItemInfo;
+                m_OnInfo.text = m_OnSlot.m_ItemData.ItemInfoTxt;
                 m_ItemSlotUI.transform.SetAsLastSibling();
                 
             }
@@ -135,7 +140,7 @@ public class MouseMgr : MonoBehaviour
                     m_OnName.text = m_OnSlot.m_ItemData.m_Name;
 
                 m_OnStar.text = m_OnSlot.m_ItemData.m_Grade;
-                m_OnInfo.text = m_OnSlot.m_ItemData.m_ItemInfo;
+                m_OnInfo.text = m_OnSlot.m_ItemData.ItemInfoTxt;
                 m_ItemSlotUI.transform.SetAsLastSibling();
                
             }
@@ -153,7 +158,7 @@ public class MouseMgr : MonoBehaviour
                 m_OnCount.text = "";
                 m_OnName.text = skillSlot.m_Skill.m_SkillName;
                 m_OnStar.text = skillSlot.m_Skill.m_Lv + " Lv";
-                m_OnInfo.text = skillSlot.m_Skill.m_SkillInfo;
+                m_OnInfo.text = skillSlot.m_Skill.SKillInfo;
                 m_ItemSlotUI.transform.SetAsLastSibling();
                
             }
@@ -212,6 +217,7 @@ public class MouseMgr : MonoBehaviour
             return;
 
         m_EndSlot = RaycastSlot();
+        
         if (m_EndSlot != null)
         {
             ChangSlot(m_BeginSlot, m_EndSlot);
@@ -225,6 +231,10 @@ public class MouseMgr : MonoBehaviour
         else if (m_BeginSlot.m_SlotType == SlotType.UseItem)
         {
             m_BeginSlot.SetSlot(null);//빈칸으로 만들기
+        }
+        else if(m_BeginSlot.m_SlotType == SlotType.Equipment || m_BeginSlot.m_SlotType == SlotType.UseItem)
+        {
+            InventoryUIMgr.Inst.OnLogBox(m_BeginSlot.m_SlotType, m_BeginSlot.m_SlotNum);
         }
 
         m_BeginSlot = null;
@@ -249,9 +259,17 @@ public class MouseMgr : MonoBehaviour
         return null;
     }
     void SetSizeRectTr()
-    {
+    {      
         if(m_ItemSlotUI.activeSelf)
         {
+            if (bIsDrag)
+            {
+                m_ItemSlotUI.SetActive(false);
+                return;
+            }
+                
+
+
             //패널 크기 조정
             m_TempSize = m_ItemSlotRectTr.sizeDelta;
             m_TempSize.y = 180 + m_ItemTxtTr.sizeDelta.y;

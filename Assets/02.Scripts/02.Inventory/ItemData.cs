@@ -55,6 +55,10 @@ public class ItemData         //아이템 클래스 뿌리
     public ItemType m_ItemType = ItemType.None; //아이템 타입
     public string m_Name = "";      //아이템 이름
     public string m_ItemInfo = "";  //아이템 설명
+    public string ItemInfoTxt   //상세 아이템 설명
+    {
+        get { return m_ItemInfo + ItemInfo(); }
+    }
     public int m_Price = 100;             //가격
     public string m_Grade = "노말";
     public Vector3 m_DropMeshPos = Vector3.zero;
@@ -84,6 +88,10 @@ public class ItemData         //아이템 클래스 뿌리
         m_ItemMatrl = null; //아이템 메테리얼  
     }
    
+    public virtual string ItemInfo()
+    {
+        return "";
+    }
 }
 
 
@@ -96,6 +104,26 @@ public class EquipmentItemData : ItemData   //장비 아이템 정보
     public int m_DefPw = 1;           //방어력
     public int m_Star = 0;              //등급
     public int m_MaxStar = 1;        //최대등급
+
+    string temp = "";
+
+    public override string ItemInfo()
+    {
+        temp = "";
+        if(m_PartType.Equals(PartType.Weapon))
+        {
+            temp += "\n공격력 : " + m_AttPw.ToString();
+        }
+        else
+        {
+            temp += "\n방어력 : " + m_DefPw.ToString();
+        }
+
+
+
+
+        return temp;
+    }
 
 }
 
@@ -114,6 +142,6 @@ public class UseItem : ItemData
 public class PortionItem : UseItem
 {
     public PortionType m_PortionType = PortionType.None;    //포션 타입
-    public float m_Value = 10;                                             //수치 
+    public float m_Value = 10;                              //수치 
 }
 

@@ -104,10 +104,9 @@ public class SpecterBoss : BossMonster
                     RaycastHit[] hits = Physics.BoxCastAll(Attack01RangeEff.transform.position, Attack01Range * 0.5f, transform.forward, transform.rotation, 0.0f, 1 << LayerMask.NameToLayer("PLAYER"));        // 공격범위안에 있는 콜리더 가져오기
                     if (hits.Length > 0) // 콜리더가 있다면
                     {
-                        for (int i = 0; i < hits.Length; i++)
-                        {
-
-                        }
+                        Player player = hits[0].collider.GetComponent<Player>();
+                        player.OnDamge(10);  //데미지적용
+                        
 
                     }
 
@@ -129,7 +128,7 @@ public class SpecterBoss : BossMonster
                     RaycastHit[] hits = Physics.BoxCastAll(Attack02RangeEff.transform.position, Attack02Range * 0.5f, transform.forward, transform.rotation, 0.0f, 1 << LayerMask.NameToLayer("PLAYER"));        // 공격범위안에 있는 콜리더 가져오기
                     if (hits.Length > 0) // 콜리더가 있다면
                     {                          //데미지 적용
-
+                       
                     }
 
                     for (int i = 0; i < Attack02ShineEffs.Length; i++)

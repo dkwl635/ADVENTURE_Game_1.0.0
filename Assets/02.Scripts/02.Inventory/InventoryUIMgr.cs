@@ -33,6 +33,11 @@ public class InventoryUIMgr : MonoBehaviour
     public Button m_UserInfoBtn = null;
     Text m_UserInfoLable = null;
 
+    [Header("LogBox")]
+    public GameObject m_LogBoxPanel = null;
+    public Button m_LogOkBtn = null;
+    public Button m_LogNoBtn = null;
+    
     public Text m_CoinText = null;             //가지고 있는 코인 를 나타낼 텍스트
     public Text m_UserInfoText = null;
 
@@ -102,6 +107,10 @@ public class InventoryUIMgr : MonoBehaviour
         m_ItemBtn.onClick.AddListener(() => { OpenBox(m_ItemUI); });
         m_UserInfoBtn.onClick.AddListener(() => { OpenBox(m_UserInfoUI); });
 
+        m_LogOkBtn.onClick.AddListener(DestroyItem);
+        m_LogNoBtn.onClick.AddListener(OffLogBox);
+
+
         //아이템 퀵슬롯 초기화
         UseItemSlot[] useItemSlots = m_UseItemSlot.GetComponentsInChildren<UseItemSlot>();
         {
@@ -123,6 +132,9 @@ public class InventoryUIMgr : MonoBehaviour
         //OnOff UI
         if (Input.GetKeyDown(KeyCode.I))
         {
+            if (m_LogBoxPanel.activeSelf)
+                return;
+
             if (m_InventoryUI_Panel.activeSelf)
                 OffInvenUI();
             else
@@ -130,9 +142,6 @@ public class InventoryUIMgr : MonoBehaviour
           
         }
     }
-
-
-    
 
     public void OnInvenUI()
     {
@@ -213,5 +222,34 @@ public class InventoryUIMgr : MonoBehaviour
         }
     }
 
+
+     SlotType m_curType = SlotType.Item;
+    int m_curIdx = 0;
+
+    public void OnLogBox(SlotType slot, int a_idx)
+    {
+        m_LogBoxPanel.SetActive(true);
+        m_curType = slot;
+        m_curIdx = a_idx;
+    }
+
+    void OffLogBox()
+    {
+        m_LogBoxPanel.SetActive(false);
+    }
+    
+    void DestroyItem()
+    {
+        if(m_curType == SlotType.Equipment)
+        {
+            PlayerInventory.DestoryEquipmentItem(m_curIdx);
+        }
+        else if(m_curType == SlotType.Item)
+        {
+            PlayerInventory.DestroyItem(m_curIdx, 99);
+        }
+
+        m_LogBoxPanel.SetActive(false);
+    }
 
 }

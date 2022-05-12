@@ -26,6 +26,11 @@ public class Sk01Crash : Skill
         get { return (m_Damage  * m_Lv) + player.m_PlayerAttPw; }
     }
 
+    public override string SkillInfoTxt()
+    {
+        return "\n기본 스킬데미지 : " + (m_Damage * m_Lv).ToString() 
+            + "\n총 스킬 데미지 : " + m_SkillDamage.ToString();
+    }
 
     public override void ShowSkillMark(Vector3 a_MouesDir)
     {

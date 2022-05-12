@@ -750,10 +750,10 @@ MonoBehaviour:
   m_HpBarCtrl: {fileID: 4876942321308140012}
   m_MonsterStatus:
     m_Lv: 0
-    m_CurExp: 0
+    m_CurExp: 10
     m_NextExp: 0
-    m_CurHp: 1000
-    m_MaxHp: 1000
+    m_CurHp: 500
+    m_MaxHp: 500
     m_AttPw: 50
     m_DefPw: 0
     m_Critical: 0

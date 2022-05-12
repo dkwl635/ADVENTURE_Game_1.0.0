@@ -260,7 +260,7 @@ public class Specter : NomalMonster
             ItemMgr.Inst.SpawnDropItem(transform.position, m_DropList[itemnum], 1); //아이템 떨구기
             int coin = Random.Range(m_MinCoin, m_MaxCoin);              //코인
             m_Attacker.m_PlayerInventory.AddCoin(coin);   //돈주기
-            m_Attacker.AddExp(10);
+            m_Attacker.AddExp(m_MonsterStatus.m_CurExp);
 
             QuestMgr.Inst.CheckKillQuest(m_MonsterId);
         }

@@ -107,6 +107,10 @@ public class Player : MonoBehaviour
 
     public ParticleSystem m_LevelEffect = null;
 
+    float m_HitTimer = -1.0f;
+
+
+
     public GameObject m_NpcObj = null; //지금 보고 있는 NPC
     public NPC m_Npc= null; //지금 보고 있는 NPC
     LayerMask m_NpcLayer = 1;
@@ -141,8 +145,7 @@ public class Player : MonoBehaviour
         //m_MeshOutline 설정
         m_MeshOutline = GetComponentInChildren<Outline>();
 
-        //캐릭터 능력 설정
-        m_PlayerStatus.SetStatue(1,10,1000, 10, 10, 20.0f);
+       
         
     }
     private void Start()
@@ -162,72 +165,29 @@ public class Player : MonoBehaviour
 
     }
     private void Update()
-    {      
+    {
+     
         MouseInput();   //마우스 피킹
         CheckNpcUpdate();   //NPC 찾기
-       
-    }
 
+        //피격 연출 
+        Hit_Update();
+
+    }
     private void FixedUpdate()
     {
-        MousePickMove(); //마우스로 이동 하는 함수        
-
-        m_Vec = rigidbody.velocity;
-        m_Vec.x = 0;
-        m_Vec.z = 0;
-        //rigidbody.velocity = m_Vec;
-        //KeyMove();  
+        MousePickMove(); //마우스로 이동 하는 함수               
     }
 
-    #region ---------------KeyMode---------------
-    private void KeyInput()
-    {
-
-        h = Input.GetAxisRaw("Vertical");
-        v = Input.GetAxisRaw("Horizontal");
-
-        if (bIsAttack || bIsHit)  //만약 공격 중이면 리턴
-        {
-            h = 0;
-            v = 0;
-            return;
-        }
-    }
-    private void KeyMove()  //키보드 입력 받아 움직이는 
-    {
-        rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
-        //아무것도 누르지 않으면 
-        if (h == 0 && v == 0)
-        {
-            animator.SetBool("IsMove", false);
-        }
-        else
-        {
-            animator.SetBool("IsMove", true);
-
-            //방향 정하기
-            m_DirVec = Vector3.forward * h + Vector3.right * v;
-            //Y값은 변화가 없으니
-            m_DirVec.y = 0;
-
-            //앞을 바라보게 하기
-            transform.rotation = Quaternion.LookRotation(m_DirVec);
-
-            //대각선 이동 속도 변화를 맞기 위해
-            if (m_DirVec.magnitude >= 1)
-                m_DirVec = m_DirVec.normalized;
-            //방향에 속도 다음 얼마만큼 이동되는지
-            m_DirVec = m_DirVec * m_MoveSpeed * Time.fixedDeltaTime;
-            //다음 위치로 이동
-            rigidbody.MovePosition(rigidbody.position + m_DirVec);
-        }
-
-    }
-    #endregion
-
+   
     #region ---------------MouseMode---------------
     public void MouseInput()
     {
+        m_Vec = rigidbody.velocity;
+        m_Vec.x = 0;
+        m_Vec.z = 0;
+
+
         if (bIsAttack || bIsHit || !bIsMove)
         {
             return;
@@ -257,10 +217,7 @@ public class Player : MonoBehaviour
         if (hitInfo.collider.CompareTag("GROUND"))
         {   
             nv.SetDestination(hitInfo.point + (Vector3.up));                               
-            CursorMarkOn(hitInfo.point);    //마크 커서 On
-
-           
-
+            CursorMarkOn(hitInfo.point);    //마크 커서 On          
         }
         else if(hitInfo.collider.CompareTag("NPC"))
         {
@@ -323,7 +280,12 @@ public class Player : MonoBehaviour
     }
     #endregion
 
- 
+    private void OnDisable()
+    {
+        if (m_LvUpTxt)
+            m_LvUpTxt.SetActive(false);
+    }
+
 
     public void SetHpUI()
     {
@@ -363,9 +325,13 @@ public class Player : MonoBehaviour
 
         SetHpUI();
 
-        if(!bIsAttack && !bIsHit)
-        {        
-            StartCoroutine(HitAction());
+
+        m_MeshOutline.OutlineColor = Color.red;
+        m_HitTimer = 0.5f;
+        if (!bIsAttack && !bIsHit)
+        {
+            bIsHit = true;
+            animator.SetTrigger("Hit");
         }
       
     }
@@ -387,18 +353,22 @@ public class Player : MonoBehaviour
       
     }
 
-    IEnumerator HitAction()
-    {
-        animator.SetTrigger("Hit");
-        bIsHit = true;
+    
 
-        m_MeshOutline.OutlineColor = Color.red;
-       
-      
-       yield return new WaitForSeconds(0.5f);
-       m_MeshOutline.OutlineColor = Color.white;
-       bIsHit = false;
-        yield break;
+    void Hit_Update()
+    {
+        if (m_HitTimer > 0)
+        {
+            m_HitTimer -= Time.deltaTime;
+
+            if (m_HitTimer <= 0)
+            {
+                if (bIsHit)
+                    bIsHit = false;
+
+                m_MeshOutline.OutlineColor = Color.white;
+            }
+        } 
     }
 
     void CheckNpcUpdate()

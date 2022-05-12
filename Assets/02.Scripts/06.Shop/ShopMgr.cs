@@ -230,13 +230,12 @@ public class ShopMgr : MonoBehaviour
         m_ShopPanel.SetActive(false);
         InventoryUIMgr.Inst.m_InventoryUI_Panel.SetActive(false);
 
-        Debug.Log("3");
         //플레이어 움직이게
         if (m_Player != null)
             m_Player.bIsMove = true;
 
         m_Player = null;
-        Debug.Log("4");
+       
     }
 
     //유저 아이템 총 판매 금액 갱신

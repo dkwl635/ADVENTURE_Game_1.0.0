@@ -18,6 +18,10 @@ public class Skill : MonoBehaviour
     public int m_NeedSP = 5;            //레벨 업 필요 스킬 포인트
     public int m_Damage = 10;   //기본 데미지
     public string m_SkillInfo; //스킬 설명
+    public string SKillInfo
+    {
+        get { return m_SkillInfo + SkillInfoTxt(); }
+    }
 
     //스킬 쿨타임
     public float m_CurrTime = -1.0f;
@@ -36,6 +40,11 @@ public class Skill : MonoBehaviour
        
         //타겟 레이어 셋팅
         m_SkillTargetLayer = 1 << LayerMask.NameToLayer("MONSTER");
+    }
+
+    public virtual string SkillInfoTxt()
+    {
+        return "";
     }
 
     public virtual void BoolShowMark()  //사거리를 보여줄지 체크
@@ -85,13 +94,9 @@ public class Skill : MonoBehaviour
             m_CurrTime -= Time.deltaTime;
     }
 
-
-
-
     public virtual IEnumerator SkillStart()
     {      
         yield break;
     }
 
-   
 }
