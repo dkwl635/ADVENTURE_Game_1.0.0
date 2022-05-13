@@ -7,7 +7,6 @@ public class StartPos : MonoBehaviour
     public Player player;
    
     void Start()
-
     { 
 
         StartCoroutine(SetPlayerPos());
@@ -23,6 +22,8 @@ public class StartPos : MonoBehaviour
         {
             player.transform.position = this.transform.position;
             player.gameObject.SetActive(true);
+
+            Camera.main.GetComponent<CameraCtrl>().InitCamera();
         }
 
     }

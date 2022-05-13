@@ -1,5 +1,5 @@
 No,ItemType,ItemName,ItemInfo,Price,DropItemPosX,DropItemPosY,DropItemPosZ,ItemSprite,ItemMesh,ItemMaterial,PortionType,Value
 int,int,string,string,int,float,float,float,string,string,string,int,int
-501,3,일반 Hp포션,체력 50를 회복시켜준다.,100,0.0,1.0,0.0,hp_1,bottle_red,Bottle_red,1,50
-502,3,고급 Hp포션,체력 100를 회복시켜준다.,200,0.0,1.0,0.0,hp_1,bottle_blue,Bottle_blue,1,100
-503,3,엘릭서,체력 200를 회복시켜준다.,300,0.0,1.0,0.0,hp_2,bottle_green,Bottle_green,1,200
+501,3,일반 Hp포션,체력 50를 회복시켜준다.,100,0.0,0.0,0.0,hp_1,bottle_red,Bottle_red,1,50
+502,3,고급 Hp포션,체력 100를 회복시켜준다.,200,0.0,0.0,0.0,hp_1,bottle_blue,Bottle_blue,1,100
+503,3,엘릭서,체력 200를 회복시켜준다.,300,0.0,0.0,0.0,hp_2,bottle_green,Bottle_green,1,200

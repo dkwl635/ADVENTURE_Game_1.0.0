@@ -18,7 +18,7 @@ public enum MonsterState
 
  public class MonsterCtrl : MonoBehaviour
 {
-    [HideInInspector] public BoxCollider boxCollider = null;       //몬스터 콜라이더
+    [HideInInspector] public Collider Collider = null;       //몬스터 콜라이더
     [HideInInspector] public Animator animator = null;             //몬스터 애니메이터
     [HideInInspector] public NavMeshAgent navMeshAgent = null;     //타켓 추적을 위한 네비
     [HideInInspector] public GameObject mesh = null;                      //몬스터 메쉬 오브젝트

@@ -52,7 +52,11 @@ public class InGameMgr : MonoBehaviour
     private void Start()
     {
         Debug.Log("테스트 무기 떨구기");
-        ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f,0,-18.68f), 101, 1); //아이템 떨구기
+        ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f,0,-18.68f), 6, 1); //아이템 떨구기
+        ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f,0,-18.68f), 501, 1); //아이템 떨구기
+        
+
+
     }
 
     void InitObjPool()

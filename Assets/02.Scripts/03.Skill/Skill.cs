@@ -66,7 +66,9 @@ public class Skill : MonoBehaviour
         {
             m_Show = false;
             return;
-        }//false 로 변경될경우 스킬 중단               
+        }//false 로 변경될경우 스킬 중단
+         
+      
     }
 
     public virtual void UseSkill()  //스킬 사용 
@@ -85,7 +87,13 @@ public class Skill : MonoBehaviour
 
             StartCoroutine(SkillStart());
             SkillMgr.Inst.bIsPushSkill = false; //돌려놓기
-        }      
+        }
+        else
+        {
+            m_Show = false;
+            return;
+        }
+       
     }
 
     public virtual void CoolTimeUpdate()

@@ -1133,4 +1133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd4c8689080eca4c8ae5c0c6744b957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Quest_IdList: 
   m_Quest_ID: 2
+  m_QuestObj: {fileID: 0}

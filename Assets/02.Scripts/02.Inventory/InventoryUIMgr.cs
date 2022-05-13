@@ -32,6 +32,7 @@ public class InventoryUIMgr : MonoBehaviour
     Text m_ItemLable = null;
     public Button m_UserInfoBtn = null;
     Text m_UserInfoLable = null;
+    public Button m_BackBtn = null;
 
     [Header("LogBox")]
     public GameObject m_LogBoxPanel = null;
@@ -106,7 +107,8 @@ public class InventoryUIMgr : MonoBehaviour
         m_EquipBtn.onClick.AddListener(() => { OpenBox(m_EquipmentUI); });
         m_ItemBtn.onClick.AddListener(() => { OpenBox(m_ItemUI); });
         m_UserInfoBtn.onClick.AddListener(() => { OpenBox(m_UserInfoUI); });
-
+       
+        m_BackBtn.onClick.AddListener(OffInvenUI);
         m_LogOkBtn.onClick.AddListener(DestroyItem);
         m_LogNoBtn.onClick.AddListener(OffLogBox);
 

@@ -57,6 +57,11 @@ public class CameraCtrl : MonoBehaviour
     {
         m_Tr = GetComponent<Transform>();
 
+        InitCamera();
+    }
+
+    public void InitCamera()
+    {
         m_TargetPos = m_CharTr.transform.position;      //타겟 위치 정보 
         m_TargetPos.y = m_TargetPos.y + 1.4f;           //타겟의 머리 위쪽 위치 조정
 
@@ -75,13 +80,11 @@ public class CameraCtrl : MonoBehaviour
         transform.LookAt(m_TargetPos);
     }
 
-
     private void LateUpdate() 
     {
         if (Shake)
         {
-            m_BuffPos = Random.insideUnitSphere * 1 + m_orginPos;
-          
+            m_BuffPos = Random.insideUnitSphere + m_orginPos; 
             transform.position = m_BuffPos;
             return;
         }  

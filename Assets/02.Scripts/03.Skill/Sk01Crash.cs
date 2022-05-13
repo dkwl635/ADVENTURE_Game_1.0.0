@@ -34,20 +34,18 @@ public class Sk01Crash : Skill
 
     public override void ShowSkillMark(Vector3 a_MouesDir)
     {
-        if (SkillMgr.Inst.bIsPushSkill == false)//false 로 변경될경우 스킬 중단
-        {
-            m_Show = false;
-
-            m_Ring.SetActive(false);
-            return;
-        }
+        base.ShowSkillMark(a_MouesDir);     
 
         if (!m_Show)
+        {
+            m_Ring.SetActive(false); //사거리 비표시
             return;
+        }
+           
       
         m_Ring.SetActive(true);
         m_tempPos = playerTr.position + a_MouesDir * m_Distance;
-        m_tempPos.y += 0.2f;
+        m_tempPos.y += 0.4f;
         m_Ring.transform.position = m_tempPos;
 
     }

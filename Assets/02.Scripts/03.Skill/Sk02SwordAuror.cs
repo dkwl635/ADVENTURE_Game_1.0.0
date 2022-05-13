@@ -24,19 +24,19 @@ public class Sk02SwordAuror : Skill
 
     public override void ShowSkillMark(Vector3 a_MouesDir)
     {
-        if (SkillMgr.Inst.bIsPushSkill == false)//false 로 변경될경우 스킬 중단
+        base.ShowSkillMark(a_MouesDir);
+
+
+        if (!m_Show)
         {
-            m_Show = false;
-            m_SkillMark.SetActive(false);
+            m_SkillMark.SetActive(false); //사거리 비표시
             return;
         }
 
-        if (!m_Show)
-            return;
 
         m_SkillMark.SetActive(true);
         m_tempPos = playerTr.position + a_MouesDir * m_ZOffset;
-        m_tempPos.y += 0.1f;
+        m_tempPos.y += 0.4f;
         m_SkillMark.transform.SetPositionAndRotation(m_tempPos, Quaternion.LookRotation(a_MouesDir));
         m_SkillMark.transform.position = m_tempPos;
     }

@@ -44,6 +44,9 @@ public class SkillMgr : MonoBehaviour
     public GameObject m_SlotSkillRoot;
     public SkillSlot[] m_SkillSlots;
 
+    [Header("Button")]
+    public Button m_BackBtn;
+
     [Header("SkillRoot")]
     public GameObject m_SkillRootPrefab;
     public Transform m_Content;
@@ -85,6 +88,9 @@ public class SkillMgr : MonoBehaviour
 
     void Start()
     {
+
+        m_BackBtn.onClick.AddListener(OffSkillUI);
+
         m_SkillPoint = 10;
        
 
@@ -209,7 +215,7 @@ public class SkillMgr : MonoBehaviour
 
     void KeyUp_Update()
     {
-        if (player.bIsHit || !player.bIsWeapon)
+        if (!player.bIsWeapon)
             return;
 
             if (m_SkillSlots.Length > 0)

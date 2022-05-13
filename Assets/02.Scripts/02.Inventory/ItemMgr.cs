@@ -155,6 +155,7 @@ public class ItemMgr : MonoBehaviour
             m_TempPos.x = (float)EquipmentTable[idx]["DropItemPosX"]; //땅에 드롭되을때 위치보정 값
             m_TempPos.y = (float)EquipmentTable[idx]["DropItemPosY"]; //땅에 드롭되을때 위치보정 값
             m_TempPos.z = (float)EquipmentTable[idx]["DropItemPosZ"]; //땅에 드롭되을때 위치보정 값
+            
             newEquipData.m_DropMeshPos = m_TempPos;
             newEquipData.m_CurCount = a_Count;
             newEquipData.m_MaxCount = 1;

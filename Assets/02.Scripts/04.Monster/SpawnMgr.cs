@@ -158,7 +158,7 @@ public class SpawnMgr : MonoBehaviour
     IEnumerator SpwnBossCo()
     {
         yield return null;
-        m_Boss.boxCollider.enabled = false;
+        m_Boss.Collider.enabled = false;
         m_Boss.navMeshAgent.enabled = false;
 
         m_Boss.transform.position -= Vector3.up * 3;

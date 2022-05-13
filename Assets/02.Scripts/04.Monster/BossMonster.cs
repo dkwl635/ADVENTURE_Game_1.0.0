@@ -20,7 +20,7 @@ public class BossMonster : MonsterCtrl
 
     public virtual void Start()
     {
-        boxCollider = GetComponentInChildren<BoxCollider>();                    //충돌체  
+        Collider = GetComponentInChildren<Collider>();                    //충돌체  
         animator = GetComponent<Animator>();                                          //에니메이션              
         navMeshAgent = GetComponent<NavMeshAgent>();   //네비메쉬      
         m_Skin = GetComponentInChildren<SkinnedMeshRenderer>(); //스킨 찾아오기

@@ -27,6 +27,8 @@ public class NormalAttack : Skill
         get { return m_Damage + player.m_PlayerAttPw; }
     }
 
+
+   
     public override void UseSkill()
     {     
         if (m_CurrTime < 0.0f && player.bIsAttack == false)
@@ -204,15 +206,15 @@ public class NormalAttack : Skill
         yield break;
     }
 
-    private void OnDrawGizmos()
-    {
-        if(playerTr != null)
-        {        
-            Handles.color = isCollision ? _red : _blue;
-            Handles.DrawSolidArc(playerTr.position, Vector3.up, playerTr.forward, angleRange / 2, distance);
-            Handles.DrawSolidArc(playerTr.position, Vector3.up, playerTr.forward, -angleRange / 2, distance);
-        }
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    if(playerTr != null)
+    //    {        
+    //        Handles.color = isCollision ? _red : _blue;
+    //        Handles.DrawSolidArc(playerTr.position, Vector3.up, playerTr.forward, angleRange / 2, distance);
+    //        Handles.DrawSolidArc(playerTr.position, Vector3.up, playerTr.forward, -angleRange / 2, distance);
+    //    }
+    //}
 }
 
      

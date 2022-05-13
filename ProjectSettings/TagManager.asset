@@ -6,6 +6,7 @@ TagManager:
   tags:
   - NPC
   - GROUND
+  - MiniMap
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - GROUND
   - NPC
   - ITEMBOX
-  - 
-  - 
+  - MAP
+  - MAPSPRITE
   - 
   - 
   - 

@@ -15,7 +15,7 @@ public class Specter : NomalMonster
 
     public override void Init()
     {
-        boxCollider = GetComponentInChildren<BoxCollider>();                    //충돌체
+        Collider = GetComponentInChildren<Collider>();                    //충돌체
         animator = GetComponent<Animator>();                                          //애니메이터             
         navMeshAgent = GetComponent<NavMeshAgent>();   //네비
      
@@ -35,7 +35,7 @@ public class Specter : NomalMonster
 
     private void Start()
     {
-        boxCollider = GetComponentInChildren<BoxCollider>();                    //충돌체
+        Collider = GetComponentInChildren<Collider>();                    //충돌체
         animator = GetComponent<Animator>();                                          //애니메이터             
         navMeshAgent = GetComponent<NavMeshAgent>();   //네비       
         m_Skin = GetComponentInChildren<SkinnedMeshRenderer>(); //스킨 머터리얼 적용을 위한
@@ -232,7 +232,7 @@ public class Specter : NomalMonster
         transform.position = m_SpawnPos;        //스폰위치적용       
         m_MonsterStatus.m_CurHp = m_MonsterStatus.m_MaxHp;      //체력회복
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //체력바 적용
-        boxCollider.enabled = true; //충돌체 켜기
+        Collider.enabled = true; //충돌체 켜기
         navMeshAgent.enabled = true;    //네비 켜기
         OnOffNav(true); //네비 켜기   
         navMeshAgent.nextPosition = m_SpawnPos; //네비 위치 정보 초기화
@@ -248,7 +248,7 @@ public class Specter : NomalMonster
         m_MonsterState = MonsterState.Die;  //상태 전환
         m_HpBarCtrl.gameObject.SetActive(false);     //체력바 끄기
         animator.SetTrigger("Die");         //애니메이션 적용      
-        boxCollider.enabled = false; //충돌체 끄기    
+        Collider.enabled = false; //충돌체 끄기    
         OnOffNav(false);
         navMeshAgent.enabled = false;
         m_SpawnTime = 5.0f;
