@@ -207,7 +207,7 @@ public class Specter : NomalMonster
 
         m_MonsterStatus.m_CurHp -= a_Damage; //데미지 적용
         Vector2 canvaspos = Camera.main.WorldToScreenPoint(m_HpBarCtrl.gameObject.transform.position);
-        InGameMgr.Inst.SpanwDamageTxt(canvaspos, a_Damage, TxtType.Damage); //데미지 텍스트 출력
+        InGameMgr.Inst.SpanwDamageTxt(canvaspos,TxtType.Damage, a_Damage); //데미지 텍스트 출력
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //체력바 적용
 
         OnOffNav(false);

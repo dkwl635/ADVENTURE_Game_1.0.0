@@ -740,7 +740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef4a0dbf9855a114aad2e8f7936255f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider: {fileID: 0}
+  Collider: {fileID: 0}
   animator: {fileID: 0}
   navMeshAgent: {fileID: 0}
   mesh: {fileID: 0}
@@ -2409,7 +2409,7 @@ GameObject:
   - component: {fileID: 4154368601748794380}
   - component: {fileID: 5721512742062878555}
   - component: {fileID: 7773798860197830684}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2593,7 +2593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3770781138630151675, guid: c868bc7fa73f86847be4b58953226e2d, type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3770781138630151678, guid: c868bc7fa73f86847be4b58953226e2d, type: 3}
       propertyPath: m_CullTransparentMesh
@@ -2705,7 +2705,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3770781138701405549, guid: c868bc7fa73f86847be4b58953226e2d, type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7888324184301460604, guid: c868bc7fa73f86847be4b58953226e2d, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2717,7 +2717,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8346215606705919445, guid: c868bc7fa73f86847be4b58953226e2d, type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c868bc7fa73f86847be4b58953226e2d, type: 3}

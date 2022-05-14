@@ -72,35 +72,35 @@ public class TalkMgr : MonoBehaviour
 
     private void Start()
     {
-        //talk  0 : 일반 대화 , + 퀘스트 ID
-        m_TalkTable.Add(100 + 0, "안녕하세요.:0/반갑습니다. 여기는 상점입니다.:1/감사합니다.:2");
-        m_TalkTable.Add(110 + 0, "안녕하세요.:0/반갑습니다. 여기는 강화소입니다.:2/감사합니다.:2");
-        m_TalkTable.Add(120 + 0, "안녕하세요.:0/Ludo 입니다..:2");
-        m_TalkTable.Add(120 + 1, "안녕하세요.:0/Ludo 입니다..:2/저기있는 Luna에게 얘기를 들어 주세요.:2/잘부탁드립니다.:2");
-        m_TalkTable.Add(130 + 0, "안녕하세요.:0/Luna 입니다..:2/저기 포탈을 타면 사냥터에 갈 수 있습니다.:2");
-        m_TalkTable.Add(130 + 2, "안녕하세요.:0/부탁이있습니다..:2/저기 있는 유령몬스터 10마리만 잡아 주세요:2/감사합니다.:2");
-        m_TalkTable.Add(130 + 3, "안녕하세요.:0/이번에는 좀더 강한..:2/유령들의 왕을 잡아주세요:2/부탁드리겠습니다.:2");
+        InitTalkList();
 
         m_TalkBtnGroup.SetActive(false);
 
-        if (m_TalkBtn != null)
-            m_TalkBtn.onClick.AddListener(TalkBtn);
+        //if (m_TalkBtn != null)
+        //    m_TalkBtn.onClick.AddListener(TalkBtn);
 
-        if (m_ShopBtn != null)
-            m_ShopBtn.onClick.AddListener(ShopBtn);
+        //if (m_ShopBtn != null)
+        //    m_ShopBtn.onClick.AddListener(ShopBtn);
 
-        if (m_UpgradeBtn != null)
-            m_UpgradeBtn.onClick.AddListener(UpgradeBtn);
+        //if (m_UpgradeBtn != null)
+        //    m_UpgradeBtn.onClick.AddListener(UpgradeBtn);
 
-        if (m_QuestBtn != null)
-            m_QuestBtn.onClick.AddListener(QuestBtn);
+        //if (m_QuestBtn != null)
+        //    m_QuestBtn.onClick.AddListener(QuestBtn);   
+
+        if (m_TalkBtn != null) m_TalkBtn.onClick.AddListener(()=> { TalkStart(TalkType.Talk); });
+
+        if (m_ShopBtn != null) m_ShopBtn.onClick.AddListener(() => { TalkStart(TalkType.Shop); });
+
+        if (m_UpgradeBtn != null) m_UpgradeBtn.onClick.AddListener(() => { TalkStart(TalkType.Upgrade); });
+
+        if (m_QuestBtn != null)      m_QuestBtn.onClick.AddListener(() => { TalkStart(TalkType.Quest); });
+
+
 
 
         if (m_NexTalkBtn != null)
             m_NexTalkBtn.onClick.AddListener(NextTalk);
-
-     
-
 
         if (m_QuestOkBtn != null)
             m_QuestOkBtn.onClick.AddListener(QuestOkBtn);
@@ -108,6 +108,19 @@ public class TalkMgr : MonoBehaviour
         if (m_BackBtn != null)
             m_BackBtn.onClick.AddListener(BackBtn);
 
+    }
+     void InitTalkList()
+    {
+        //talk  0 : 일반 대화 , + 퀘스트 ID
+        m_TalkTable.Add(100 + 0, "안녕하세요.:0/반갑습니다. 여기는 상점입니다.:1/감사합니다.:2");
+        m_TalkTable.Add(110 + 0, "안녕하세요.:0/반갑습니다. 여기는 강화소입니다.:2/감사합니다.:2");
+
+        m_TalkTable.Add(120 + 0, "안녕하세요.:0/Ludo 입니다..:2");
+        m_TalkTable.Add(120 + 1, "안녕하세요.:0/Ludo 입니다..:2/저기있는 Luna에게 얘기를 들어 주세요.:2/마우스 휠을 누르며 드래그를 하면 시야를 조절 할 수 있어요.:2");
+        m_TalkTable.Add(130 + 0, "안녕하세요.:0/Luna 입니다..:2/저기 포탈을 타면 사냥터에 갈 수 있습니다.:2");
+
+        m_TalkTable.Add(130 + 2, "안녕하세요.:0/부탁이있습니다..:2/저기 있는 유령몬스터 10마리만 잡아 주세요:2/감사합니다.:2");
+        m_TalkTable.Add(130 + 3, "안녕하세요.:0/이번에는 좀더 강한..:2/유령들의 왕을 잡아주세요:2/부탁드리겠습니다.:2");
     }
 
     public void Update()
@@ -194,6 +207,42 @@ public class TalkMgr : MonoBehaviour
     {
         m_QuestID = a_QuestID;
         m_QuestBtn.gameObject.SetActive(true);
+    }
+
+    void TalkStart(TalkType type)
+    {
+        OffTalkBtnGroup();
+
+        m_CurrTalkType = type;
+
+        if (type.Equals(TalkType.Talk))
+        {
+            SetTalkList(m_TalkTable[m_NpcID]);
+
+            //퀘스트 채크
+            QuestMgr.Inst.CheckTalkQuest(m_NpcID);
+        }         
+        else if(type.Equals(TalkType.Quest))
+        {
+            SetTalkList(m_TalkTable[m_NpcID + m_QuestID]);
+        }
+        else if (type.Equals(TalkType.Shop))
+        {
+            ShopMgr.Inst.OpenShop();
+            return;
+        }
+        else if (type.Equals(TalkType.Upgrade))
+        {
+            UpgradeMgr.Inst.OpenUpgrade(m_Talker);
+            return;
+        }
+
+
+
+        m_OpenBox = true;
+        m_PortraitImg.gameObject.SetActive(true);
+        PrintMsg();
+
     }
 
     //일반 대화 버튼 함수
@@ -321,7 +370,8 @@ public class TalkMgr : MonoBehaviour
 
     void BackBtn()
     {
-        OffTalkBox(); 
+        OffTalkBox();
+        m_Talker.bIsMove = true;
     }
 
 

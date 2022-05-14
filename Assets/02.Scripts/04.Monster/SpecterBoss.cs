@@ -103,10 +103,7 @@ public class SpecterBoss : BossMonster
                 else if (rand > 80 && rand <= 100)
                     m_BossAttackType = BossAttackType.Attack03;
 
-                //m_BossAttackType = (BossAttackType)Random.Range((int)BossAttackType.Attack01, (int)BossAttackType.Count);
-
-
-
+                m_BossAttackType = BossAttackType.Attack04;
                 transform.LookAt(m_Target);
 
                 if (m_BossAttackType == BossAttackType.Attack01)         //1번 공격 기본공격
@@ -203,6 +200,7 @@ public class SpecterBoss : BossMonster
 
                     
                 }
+             
                 
                 m_MonsterState = MonsterState.Idle;   //상태 전환              
             }
@@ -234,7 +232,7 @@ public class SpecterBoss : BossMonster
     {
         m_MonsterStatus.m_CurHp -= a_Damage; //데미지 적용
         Vector2 canvaspos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-        InGameMgr.Inst.SpanwDamageTxt(canvaspos, a_Damage, TxtType.Damage); //데미지 숫자 이펙트
+        InGameMgr.Inst.SpanwDamageTxt(canvaspos, TxtType.Damage, a_Damage); //데미지 숫자 이펙트
 
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //hpbar 적용
 

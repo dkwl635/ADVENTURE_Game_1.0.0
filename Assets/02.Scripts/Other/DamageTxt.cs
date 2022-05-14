@@ -53,7 +53,7 @@ public class DamageTxt : MonoBehaviour
 
     public void OffDamageText()
     {
-        InGameMgr.Inst.PushBackDamageTxt(this.gameObject);
+        InGameMgr.Inst.PushBackDamageTxt(this);
         m_LifeTime = m_InitLifeTime;   
         gameObject.SetActive(false);
     }

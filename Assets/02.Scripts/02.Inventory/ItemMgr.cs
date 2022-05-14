@@ -355,7 +355,7 @@ public class ItemMgr : MonoBehaviour
             Vector2 pos = player.m_MsgBoxTr.position;
             pos.x = pos.x - 200 + ( Random.Range( 0, 20.0f ) );
             pos.y = pos.y - 50;
-            InGameMgr.Inst.SpanwDamageTxt( pos , (int)a_Portion.m_Value,TxtType.Heal);
+            InGameMgr.Inst.SpanwDamageTxt( pos ,TxtType.Heal, (int)a_Portion.m_Value);
         }
 
     }

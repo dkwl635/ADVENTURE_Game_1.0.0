@@ -22,8 +22,10 @@ public class InGameMgr : MonoBehaviour
     public List<GameObject>FX_PrefabList = new List<GameObject>();
     Dictionary<string, GameObject> DicFxPrefab = new Dictionary<string, GameObject>();
 
-    Dictionary<string, Stack<GameObject>> ObjPoolStacks = new Dictionary<string, Stack<GameObject>>();    
+    //Dictionary<string, Stack<GameObject>> ObjPoolStacks = new Dictionary<string, Stack<GameObject>>();        
     public int m_ObjPoolInit = 20; //오브젝트 풀 첫 생성 갯수
+
+    Stack<DamageTxt> m_DamageTxtPool = new Stack<DamageTxt>();
 
     private void Awake()
     {
@@ -42,17 +44,18 @@ public class InGameMgr : MonoBehaviour
 
 
         Application.targetFrameRate = 60;
-        
-        ObjPoolStacks[m_DamageTxt] = new Stack<GameObject>();    //데미지 텍스트 이펙트 관련
-        ObjPoolStacks["FX_BloodSplatter"] = new Stack<GameObject>();    //데미지 텍스트 이펙트 관련
-      
+
+       
+        //ObjPoolStacks[m_DamageTxt] = new Stack<GameObject>();    //데미지 텍스트 이펙트 관련
+        //ObjPoolStacks["FX_BloodSplatter"] = new Stack<GameObject>();    //데미지 텍스트 이펙트 관련
+
         InitObjPool();
     }
 
     private void Start()
     {
         Debug.Log("테스트 무기 떨구기");
-        ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f,0,-18.68f), 6, 1); //아이템 떨구기
+        ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f,0,-18.68f), 104, 1); //아이템 떨구기
         ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f,0,-18.68f), 501, 1); //아이템 떨구기
         
 
@@ -64,26 +67,30 @@ public class InGameMgr : MonoBehaviour
         if (m_DamageTxtObj != null)
             for (int i = 0; i < m_ObjPoolInit; i++)
         {
-            GameObject textObj = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform);
-            textObj.SetActive(false);
-            ObjPoolStacks[m_DamageTxt].Push(textObj);
-        }
+                DamageTxt txtObj = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform).GetComponent<DamageTxt>();
+                txtObj.gameObject.SetActive(false);
+                m_DamageTxtPool.Push(txtObj);
+
+                //GameObject textObj = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform);
+                //textObj.SetActive(false);
+                //ObjPoolStacks[m_DamageTxt].Push(textObj);
+            }
 
         //FX ObjectPool
-        for (int i = 0; i < FX_PrefabList.Count; i++)
-        {
-            DicFxPrefab.Add(FX_PrefabList[i].name, FX_PrefabList[i]);
+        //for (int i = 0; i < FX_PrefabList.Count; i++)
+        //{
+        //    DicFxPrefab.Add(FX_PrefabList[i].name, FX_PrefabList[i]);
 
-            for (int j = 0; j < m_ObjPoolInit; j++)
-            {
-                GameObject fx = Instantiate(FX_PrefabList[i],this.transform);
+        //    for (int j = 0; j < m_ObjPoolInit; j++)
+        //    {
+        //        GameObject fx = Instantiate(FX_PrefabList[i],this.transform);
           
-                fx.SetActive(false);
+        //        fx.SetActive(false);
 
-                string str = FX_PrefabList[i].name;
-                ObjPoolStacks[str].Push(fx);
-            }
-        }
+        //        string str = FX_PrefabList[i].name;
+        //        ObjPoolStacks[str].Push(fx);
+        //    }
+        //}
 
 
        
@@ -116,11 +123,11 @@ public class InGameMgr : MonoBehaviour
 #endif
     }//public bool IsPointerOverUIObject() 
 
-    public void SpanwDamageTxt(Vector2 a_Pos, int a_Value, TxtType a_TxtType)
+    public void SpanwDamageTxt(Vector2 a_Pos, TxtType a_TxtType, int a_Value = 0)
     {
         DamageTxt text = null;
-        if (ObjPoolStacks[m_DamageTxt].Count > 0)
-            text = ObjPoolStacks[m_DamageTxt].Pop().GetComponent<DamageTxt>();
+        if (m_DamageTxtPool.Count > 0)
+            text = m_DamageTxtPool.Pop().GetComponent<DamageTxt>();
         else
         {
             text = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform).GetComponent<DamageTxt>();
@@ -130,42 +137,42 @@ public class InGameMgr : MonoBehaviour
         text.OnDamageText(a_Value, a_TxtType);
     }
 
-    public void SpawnFxEffect(Vector3 a_Pos, string a_FxName)
-    {        
-        StartCoroutine(SpawnFx(a_Pos, a_FxName));
-    }
+    //public void SpawnFxEffect(Vector3 a_Pos, string a_FxName)
+    //{        
+    //    StartCoroutine(SpawnFx(a_Pos, a_FxName));
+    //}
 
-    IEnumerator SpawnFx(Vector3 a_Pos , string a_FxName)
+    //IEnumerator SpawnFx(Vector3 a_Pos , string a_FxName)
+    //{
+    //    GameObject fx = null;
+    //    if (ObjPoolStacks[a_FxName].Count > 0)
+    //        fx = ObjPoolStacks[a_FxName].Pop();
+    //    else
+    //    {
+    //        fx = Instantiate(DicFxPrefab[a_FxName]);
+    //    }
+
+    //    if (fx != null)
+    //    {          
+    //        fx.transform.position = a_Pos;
+    //        fx.SetActive(true);
+    //    }
+
+    //    ParticleSystem effect = fx.GetComponent<ParticleSystem>();      
+    //    yield return new WaitForSeconds(effect.main.duration + 0.01f);
+
+    //    PushBackFx(fx, a_FxName);
+    //}
+
+    //void PushBackFx(GameObject a_Obj, string a_FxName)
+    //{
+    //    a_Obj.SetActive(false);
+    //    ObjPoolStacks[a_FxName].Push(a_Obj);
+    //}
+
+    public void PushBackDamageTxt(DamageTxt a_text)
     {
-        GameObject fx = null;
-        if (ObjPoolStacks[a_FxName].Count > 0)
-            fx = ObjPoolStacks[a_FxName].Pop();
-        else
-        {
-            fx = Instantiate(DicFxPrefab[a_FxName]);
-        }
-
-        if (fx != null)
-        {          
-            fx.transform.position = a_Pos;
-            fx.SetActive(true);
-        }
-
-        ParticleSystem effect = fx.GetComponent<ParticleSystem>();      
-        yield return new WaitForSeconds(effect.main.duration + 0.01f);
-
-        PushBackFx(fx, a_FxName);
-    }
-
-    void PushBackFx(GameObject a_Obj, string a_FxName)
-    {
-        a_Obj.SetActive(false);
-        ObjPoolStacks[a_FxName].Push(a_Obj);
-    }
-
-    public void PushBackDamageTxt(GameObject a_text)
-    {
-        ObjPoolStacks[m_DamageTxt].Push(a_text);
+        m_DamageTxtPool.Push(a_text);
     }
 
 }

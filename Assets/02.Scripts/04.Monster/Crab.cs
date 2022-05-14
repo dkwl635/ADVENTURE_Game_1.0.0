@@ -123,7 +123,7 @@ public class Crab : MonsterCtrl
                         player.OnDamge(m_MonsterStatus.m_AttPw);  //데미지적용
 
                         //때리는 이펙트
-                        InGameMgr.Inst.SpawnFxEffect(m_AttackPos.transform.position, "FX_BloodSplatter");
+                        //  InGameMgr.Inst.SpawnFxEffect(m_AttackPos.transform.position, "FX_BloodSplatter");
                     }
                 }
             }
@@ -170,7 +170,7 @@ public class Crab : MonsterCtrl
             m_Attacker = a_Attacker;
 
         m_MonsterStatus.m_CurHp -= a_Damage; //데미지 적용
-        InGameMgr.Inst.SpanwDamageTxt(m_HpBarCtrl.gameObject.transform.position, a_Damage, TxtType.Damage); //데미지 텍스트 출력
+        InGameMgr.Inst.SpanwDamageTxt(m_HpBarCtrl.gameObject.transform.position, TxtType.Damage, a_Damage); //데미지 텍스트 출력
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //체력바 적용
 
         OnOffNav(false);

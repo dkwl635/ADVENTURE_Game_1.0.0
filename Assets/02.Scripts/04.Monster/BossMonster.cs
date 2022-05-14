@@ -9,6 +9,7 @@ public enum BossAttackType
     Attack01,
     Attack02,
     Attack03,
+    Attack04,
     Count,
 }
 

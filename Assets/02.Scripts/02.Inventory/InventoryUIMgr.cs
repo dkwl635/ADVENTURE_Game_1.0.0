@@ -33,6 +33,8 @@ public class InventoryUIMgr : MonoBehaviour
     public Button m_UserInfoBtn = null;
     Text m_UserInfoLable = null;
     public Button m_BackBtn = null;
+    public Button m_EqTrimBtn = null;
+    public Button m_EqSortBtn = null;
 
     [Header("LogBox")]
     public GameObject m_LogBoxPanel = null;
@@ -53,8 +55,8 @@ public class InventoryUIMgr : MonoBehaviour
         else
         {
             Inst = this;
-            DontDestroyOnLoad(this.gameObject);
-            this.gameObject.transform.SetParent(GameObject.FindObjectOfType<DontDestroyOnLoadMgr>().gameObject.transform);
+            //DontDestroyOnLoad(this.gameObject);
+            //this.gameObject.transform.SetParent(GameObject.FindObjectOfType<DontDestroyOnLoadMgr>().gameObject.transform);
         }
 
         Inst = this;
@@ -111,6 +113,8 @@ public class InventoryUIMgr : MonoBehaviour
         m_BackBtn.onClick.AddListener(OffInvenUI);
         m_LogOkBtn.onClick.AddListener(DestroyItem);
         m_LogNoBtn.onClick.AddListener(OffLogBox);
+        m_EqTrimBtn.onClick.AddListener(TrimEquipItem);
+        m_EqSortBtn.onClick.AddListener(SortEquipItem);
 
 
         //아이템 퀵슬롯 초기화
@@ -194,38 +198,42 @@ public class InventoryUIMgr : MonoBehaviour
 
     void OpenBox(GameObject a_Box)
     {
+        m_ItemUI.SetActive(false);
+        m_EquipmentUI.SetActive(false);
+        m_UserInfoUI.SetActive(false);
+
+        m_ItemLable.color = Color.white;
+        m_EquipLable.color = Color.white;
+        m_UserInfoLable.color = Color.white;
+
+
+        m_EqTrimBtn.gameObject.SetActive(false);
+        m_EqSortBtn.gameObject.SetActive(false);
+
         if (m_ItemUI == a_Box)
         {
-            m_ItemLable.color = Color.yellow;
-            m_EquipLable.color = Color.white;
-            m_UserInfoLable.color = Color.white;
-            m_ItemUI.SetActive(true);
-            m_EquipmentUI.SetActive(false);
-            m_UserInfoUI.SetActive(false);
+            m_ItemLable.color = Color.yellow;          
+            m_ItemUI.SetActive(true);         
         }
         else if (m_EquipmentUI == a_Box)
         {
-            m_EquipLable.color = Color.yellow;
-            m_ItemLable.color = Color.white;
-            m_UserInfoLable.color = Color.white;
+            m_EquipLable.color = Color.yellow;      
             m_EquipmentUI.SetActive(true);
-            m_ItemUI.SetActive(false);
-            m_UserInfoUI.SetActive(false);
+
+            m_EqTrimBtn.gameObject.SetActive(true);
+            m_EqSortBtn.gameObject.SetActive(true);
         }
         else if(m_UserInfoUI == a_Box)
         {
             SetUserInfo();
             m_UserInfoLable.color = Color.yellow;
-            m_EquipLable.color = Color.white;
-            m_ItemLable.color = Color.white;
-            m_UserInfoUI.SetActive(true);
-            m_EquipmentUI.SetActive(false);
-            m_ItemUI.SetActive(false);            
+         
+            m_UserInfoUI.SetActive(true);          
         }
     }
 
 
-     SlotType m_curType = SlotType.Item;
+    SlotType m_curType = SlotType.Item;
     int m_curIdx = 0;
 
     public void OnLogBox(SlotType slot, int a_idx)
@@ -254,4 +262,23 @@ public class InventoryUIMgr : MonoBehaviour
         m_LogBoxPanel.SetActive(false);
     }
 
+    void TrimEquipItem()
+    {
+        PlayerInventory.TrimEquipItem();
+
+        for (int i = 0; i < m_EquipmentSlots.Count; i++)
+        {
+            m_EquipmentSlots[i].SetSlot(PlayerInventory.m_PlayerEquipmentItemInven[i]);
+        }
+    }
+
+    void SortEquipItem()
+    {
+        PlayerInventory.SortEquipItem();
+
+        for (int i = 0; i < m_EquipmentSlots.Count; i++)
+        {
+            m_EquipmentSlots[i].SetSlot(PlayerInventory.m_PlayerEquipmentItemInven[i]);
+        }
+    }
 }

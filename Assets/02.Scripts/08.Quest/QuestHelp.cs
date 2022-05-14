@@ -11,8 +11,7 @@ public class QuestHelp : MonoBehaviour
 
 
     void Start()
-    {
-    
+    { 
         QuestSet();
 
         m_MyNPC = GetComponent<NPC>();

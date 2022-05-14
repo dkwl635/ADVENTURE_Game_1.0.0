@@ -25,15 +25,12 @@ public class MonHpBarCtrl : MonoBehaviour
             transform.localRotation = Quaternion.identity;
            transform.LookAt(cam);
         }
-
-
         //transform.LookAt(cam);
     }
 
 
     public void SetHpBar(float a_CurHp, float a_MaxHp)
     {
-
         m_Hpbar.fillAmount = a_CurHp / a_MaxHp;
         if ((a_CurHp == a_MaxHp)  || a_CurHp <= 0)
             gameObject.SetActive(false);

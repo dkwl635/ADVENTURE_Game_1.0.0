@@ -1,15 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventory : MonoBehaviour 
 {
     Player player;
 
     int m_Count = 42;
-    ItemData[] m_PlayerEquipmentItemInven; //플레이어 장비아이템 목록
-    ItemData[] m_PlayerItemInven;                //플레이어 일반아이템 목록
+    [HideInInspector] public ItemData[] m_PlayerEquipmentItemInven; //플레이어 장비아이템 목록
+    [HideInInspector] public ItemData[] m_PlayerItemInven;                //플레이어 일반아이템 목록
 
     //보유중인 코인
     [Header("Coin")]
@@ -23,8 +24,6 @@ public class PlayerInventory : MonoBehaviour
     Color m_CoinMsgColor = Color.white;
     Animation m_CoinMsgAnim = null;
 
-
-
     [Header("Hair")]
     public SkinnedMeshRenderer m_HairMesh = null;  //머리카락을 담당하는 스킨
     public Mesh m_Hair = null;                                  //만약 머리 파트가 없을 경우 필요한 머리카락 메쉬 
@@ -35,6 +34,10 @@ public class PlayerInventory : MonoBehaviour
     float m_UpdateAddItemTime = 0.2f;
 
     Outline outline;
+
+    //정렬시 필요한 변수
+    ItemComparer itemComparer = new ItemComparer();
+
 
     private void Awake()
     {
@@ -190,6 +193,17 @@ public class PlayerInventory : MonoBehaviour
 
         return -1;
     }
+
+    bool EquipmentEmpty()
+    {      
+        for (int i = 0; i < m_PlayerEquipmentItemInven.Length; i++)
+            if (m_PlayerEquipmentItemInven[i] != null)            
+                return false;
+
+        return true;
+
+    }
+
     private int FindItemInventory(int a_ItemCode)//일반 아이템목록에서 같은 아이템 코드가 있는지 확인하고 그 아이템이 있는 번호를 반환
     {
         for (int i = 0; i < m_PlayerItemInven.Length; i++)
@@ -257,7 +271,6 @@ public class PlayerInventory : MonoBehaviour
         }
 
     }
-
     public void EquipItem(int  a_Idx)
     {
         if (player.bIsAttack)
@@ -338,7 +351,6 @@ public class PlayerInventory : MonoBehaviour
 
         outline.MeshUpdate();
     }
-
     public void OffEquipment(PartType a_PartType, int a_EndIdx)
     {
         if (player.bIsAttack)
@@ -451,8 +463,6 @@ public class PlayerInventory : MonoBehaviour
         m_TimeColorA = 3.0f;
         m_CoinMsgTxt.text = "X " + m_OnceCoin;
     }
-
-  
     void SendItemMsg_Update()
     {
         if (m_UpdateAddItemTime < 0)
@@ -472,7 +482,6 @@ public class PlayerInventory : MonoBehaviour
             m_UpdateAddItemTime -= Time.deltaTime;
 
     }
-
     public void SendItemMsg(ItemData a_Item)
     {
         GameObject msgBox = (GameObject)Instantiate(player.m_MsgBoxPrefab, player.m_MsgBoxTr);
@@ -480,7 +489,6 @@ public class PlayerInventory : MonoBehaviour
         MsgItem msg = msgBox.GetComponent<MsgItem>();
         msg.SetMsgItem(a_Item);
     }
-
     public void DestroyItem(int a_Idx, int a_Count = 0)
     {
         m_PlayerItemInven[a_Idx].m_CurCount -= a_Count;
@@ -490,10 +498,84 @@ public class PlayerInventory : MonoBehaviour
             InventoryUIMgr.Inst.SetItemSlot(a_Idx, null);
         }
    }
-
     public void DestoryEquipmentItem(int a_Idx)
     {
         m_PlayerEquipmentItemInven[a_Idx] = null;
         InventoryUIMgr.Inst.SetEquipSlot( a_Idx, null );
+    }
+
+    public void TrimEquipItem()
+    {
+        if (EquipmentEmpty())
+            return;
+
+        int start = -1; //빈칸이 있는 위치
+        int next = -1;   //빈칸 이후 다음 아이템
+                            
+        //다음 빈칸 찾기
+        while (m_PlayerEquipmentItemInven[++start] != null) ;
+        next = start;
+
+        while(true)//정렬 시작
+        {
+            next++; //다음칸이동
+
+            if (next >= m_PlayerEquipmentItemInven.Length)//만약 끝까지돌았을 경우
+                break;
+
+            //다음 아이템을 발견한다면
+            if (m_PlayerEquipmentItemInven[next] != null)
+            {
+                //아이템 옮기기
+                m_PlayerEquipmentItemInven[start] = m_PlayerEquipmentItemInven[next];
+                m_PlayerEquipmentItemInven[next] = null;
+
+                //인덱스 바꿔주기
+                start++;
+            }
+        }
+    }
+
+    public void SortEquipItem()
+    {
+        if (EquipmentEmpty())
+            return;
+
+        int start = -1; //빈칸이 있는 위치
+        int next = -1;   //빈칸 이후 다음 아이템
+
+        //다음 빈칸 찾기
+        while (m_PlayerEquipmentItemInven[++start] != null) ;
+        next = start;
+
+        while (true)//정렬 시작
+        {
+            next++; //다음칸이동
+
+            if (next >= m_PlayerEquipmentItemInven.Length)//만약 끝까지돌았을 경우
+                break;
+
+            //다음 아이템을 발견한다면
+            if (m_PlayerEquipmentItemInven[next] != null)
+            {
+                //아이템 옮기기
+                m_PlayerEquipmentItemInven[start] = m_PlayerEquipmentItemInven[next];
+                m_PlayerEquipmentItemInven[next] = null;
+
+                //인덱스 바꿔주기
+                start++;
+            }
+        }
+
+        Array.Sort(m_PlayerEquipmentItemInven, 0, start, itemComparer);
+
+    }
+}
+
+class ItemComparer : IComparer<ItemData>
+{   
+     int IComparer<ItemData>.Compare(ItemData a, ItemData b)
+    {
+        return a.m_ItemCode - b.m_ItemCode;
     }
 }
