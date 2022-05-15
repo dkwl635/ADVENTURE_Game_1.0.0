@@ -15,6 +15,7 @@ public class QuestMgr : MonoBehaviour
 
     List<TalkQuest> m_TalkQuestList = new List<TalkQuest>();    //대화로 하는 퀘스트
     List<KillQuest> m_KillQuestList = new List<KillQuest>();    //잡아야 하는 퀘스트
+    List<CollectQuest> m_CollectQuestList = new List<CollectQuest>();    //수집 하는 퀘스트
 
     public GameObject m_QuestPanel = null;
     public GameObject m_QuestDlgBox = null;
@@ -61,13 +62,26 @@ public class QuestMgr : MonoBehaviour
         talkQuest1.m_QuestName = "Luna와 대화 하기";
         talkQuest1.m_QuestInfo = "옆에 있는 Luna 와 대화 하세요";
         talkQuest1.m_RewardCoin = 1000;
-        talkQuest1.m_RewardExp = 1000;
+        talkQuest1.m_RewardExp = 100;
         talkQuest1.m_RewardItem = 501;
         talkQuest1.m_RewardItemCount = 10;
-        //talkQuest1.m_RewardItemData = ItemMgr.Inst.InstantiateItem(501, 10);
+
+
+        CollectQuest collectQuest1 = new CollectQuest();
+        collectQuest1.m_QuestId = 2;
+        collectQuest1.m_QuestType = QuestType.Collection;
+        collectQuest1.m_GoalItemName = "강철 소드";
+        collectQuest1.m_GoalCount = 1;
+        collectQuest1.m_GoalItem = 101;
+        collectQuest1.m_QuestName = "상점에서 물건 구매 하기";
+        collectQuest1.m_QuestInfo = "상점에서 강철소드를 하나 구매하세요";
+        collectQuest1.m_RewardCoin = 1000;
+        collectQuest1.m_RewardExp = 100;
+        collectQuest1.m_RewardItemCount = 0;
+        collectQuest1.m_BeforeQuestId = 1;
 
         KillQuest killQuest1 = new KillQuest();
-        killQuest1.m_QuestId = 2;
+        killQuest1.m_QuestId = 3;
         killQuest1.m_QuestType = QuestType.Kill;
         killQuest1.m_KillMonster = "Specter";
         killQuest1.m_KillMonsterId = 1;
@@ -78,12 +92,11 @@ public class QuestMgr : MonoBehaviour
         killQuest1.m_RewardExp = 10000;
         killQuest1.m_RewardItem = 102;
         killQuest1.m_RewardItemCount = 1;
-        killQuest1.m_BeforeQuestId = 1;
-        
-        //killQuest1.m_RewardItemData = ItemMgr.Inst.InstantiateItem(102, 1);
+        killQuest1.m_BeforeQuestId = 2;
+       
 
         KillQuest killQuest2 = new KillQuest();
-        killQuest2.m_QuestId = 3;
+        killQuest2.m_QuestId = 4;
         killQuest2.m_QuestType = QuestType.Kill;
         killQuest2.m_KillMonster = "SpecterBoss";
         killQuest2.m_KillMonsterId = 2;
@@ -94,12 +107,14 @@ public class QuestMgr : MonoBehaviour
         killQuest2.m_RewardExp = 10000;
         killQuest2.m_RewardItem = 503;
         killQuest2.m_RewardItemCount = 1;
-        killQuest2.m_BeforeQuestId = 2;
+        killQuest2.m_BeforeQuestId = 3;
+
 
 
         DicQuest[1] = talkQuest1;
-        DicQuest[2] = killQuest1;
-        DicQuest[3] = killQuest2;
+        DicQuest[2] = collectQuest1;
+        DicQuest[3] = killQuest1;
+        DicQuest[4] = killQuest2;
     }
 
 
@@ -143,6 +158,25 @@ public class QuestMgr : MonoBehaviour
         }
     }
 
+    public void CheckCollectQuest(int a_ItemCode, int a_Count)
+    {
+
+        for (int i = 0; i < m_CollectQuestList.Count; i++)
+        {
+            if (m_CollectQuestList[i].bIsSuccess)
+                continue;
+
+            m_CollectQuestList[i].CheckQuest(a_ItemCode, a_Count);
+
+            if (m_CollectQuestList[i].bIsSuccess)
+            {
+                m_CollectQuestList.RemoveAt(i);
+                Debug.Log("퀘스트 성공");
+            }
+
+        }
+    }
+    
     public void CheckKillQuest(int a_MonsterId)
     {   
 
@@ -161,7 +195,6 @@ public class QuestMgr : MonoBehaviour
         }
     }
 
-   
     public bool AddQuest(int a_QuestId)
     {
         if (m_AllQuestList.Contains(DicQuest[a_QuestId]))
@@ -172,14 +205,20 @@ public class QuestMgr : MonoBehaviour
         if(DicQuest[a_QuestId].m_QuestType.Equals(QuestType.Talk))
         {
             TalkQuest talkQuest  = DicQuest[a_QuestId] as TalkQuest;
-            talkQuest.m_RewardItemData = ItemMgr.Inst.InstantiateItem(DicQuest[a_QuestId].m_RewardItem, DicQuest[a_QuestId].m_RewardItemCount);
+            talkQuest.m_RewardItemData = DicQuest[a_QuestId].m_RewardItem != 0 ?  ItemMgr.Inst.InstantiateItem(DicQuest[a_QuestId].m_RewardItem, DicQuest[a_QuestId].m_RewardItemCount ) : null;
             m_TalkQuestList.Add(talkQuest);
         }
         else if(DicQuest[a_QuestId].m_QuestType.Equals (QuestType.Kill))
         {
             KillQuest killQuest = DicQuest[a_QuestId] as KillQuest;
-            killQuest.m_RewardItemData = ItemMgr.Inst.InstantiateItem(DicQuest[a_QuestId].m_RewardItem, DicQuest[a_QuestId].m_RewardItemCount);
+            killQuest.m_RewardItemData = DicQuest[a_QuestId].m_RewardItem != 0 ? ItemMgr.Inst.InstantiateItem(DicQuest[a_QuestId].m_RewardItem, DicQuest[a_QuestId].m_RewardItemCount) : null;
             m_KillQuestList.Add(killQuest);
+        }
+        else if(DicQuest[a_QuestId].m_QuestType.Equals(QuestType.Collection))
+        {
+            CollectQuest collectQuest = DicQuest[a_QuestId] as CollectQuest;
+            collectQuest.m_RewardItemData = DicQuest[a_QuestId].m_RewardItem != 0 ? ItemMgr.Inst.InstantiateItem(DicQuest[a_QuestId].m_RewardItem, DicQuest[a_QuestId].m_RewardItemCount) : null;
+            m_CollectQuestList.Add(collectQuest);
         }
 
         InstantiateQuestItem(DicQuest[a_QuestId]);
@@ -242,8 +281,10 @@ public class QuestMgr : MonoBehaviour
         m_QuestStatus.text = a_Quest.m_QuestStatus;
         m_QuestReward.text = "코인 : " + a_Quest.m_RewardCoin;
         m_QuestReward.text += "\n경험치 : " + a_Quest.m_RewardExp;
-        m_QuestReward.text += "\n아이템 : " + a_Quest.m_RewardItemData.m_Name + " x " +
-                a_Quest.m_RewardItemData.m_CurCount;
+
+        if (a_Quest.m_RewardItemData != null)
+            m_QuestReward.text += "\n아이템 : " + a_Quest.m_RewardItemData.m_Name + " x " +
+                    a_Quest.m_RewardItemData.m_CurCount;
 
         if (a_Quest.bIsSuccess)
             m_OkBtn.gameObject.SetActive(true);
@@ -256,14 +297,13 @@ public class QuestMgr : MonoBehaviour
     void QuestClear()
     {
         RewardQuest(m_CurQuest);
-
     }
 
     void RewardQuest(Quest a_Quest)
     {
-
         //아이템 보상 -> 아이템창고 부족시 실패
-        if (!a_Quest.m_RewardItemData.Equals(null))
+        if (!ReferenceEquals(a_Quest.m_RewardItemData, null))//   !a_Quest.m_RewardItemData.Equals(null))
+       // if (a_Quest.m_RewardItemData != null)
             if (m_Player.m_PlayerInventory.AddNewItem(a_Quest.m_RewardItemData).Equals(false))
             {
                 Debug.Log("아이템 창고 부족");

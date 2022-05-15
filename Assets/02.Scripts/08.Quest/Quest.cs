@@ -14,8 +14,7 @@ public enum QuestType
 
 [System.Serializable]
 public class Quest 
-{
-   
+{  
     public int m_QuestId = -1;     //퀘스트 아이디
     public int m_BeforeQuestId = -1; //선행퀘스트
     public QuestType m_QuestType = QuestType.None; //퀘스트 타입
@@ -103,4 +102,37 @@ public class KillQuest : Quest
         else
             return m_KillMonster + " 처치 하기 (" + m_CurCount + "/" + m_GoalCount + ")";
     }
+}
+
+public class CollectQuest : Quest
+{
+    public string m_GoalItemName = "";  //목표 수집 아이템 이름
+    public int m_GoalItem = 0; //목표 수직아이템 코드
+    public int m_CurCount = 0;
+    public int m_GoalCount = 0;
+
+    public void CheckQuest(int a_ItemCode, int a_Count)
+    {
+        if (bIsSuccess.Equals(true))    //성공한 퀘스트라면
+            return;
+
+        if (a_ItemCode.Equals(m_GoalItem))
+        {
+            m_CurCount += a_Count;
+            if (m_CurCount >= m_GoalCount)
+                bIsSuccess = true;
+        }
+
+    }
+
+    protected override string QuestStatus()
+    {
+        if (bIsSuccess)
+        {
+            return m_GoalItemName + " 획득 하기 (완료)";
+        }
+        else
+            return m_GoalItemName + "(" + m_CurCount + "/" + m_GoalCount + ") 흭득 하기";
+    }
+
 }

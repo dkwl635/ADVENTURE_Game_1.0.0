@@ -268,7 +268,7 @@ public class InventoryUIMgr : MonoBehaviour
 
         for (int i = 0; i < m_EquipmentSlots.Count; i++)
         {
-            m_EquipmentSlots[i].SetSlot(PlayerInventory.m_PlayerEquipmentItemInven[i]);
+            m_EquipmentSlots[i].SetSlot(PlayerInventory.PlayerEquipmentItemInven[i]);
         }
     }
 
@@ -278,7 +278,7 @@ public class InventoryUIMgr : MonoBehaviour
 
         for (int i = 0; i < m_EquipmentSlots.Count; i++)
         {
-            m_EquipmentSlots[i].SetSlot(PlayerInventory.m_PlayerEquipmentItemInven[i]);
+            m_EquipmentSlots[i].SetSlot(PlayerInventory.PlayerEquipmentItemInven[i]);
         }
     }
 }

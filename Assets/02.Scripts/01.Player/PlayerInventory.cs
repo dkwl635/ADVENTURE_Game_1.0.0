@@ -9,8 +9,25 @@ public class PlayerInventory : MonoBehaviour
     Player player;
 
     int m_Count = 42;
-    [HideInInspector] public ItemData[] m_PlayerEquipmentItemInven; //플레이어 장비아이템 목록
-    [HideInInspector] public ItemData[] m_PlayerItemInven;                //플레이어 일반아이템 목록
+    ItemData[] m_PlayerEquipmentItemInven; //플레이어 장비아이템 목록
+    ItemData[] m_PlayerItemInven;                //플레이어 일반아이템 목록
+
+    public ItemData[] PlayerEquipmentItemInven
+    {
+        get
+        {
+            return m_PlayerEquipmentItemInven;
+        }
+    }
+
+    public ItemData[] PlayerItemInven
+    {
+        get
+        {
+            return m_PlayerItemInven;
+        }
+    }
+
 
     //보유중인 코인
     [Header("Coin")]
@@ -30,7 +47,7 @@ public class PlayerInventory : MonoBehaviour
     public Mesh m_HairHalf = null;                             //만약 머리 파트가 있을 경우 필요한 머리카락 메쉬 
     public GameObject m_Face = null;                        //필요시 얼굴(face)를 가려야 할때 사용
 
-    List<ItemData> m_AddItemData = new List<ItemData>();
+    List<ItemData> m_AddItemData = new List<ItemData>();// 흭득한 아이템 연출을 위한 리스트
     float m_UpdateAddItemTime = 0.2f;
 
     Outline outline;
@@ -43,7 +60,6 @@ public class PlayerInventory : MonoBehaviour
     {
         m_PlayerEquipmentItemInven = new ItemData[m_Count];
         m_PlayerItemInven = new ItemData[m_Count];
-      
 
          player = GetComponent<Player>();
 
@@ -60,8 +76,10 @@ public class PlayerInventory : MonoBehaviour
     }
 
     void Update()
-    {
+    {  
+        //흭득한 코인 연출을 위한
         CoinMsgUpdate();
+        //흭득한 아이템 연출을 위한
         SendItemMsg_Update();
     }
 
@@ -72,8 +90,8 @@ public class PlayerInventory : MonoBehaviour
         {
             if (newItem.m_ItemData == null)
                 return;
-
-             if(AddNewItem(newItem.m_ItemData))
+            Debug.Log("드롭 아이템 접근");
+            if (AddNewItem(newItem.m_ItemData))
             {
                 
                 Destroy(other.gameObject);
@@ -81,36 +99,21 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-   private void OnCollisionEnter(Collision collision)
-    {
-        DropItem newItem = collision.gameObject.GetComponent<DropItem>();
-        if (newItem != null)
-        {
-            if (newItem.m_ItemData == null)
-                return;
-
-            if (AddNewItem(newItem.m_ItemData))
-            {
-               
-                Destroy(collision.gameObject);
-            }
-        }
-    }
 
     public bool AddNewItem(ItemData a_NewItemData) //아이템을 추가할수 있는지 판단 하고 결과 리턴
     {
         if (a_NewItemData == null) //만약 데이터가 없다면
-            return false;
-       
+            return false;   
         int idx = -1; //아이템을 넣을 슬롯 번호
 
         //아이템 타입 체크
         //장비템
         if (a_NewItemData.m_ItemType == ItemType.Equipment)
         {
+           
             //1, 빈 자리가 있는지
             idx = FindEquipmentEmptyIndex();
-            
+            Debug.Log(idx);
             //2, 아이템 추가
             if (idx == -1)  //빈자리가 없다. 그러니 실패
                 return false;
@@ -120,7 +123,6 @@ public class PlayerInventory : MonoBehaviour
                 a_NewItemData.m_SlotNum = idx;
                 InventoryUIMgr.Inst.SetEquipSlot(idx, a_NewItemData);
                 m_AddItemData.Add(a_NewItemData);
-
                 return true;
             }
            
@@ -135,15 +137,15 @@ public class PlayerInventory : MonoBehaviour
                 bOverlap = false;
 
             // 1 - 1 중복되었다면 최대 가질수 있는 숫자를 체크 하고 새로 추가 할지 수량만 추가할지 
-            if(bOverlap == true)
+            if (bOverlap == true)
             {//중복 되었다면 
                 //중복아이템 정보 가져오기
-                ItemData oldItemData = m_PlayerItemInven[idx]; 
+                ItemData oldItemData = m_PlayerItemInven[idx];
                 //갯수 비교 후 카운트 해주기
                 if (oldItemData.m_CurCount + a_NewItemData.m_CurCount > a_NewItemData.m_MaxCount)
                 {// 기존 갯수 + 새로운 갯수  > 최대 갯수       
-                    //빈자리 체크
-                  int otherIdx = FindEmptyIndex();
+                 //빈자리 체크
+                    int otherIdx = FindEmptyIndex();
                     if (otherIdx == -1)  //빈자리가 없다. 그러니 실패
                         return false;
 
@@ -157,7 +159,7 @@ public class PlayerInventory : MonoBehaviour
                     InventoryUIMgr.Inst.m_ItemSlots[idx].RefreshSlot();
                     m_AddItemData.Add(a_NewItemData);
                     return true;    //새로운 카운트 해주고 추가 성공 리턴
-                }              
+                }
             }
 
             //만약 나머지 갯수가 남았는데 빈칸이 없으면 
@@ -470,6 +472,8 @@ public class PlayerInventory : MonoBehaviour
             if (m_AddItemData.Count > 0)
             {
                 SendItemMsg(m_AddItemData[0]);
+                QuestMgr.Inst.CheckCollectQuest(m_AddItemData[0].m_ItemCode, m_AddItemData[0].m_CurCount);
+                
                 m_AddItemData.RemoveAt(0);
 
                 if(m_AddItemData.Count > 10)
