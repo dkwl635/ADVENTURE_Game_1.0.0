@@ -47,7 +47,7 @@ public class PlayerInventory : MonoBehaviour
     public Mesh m_HairHalf = null;                             //만약 머리 파트가 있을 경우 필요한 머리카락 메쉬 
     public GameObject m_Face = null;                        //필요시 얼굴(face)를 가려야 할때 사용
 
-    List<ItemData> m_AddItemData = new List<ItemData>();// 흭득한 아이템 연출을 위한 리스트
+    List<KeyValuePair<ItemData,int>> m_AddItemData = new List<KeyValuePair<ItemData, int>>();// 흭득한 아이템 연출을 위한 리스트
     float m_UpdateAddItemTime = 0.2f;
 
     Outline outline;
@@ -122,7 +122,7 @@ public class PlayerInventory : MonoBehaviour
                 m_PlayerEquipmentItemInven[idx] = a_NewItemData;
                 a_NewItemData.m_SlotNum = idx;
                 InventoryUIMgr.Inst.SetEquipSlot(idx, a_NewItemData);
-                m_AddItemData.Add(a_NewItemData);
+                m_AddItemData.Add(new KeyValuePair<ItemData, int>(a_NewItemData, 1));
                 return true;
             }
            
@@ -149,34 +149,48 @@ public class PlayerInventory : MonoBehaviour
                     if (otherIdx == -1)  //빈자리가 없다. 그러니 실패
                         return false;
 
-                    a_NewItemData.m_CurCount = (oldItemData.m_CurCount + a_NewItemData.m_CurCount) - a_NewItemData.m_MaxCount;
+                    int Count = a_NewItemData.m_CurCount;             
+                    int addCount = 0;
+
+                    addCount = (oldItemData.m_CurCount + Count) - oldItemData.m_MaxCount;               
+                    
                     oldItemData.m_CurCount = oldItemData.m_MaxCount;
+                    a_NewItemData.m_CurCount = addCount;
+                    
+                    m_PlayerItemInven[otherIdx] = a_NewItemData; //아이템 추가\
+                    a_NewItemData.m_SlotNum = otherIdx;
+                    InventoryUIMgr.Inst.SetItemSlot(otherIdx, a_NewItemData);
                     InventoryUIMgr.Inst.m_ItemSlots[idx].RefreshSlot();
+                    m_AddItemData.Add(new KeyValuePair<ItemData, int>(a_NewItemData, Count));
+                    return true;                  
                 }
                 else
                 {//기존 갯수 + 새로운 갯수  <= 최대 갯수
                     oldItemData.m_CurCount += a_NewItemData.m_CurCount;
                     InventoryUIMgr.Inst.m_ItemSlots[idx].RefreshSlot();
-                    m_AddItemData.Add(a_NewItemData);
+                    m_AddItemData.Add(new KeyValuePair<ItemData, int>(a_NewItemData, a_NewItemData.m_CurCount));
+
+                  
                     return true;    //새로운 카운트 해주고 추가 성공 리턴
                 }
             }
-
-            //만약 나머지 갯수가 남았는데 빈칸이 없으면 
-            //남은 갯수는 추가하지 못함
-
-            //2, 새로운 슬롯에 추가 하기
-            idx = FindEmptyIndex();
-            if (idx == -1)  //빈자리가 없다. 그러니 실패
-                return false;
             else
-            {
-                m_PlayerItemInven[idx] = a_NewItemData; //아이템 추가\
-                a_NewItemData.m_SlotNum = idx;
-                InventoryUIMgr.Inst.SetItemSlot(idx, a_NewItemData);
-                m_AddItemData.Add(a_NewItemData);
-                return true;
+            {               
+                //2, 새로운 슬롯에 추가 하기
+                idx = FindEmptyIndex();
+                if (idx == -1)  //빈자리가 없다. 그러니 실패
+                    return false;
+                else
+                {
+                    m_PlayerItemInven[idx] = a_NewItemData; //아이템 추가\
+                    a_NewItemData.m_SlotNum = idx;
+                    InventoryUIMgr.Inst.SetItemSlot(idx, a_NewItemData);
+                    m_AddItemData.Add(new KeyValuePair<ItemData, int>(a_NewItemData, a_NewItemData.m_CurCount));
+                    return true;
+                }
             }
+
+           
         }
     }
     private int FindEquipmentEmptyIndex()  //비어있는 장비아이템 인덱스 반환
@@ -240,37 +254,40 @@ public class PlayerInventory : MonoBehaviour
         ItemData benginItem = m_PlayerItemInven[a_BeginIdx];
         ItemData endItem = m_PlayerItemInven[a_EndIdx];
         //아이템이 있을경구
-        if(endItem != null)
-        {
+        if(endItem != null && benginItem.m_ItemCode == endItem.m_ItemCode)
+        {         
             if (m_PlayerItemInven[a_BeginIdx].m_ItemCode == m_PlayerItemInven[a_EndIdx].m_ItemCode)
-            {
+            {            
                 if (benginItem.m_CurCount + endItem.m_CurCount <= endItem.m_MaxCount)
-                {
+                {                
                     endItem.m_CurCount = benginItem.m_CurCount + endItem.m_CurCount;
                     benginItem.m_CurCount = 0;
                     m_PlayerItemInven[a_BeginIdx] = null;//비우기
                     InventoryUIMgr.Inst.m_ItemSlots[a_EndIdx].RefreshSlot();
                     InventoryUIMgr.Inst.m_ItemSlots[a_BeginIdx].SetSlot(null);
+                    return;
                 }
                 else
-                {
+                {                 
                     benginItem.m_CurCount = (benginItem.m_CurCount + endItem.m_CurCount) - benginItem.m_MaxCount;
                     endItem.m_CurCount = endItem.m_MaxCount;
                     InventoryUIMgr.Inst.m_ItemSlots[a_BeginIdx].RefreshSlot();
                     InventoryUIMgr.Inst.m_ItemSlots[a_EndIdx].RefreshSlot();
+                    return;
                 }
             }
-        }
-        else //다른 아이템일경우
-        {
-            ItemData tempItemData = endItem;
-            m_PlayerItemInven[a_EndIdx] = m_PlayerItemInven[a_BeginIdx];
-            m_PlayerItemInven[a_BeginIdx] = tempItemData;
 
-            //바꾼 데이터 슬롯에 적용시키기
-            InventoryUIMgr.Inst.SetItemSlot(a_BeginIdx, m_PlayerItemInven[a_BeginIdx]);
-            InventoryUIMgr.Inst.SetItemSlot(a_EndIdx, m_PlayerItemInven[a_EndIdx]);
         }
+        //else //다른 아이템일경우
+
+        ItemData tempItemData = endItem;
+        m_PlayerItemInven[a_EndIdx] = m_PlayerItemInven[a_BeginIdx];
+        m_PlayerItemInven[a_BeginIdx] = tempItemData;
+
+        //바꾼 데이터 슬롯에 적용시키기
+        InventoryUIMgr.Inst.SetItemSlot(a_BeginIdx, m_PlayerItemInven[a_BeginIdx]);
+        InventoryUIMgr.Inst.SetItemSlot(a_EndIdx, m_PlayerItemInven[a_EndIdx]);
+        
 
     }
     public void EquipItem(int  a_Idx)
@@ -471,8 +488,8 @@ public class PlayerInventory : MonoBehaviour
         {
             if (m_AddItemData.Count > 0)
             {
-                SendItemMsg(m_AddItemData[0]);
-                QuestMgr.Inst.CheckCollectQuest(m_AddItemData[0].m_ItemCode, m_AddItemData[0].m_CurCount);
+                SendItemMsg(m_AddItemData[0].Key, m_AddItemData[0].Value);
+                QuestMgr.Inst.CheckCollectQuest(m_AddItemData[0].Key.m_ItemCode, m_AddItemData[0].Value);
                 
                 m_AddItemData.RemoveAt(0);
 
@@ -486,12 +503,12 @@ public class PlayerInventory : MonoBehaviour
             m_UpdateAddItemTime -= Time.deltaTime;
 
     }
-    public void SendItemMsg(ItemData a_Item)
+    public void SendItemMsg(ItemData a_Item , int a_Count)
     {
         GameObject msgBox = (GameObject)Instantiate(player.m_MsgBoxPrefab, player.m_MsgBoxTr);
         msgBox.transform.SetAsFirstSibling();
         MsgItem msg = msgBox.GetComponent<MsgItem>();
-        msg.SetMsgItem(a_Item);
+        msg.SetMsgItem(a_Item, a_Count);
     }
     public void DestroyItem(int a_Idx, int a_Count = 0)
     {

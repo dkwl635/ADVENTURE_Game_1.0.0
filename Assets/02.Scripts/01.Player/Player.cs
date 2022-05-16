@@ -13,7 +13,8 @@ public class Player : MonoBehaviour
     [HideInInspector] public PlayerInventory m_PlayerInventory = null;     //플레이어 아이템 관련
 
     Outline m_MeshOutline = null;
-    
+
+
     public bool bIsAttack = false; // 지금 공격 중인지 판단
     public bool bIsHit = false; //피격중인지.
     public bool bIsMove = true; //움직일 수 있는지 
@@ -109,13 +110,12 @@ public class Player : MonoBehaviour
 
     float m_HitTimer = -1.0f;
 
-
-
     public GameObject m_NpcObj = null; //지금 보고 있는 NPC
     public NPC m_Npc= null; //지금 보고 있는 NPC
     LayerMask m_NpcLayer = 1;
-  
 
+    public  delegate void Event();
+    public Event LevelUpEvent;
 
     private void Awake()
     {       
@@ -194,8 +194,7 @@ public class Player : MonoBehaviour
         }
 
         if (Input.GetMouseButtonDown(1) && !InGameMgr.IsPointerOverUIObject())
-        {
-            
+        {         
             m_MousePos = m_Camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(m_MousePos, out hitInfo, Mathf.Infinity, m_LayerMask.value))
             {
@@ -348,6 +347,8 @@ public class Player : MonoBehaviour
             m_LevelEffect.Play();
             m_LvUpTxt.SetActive(false);
             m_LvUpTxt.SetActive(true);
+
+            LevelUpEvent?.Invoke();
         }                 
         SetExpUI();
       

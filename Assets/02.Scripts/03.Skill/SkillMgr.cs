@@ -110,9 +110,12 @@ public class SkillMgr : MonoBehaviour
 
         for (int i = 1; i < m_SkillList.Length; i++)
         {
-            GameObject skillRoot = Instantiate(m_SkillRootPrefab, m_Content);
-            skillRoot.GetComponent<SkillRoot>().m_Skill = m_SkillList[i];
+            SkillRoot skillRoot = Instantiate(m_SkillRootPrefab, m_Content).GetComponent<SkillRoot>();
+            skillRoot.m_Skill = m_SkillList[i];
+            player.LevelUpEvent += skillRoot.Refresh;
         }
+
+       
 
     }
 
@@ -125,26 +128,11 @@ public class SkillMgr : MonoBehaviour
 
         m_SkillPoint_Txt.text = "남은 스킬 포인트(SP) : " + m_SkillPoint.ToString();
 
-        //기본 공격 
-        //클릭시 발동
-        if (!player.bIsHit && player.bIsWeapon)
-        {
-            if (Input.GetMouseButtonDown(0) && !InGameMgr.IsPointerOverUIObject())
-            {
-                m_Skills["NormalAttack"].UseSkill();
-                bIsPushSkill = false;
-            }
-        }
+       
 
-        m_Skills["NormalAttack"].CoolTimeUpdate();
 
-        //스킬 캔슬
-        if (Input.GetMouseButtonDown(1) && !InGameMgr.IsPointerOverUIObject())
-        {
-            bIsPushSkill = false;
-        }
 
-        if(Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             if (!m_SkillUIPanel.activeSelf)
                 OnSkillUI();
@@ -165,15 +153,40 @@ public class SkillMgr : MonoBehaviour
         m_SkillUIPanel.SetActive(false);
     }
     void KeyDown_Update()
-    {
-        if (player.bIsHit || !player.bIsWeapon)
+    {             
+        if (player.bIsHit)
             return;
+
 
         if (m_SkillSlots.Length > 0)
             for (int i = 0; i < m_SkillSlots.Length; i++)
                 if (Input.GetKeyDown(m_SkillSlots[i].m_KeyCode))
+                {
+                    if (!player.bIsWeapon)
+                    {
+                        LogBoxCtrl.Inst.LogBox("현재 무기가 장착되어 있지 않습니다.");
+                        return;
+                    }
+
+
                     if (m_SkillSlots[i].m_Skill != null)
-                        m_SkillSlots[i].m_Skill.BoolShowMark();                                
+                        m_SkillSlots[i].m_Skill.BoolShowMark();
+                }
+                  
+
+        //기본 공격 
+        //클릭시 발동
+        if (Input.GetMouseButtonDown(0) && !InGameMgr.IsPointerOverUIObject())
+        {
+            if (!player.bIsWeapon)
+            {
+                LogBoxCtrl.Inst.LogBox("현재 무기가 장착되어 있지 않습니다.");
+                return;
+            }
+
+            m_Skills["NormalAttack"].UseSkill();
+            bIsPushSkill = false;
+        }
     }
 
     private void OnDrawGizmos()
@@ -184,6 +197,13 @@ public class SkillMgr : MonoBehaviour
 
     void Skill_Update()
     {
+        //스킬 캔슬
+        if (Input.GetMouseButtonDown(1) && !InGameMgr.IsPointerOverUIObject())
+        {
+            bIsPushSkill = false;
+        }
+
+
         //스킬의 방향을 정하는 
         m_MouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(m_MouseRay, out hitInfo, Mathf.Infinity, m_LayerMask))
@@ -209,7 +229,11 @@ public class SkillMgr : MonoBehaviour
 
                 m_SkillSlots[i].m_Skill.ShowSkillMark(m_MouseDirVec);
             }
-        
+
+
+
+
+        m_Skills["NormalAttack"].CoolTimeUpdate();
 
     }
 

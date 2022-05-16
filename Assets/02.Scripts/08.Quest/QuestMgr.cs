@@ -31,7 +31,10 @@ public class QuestMgr : MonoBehaviour
     public GameObject m_QuestItem = null;   //퀘스트 노드
 
     [HideInInspector]public Quest m_CurQuest = null; //현재 퀘스트
-    
+
+    public delegate void Event();
+    public Event QuestEvent;
+
     private void Awake()
     {
         if (Inst != null)
@@ -109,12 +112,25 @@ public class QuestMgr : MonoBehaviour
         killQuest2.m_RewardItemCount = 1;
         killQuest2.m_BeforeQuestId = 3;
 
+        CollectQuest collectQues2 = new CollectQuest();
+        collectQues2.m_QuestId = 5;
+        collectQues2.m_QuestType = QuestType.Collection;
+        collectQues2.m_GoalItemName = "유령의 옷깃 모으기";
+        collectQues2.m_GoalCount = 15;
+        collectQues2.m_GoalItem = 701;     //미정
+        collectQues2.m_QuestName = "상점에서 물건 구매 하기";
+        collectQues2.m_QuestInfo = "상점에서 강철소드를 하나 구매하세요";
+        collectQues2.m_RewardCoin = 1000;
+        collectQues2.m_RewardExp = 100;
+        collectQues2.m_RewardItemCount = 0;
+        collectQues2.m_BeforeQuestId = 2;
 
 
         DicQuest[1] = talkQuest1;
         DicQuest[2] = collectQuest1;
         DicQuest[3] = killQuest1;
         DicQuest[4] = killQuest2;
+        DicQuest[5] = collectQues2;
     }
 
 
@@ -152,6 +168,8 @@ public class QuestMgr : MonoBehaviour
             if (m_TalkQuestList[i].bIsSuccess)
             {
                 m_TalkQuestList.RemoveAt(i);
+
+                QuestEvent?.Invoke();
                 Debug.Log("퀘스트 성공");
             }
                 
@@ -171,6 +189,7 @@ public class QuestMgr : MonoBehaviour
             if (m_CollectQuestList[i].bIsSuccess)
             {
                 m_CollectQuestList.RemoveAt(i);
+                QuestEvent?.Invoke();
                 Debug.Log("퀘스트 성공");
             }
 
@@ -190,6 +209,7 @@ public class QuestMgr : MonoBehaviour
             if (m_KillQuestList[i].bIsSuccess)
             {
                 m_KillQuestList.RemoveAt(i);
+                QuestEvent?.Invoke();
                 Debug.Log("킬 몬스터 성공");
             }           
         }
@@ -234,6 +254,7 @@ public class QuestMgr : MonoBehaviour
             }
         }
 
+        QuestEvent?.Invoke();
 
         return true;
     }

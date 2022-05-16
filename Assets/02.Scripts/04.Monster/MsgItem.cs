@@ -29,11 +29,11 @@ public class MsgItem : MonoBehaviour
 
     }
 
-    public void SetMsgItem(ItemData a_Item)
+    public void SetMsgItem(ItemData a_Item , int a_Count)
     {
         m_Img.sprite = a_Item.m_ItemSprite;
         m_InfoText.text = a_Item.m_Name; 
-        m_InfoText.text += "X " + a_Item.m_CurCount;
+        m_InfoText.text += "X " + a_Count;
     }
 
 }

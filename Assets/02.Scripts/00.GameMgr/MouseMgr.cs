@@ -44,9 +44,7 @@ public class MouseMgr : MonoBehaviour
         }
         else
         {
-            Inst = this;
-            DontDestroyOnLoad(this.gameObject);
-            this.gameObject.transform.SetParent(GameObject.FindObjectOfType<DontDestroyOnLoadMgr>().gameObject.transform);
+            Inst = this;         
         }
 
         gr = GameObject.Find("UICanvas").GetComponent<GraphicRaycaster>();
@@ -87,13 +85,10 @@ public class MouseMgr : MonoBehaviour
         SetSizeRectTr();
     }
 
-    //private void OnEnable()
-    //{
-    //    SetSizeRectTr();
-    //}
-
+ 
     public void OnMouesEnterSlot(Slot slot) //슬롯 위에 마우스 가 있으면
     {
+  
         if (bIsDrag == false)
         {
             m_OnSlot = slot;
@@ -164,14 +159,18 @@ public class MouseMgr : MonoBehaviour
             }
             else
                 m_ItemSlotUI.gameObject.SetActive(false);
+
+            Cursor.visible = false;
         }
        
     }
 
     public void OnMouesExitSlot(Slot slot)//슬롯 위에 마우스 가 나가면
-    {
-        if(m_OnSlot == slot)
-        {
+    {     
+        if (m_OnSlot == slot)
+        { 
+            Cursor.visible = true;
+
             m_ItemSlotUI.gameObject.SetActive(false);
             m_OnSlot = null;
         }
@@ -180,6 +179,7 @@ public class MouseMgr : MonoBehaviour
     //Drag  & Drop
     public void DragStartSlot(Slot slot)
     {
+        Cursor.visible = false;
         m_BeginSlot = slot;
 
         if (m_BeginSlot == null || m_BeginSlot.m_SlotImg.sprite == null)
@@ -208,34 +208,44 @@ public class MouseMgr : MonoBehaviour
     {
         if (m_DragSlot.activeSelf)
         {
+            
+                Cursor.visible = false;
             m_DragSlot.transform.position = Input.mousePosition;        
         }
     }
+
     public void DragEndSlot()
     {
         if (!m_DragSlot.activeSelf)
             return;
 
+        Cursor.visible = true;
+
         m_EndSlot = RaycastSlot();
-        
-        if (m_EndSlot != null)
+     
+        if(m_EndSlot == null)
         {
+            if (m_BeginSlot.m_SlotType == SlotType.Skill)
+            {
+                SkillSlot beginSkillSlot = m_BeginSlot as SkillSlot;
+                if (beginSkillSlot != null && beginSkillSlot.m_Skill != null)
+                    beginSkillSlot.SetSlot(null);//빈칸으로 만들기
+            }
+            else if (m_BeginSlot.m_SlotType == SlotType.UseItem)
+            {
+                m_BeginSlot.SetSlot(null);//빈칸으로 만들기
+            }
+            else if (m_BeginSlot.m_SlotType == SlotType.Equipment || m_BeginSlot.m_SlotType == SlotType.Item)
+            {
+                if(!InGameMgr.IsPointerOverUIObject())
+                {
+                    //아이템 버리기 물어보는 상자 오픈
+                    InventoryUIMgr.Inst.OnLogBox(m_BeginSlot.m_SlotType, m_BeginSlot.m_SlotNum);
+                }                                      
+            }
+        }      
+        else
             ChangSlot(m_BeginSlot, m_EndSlot);
-        }
-        else if (m_BeginSlot.m_SlotType == SlotType.Skill)
-        {
-            SkillSlot beginSkillSlot = m_BeginSlot as SkillSlot;
-            if (beginSkillSlot != null && beginSkillSlot.m_Skill != null)
-                beginSkillSlot.SetSlot(null);//빈칸으로 만들기
-        }
-        else if (m_BeginSlot.m_SlotType == SlotType.UseItem)
-        {
-            m_BeginSlot.SetSlot(null);//빈칸으로 만들기
-        }
-        else if(m_BeginSlot.m_SlotType == SlotType.Equipment || m_BeginSlot.m_SlotType == SlotType.UseItem)
-        {
-            InventoryUIMgr.Inst.OnLogBox(m_BeginSlot.m_SlotType, m_BeginSlot.m_SlotNum);
-        }
 
         m_BeginSlot = null;
         bIsDrag = false;
@@ -307,7 +317,7 @@ public class MouseMgr : MonoBehaviour
         }
         //아이템 -> 아이템
         else if (a_BeginSlot.m_SlotType == SlotType.Item && a_EndSlot.m_SlotType == SlotType.Item)
-        {
+        {         
             InventoryUIMgr.Inst.PlayerInventory.ChangeItem(a_BeginSlot.m_SlotNum, a_EndSlot.m_SlotNum);
         }
         //장비 -> 장착장비

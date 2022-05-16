@@ -47,7 +47,7 @@ public enum PortionType
 
 
 [System.Serializable]
-public class ItemData         //아이템 클래스 뿌리
+public class ItemData   //아이템 클래스 뿌리
 {
     public int m_ItemCode = -1;   //아이템 코드
     public int m_SlotNum = -1;      //만약 아이템를 가지고 있다면 인벤토리 몇번 슬롯에 있는지   
@@ -126,7 +126,6 @@ public class EquipmentItemData : ItemData   //장비 아이템 정보
     }
 
 }
-
 public class WeaponData : EquipmentItemData
 {
     public Vector3 m_HandPos;  //무기 손잡이 위치 보정

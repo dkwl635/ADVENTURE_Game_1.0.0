@@ -11,7 +11,7 @@ public class Specter : NomalMonster
     float m_HitDelay = 0.0f;    //0.5f;
     float m_SpawnTime = 0.0f;   //5.0f
 
-    public List<int> m_DropList;
+    public List<int> m_DropList;   
 
     public override void Init()
     {
@@ -258,6 +258,9 @@ public class Specter : NomalMonster
         {           
             int itemnum = Random.Range(0, m_DropList.Count);
             ItemMgr.Inst.SpawnDropItem(transform.position, m_DropList[itemnum], 1); //아이템 떨구기
+          
+
+
             int coin = Random.Range(m_MinCoin, m_MaxCoin);              //코인
             m_Attacker.m_PlayerInventory.AddCoin(coin);   //돈주기
             m_Attacker.AddExp(m_MonsterStatus.m_CurExp);

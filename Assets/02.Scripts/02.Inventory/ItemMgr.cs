@@ -14,6 +14,7 @@ public class ItemMgr : MonoBehaviour
     List<Dictionary<string, object>> EquipmentTable; //장비아이템 테이블
     List<Dictionary<string, object>> PortionTable;       //포션아이템 테이블
     List<Dictionary<string, object>> WeaponTable;       //장비무기아이템 테이블
+    
   
 
     public GameObject m_DropItemPrefab = null;
@@ -47,10 +48,11 @@ public class ItemMgr : MonoBehaviour
         }
 
 
-        NomarlItemTable = new List<Dictionary<string, object>>();
+        NomarlItemTable = CSVReader.Read("NomarlItemDataTable");
         EquipmentTable = CSVReader.Read("EquipmentDataTable");
         PortionTable = CSVReader.Read("PortionItemDataTable");
         WeaponTable = CSVReader.Read("WeaponDataTable");
+       
 
         //테스트 아이템 스폰 해보기
         if (m_RandomSpawnItemBtn != null)
@@ -136,6 +138,31 @@ public class ItemMgr : MonoBehaviour
             }
         }
     }
+
+    public void SpawnDropItem(ItemData a_ItemData, Vector3 a_ItemPos)
+    {
+        GameObject dropObj = Instantiate(m_DropItemPrefab); //드랍하는 아이템 만들기
+        DropItem dropitem = dropObj.GetComponent<DropItem>();   //아이템 설정하기 위해서
+
+        if (dropitem == null)
+            return;
+
+        dropObj.transform.position = a_ItemPos + Vector3.up * 2; //위치 설정
+        dropitem.InitDropItem(a_ItemData);    //아이템을 만들고 설정 시키기
+
+
+        //위치 예외처리
+        if (dropitem.m_ItemData.m_ItemType == ItemType.Equipment)
+        {
+            EquipmentItemData equipmentItemData = dropitem.m_ItemData as EquipmentItemData;
+            if (equipmentItemData != null && equipmentItemData.m_PartType == PartType.Glove)
+            {
+                dropitem.m_Mesh.transform.localScale = new Vector3(0.5f, 1, 1);  //예외처리
+            }
+        }
+    }
+
+
     //새로운 아이템 데이터 만들기
     public ItemData InstantiateItem(int a_ItemCode, int a_Count = 1)
     {
@@ -237,10 +264,10 @@ public class ItemMgr : MonoBehaviour
         }
         else if (a_ItemCode > 500 && a_ItemCode <= 1000)//일반 아이템은 코드 500 ~ 1000 사용예정
         {          
-            idx -= 500; //아이템테이블에서 순서는 1부터이므로 
-
+           
             if (a_ItemCode > 500 && a_ItemCode < 700) //포션 아이템 코드 500~700
-            {               
+            {
+                idx -= 500; //아이템테이블에서 순서는 1부터이므로 
                 PortionItem newPortion = new PortionItem();           
                 #region 기본 아이템 정보 입력
                 newPortion.m_ItemCode = a_ItemCode;    //아이템 코드
@@ -277,6 +304,7 @@ public class ItemMgr : MonoBehaviour
             }
             else
             {
+                idx -= 700; //아이템테이블에서 순서는 1부터이므로 
                 ItemData newItemData = new ItemData();
                 #region 기본 아이템 정보 입력
                 newItemData.m_ItemCode = a_ItemCode;    //아이템 코드
@@ -284,9 +312,9 @@ public class ItemMgr : MonoBehaviour
                 newItemData.m_Name = (string)NomarlItemTable[idx]["ItemName"];      //아이템 이름
                 newItemData.m_ItemInfo = (string)NomarlItemTable[idx]["ItemInfo"];  //아이템 설명
                 newItemData.m_Price = (int)NomarlItemTable[idx]["Price"];           //가격
-                m_TempPos.x = (float)EquipmentTable[idx]["DropItemPosX"]; //땅에 드롭되을때 위치보정 값
-                m_TempPos.y = (float)EquipmentTable[idx]["DropItemPosY"]; //땅에 드롭되을때 위치보정 값
-                m_TempPos.y = (float)EquipmentTable[idx]["DropItemPosZ"]; //땅에 드롭되을때 위치보정 값
+                m_TempPos.x = (float)NomarlItemTable[idx]["DropItemPosX"]; //땅에 드롭되을때 위치보정 값
+                m_TempPos.y = (float)NomarlItemTable[idx]["DropItemPosY"]; //땅에 드롭되을때 위치보정 값
+                m_TempPos.y = (float)NomarlItemTable[idx]["DropItemPosZ"]; //땅에 드롭되을때 위치보정 값
                 newItemData.m_DropMeshPos = m_TempPos;
 
                 newItemData.m_CurCount = a_Count;

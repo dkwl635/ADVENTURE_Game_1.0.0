@@ -5,11 +5,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class MeumUIMgr : MonoBehaviour
 {
-
     public Button m_MeumBtn = null;
     public RectTransform m_BtnsGroup = null;
-    [SerializeField] Vector2 m_OffVector = Vector2.zero;
-    [SerializeField] Vector2 m_OnVector = Vector2.zero;
+    Vector2 m_OffVector = Vector2.zero;
+    Vector2 m_OnVector = Vector2.zero;
     bool bOnOff = false;
 
     public Button m_InvenBtn = null;
@@ -19,14 +18,16 @@ public class MeumUIMgr : MonoBehaviour
 
     public GameObject m_MiniMapObj;
 
+    public GameObject m_Skillmark;
+    public GameObject m_Quesmark;
+    public GameObject m_Mainmark;
+
+
     private void Awake()
     {
         m_OffVector = m_BtnsGroup.anchoredPosition;
         m_OnVector = m_OffVector;
-        m_OnVector.x = 0;
-
-        
-
+        m_OnVector.x = 0;       
     }
 
     // Start is called before the first frame update
@@ -38,14 +39,23 @@ public class MeumUIMgr : MonoBehaviour
         m_MeumBtn.onClick.AddListener(OnOffMeum);
 
         m_InvenBtn.onClick.AddListener(InventoryUIMgr.Inst.OnInvenUI);
-        m_SkillBtn.onClick.AddListener(SkillMgr.Inst.OnSkillUI);
-        m_QuestBtn.onClick.AddListener(QuestMgr.Inst.OnQuestUI);
+        m_SkillBtn.onClick.AddListener(() => { SkillMgr.Inst.OnSkillUI(); m_Skillmark.SetActive(false); });
+        m_QuestBtn.onClick.AddListener(() => { QuestMgr.Inst.OnQuestUI(); m_Quesmark.SetActive(false); });
         m_MiniMapBtn.onClick.AddListener(OnMiniMap);
+
+        FindObjectOfType<Player>().LevelUpEvent += () => { m_Skillmark.SetActive(true); };
+        QuestMgr.Inst.QuestEvent += () => { m_Quesmark.SetActive(true); };
     }
 
     private void Update()
     {
-        if(bOnOff)
+        if (m_Skillmark.activeSelf || m_Quesmark.activeSelf)
+            m_Mainmark.SetActive(true);
+        else
+            m_Mainmark.SetActive(false);
+
+
+        if (bOnOff)
             m_BtnsGroup.anchoredPosition = Vector2.Lerp(m_BtnsGroup.anchoredPosition, m_OnVector, 0.1f);
         else
             m_BtnsGroup.anchoredPosition = Vector2.Lerp(m_BtnsGroup.anchoredPosition, m_OffVector, 0.1f);
@@ -61,9 +71,13 @@ public class MeumUIMgr : MonoBehaviour
             else OnMiniMap();
 
         }
-       
 
 
+        if (Input.GetKeyDown(KeyCode.A))
+            m_Quesmark.SetActive(false);
+
+        if (Input.GetKeyDown(KeyCode.K))
+            m_Skillmark.SetActive(false);
     }
 
     void OnOffMeum()

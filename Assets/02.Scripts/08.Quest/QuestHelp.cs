@@ -30,9 +30,7 @@ public class QuestHelp : MonoBehaviour
         m_Quest_ID = -1;
 
         for (int i = 0; i < m_Quest_IdList.Count; i++)
-        {
-         
-                      
+        {                              
             if (!QuestMgr.Inst.ClearCheckQuest(m_Quest_IdList[i]))//선행퀘 확인                    
                 continue;
            
@@ -41,6 +39,8 @@ public class QuestHelp : MonoBehaviour
                 continue;
 
             m_Quest_ID = m_Quest_IdList[i];
+            if (m_Quest_ID != -1)
+                break;
         }
 
 
@@ -57,6 +57,9 @@ public class QuestHelp : MonoBehaviour
     public void OpenQuest(Player a_player)
     {      
         if (m_Quest_ID.Equals(-1))
+            return;
+
+        if (QuestMgr.Inst.CheckQuest(m_Quest_ID))//받은 퀘스트인지 확인                          
             return;
 
         TalkMgr.Inst.OnQuestBtn(m_Quest_ID);

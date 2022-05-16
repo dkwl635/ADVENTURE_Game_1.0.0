@@ -1,0 +1,3 @@
+No,ItemType,ItemName,ItemInfo,Price,DropItemPosX,DropItemPosY,DropItemPosZ,ItemSprite,ItemMesh,ItemMaterial
+int,int,string,string,int,float,float,float,string,string,string
+701,1,유령의 옷조각,유령이 입던 옷의 한 조각,20,0.0,0.0,0.0,Fabric,Box001,Box_Of_Pandora
