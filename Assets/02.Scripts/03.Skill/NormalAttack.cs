@@ -73,6 +73,7 @@ public class NormalAttack : Skill
                 {
                     if (attack.Equals(true))
                     {
+                        SoundMgr.Inst.PlaySound("SWORD_01");
                         var hits = Physics.SphereCastAll(playerTr.position, distance, Vector3.up, 0.0f, m_SkillTargetLayer); // 공격범위안에 있는 콜리더 가져오기
                         if (hits.Length > 0) // 콜리더가 있다면
                         {
@@ -124,6 +125,7 @@ public class NormalAttack : Skill
                 {                   
                     if (attack.Equals(true))
                     {
+                        SoundMgr.Inst.PlaySound("SWORD_02");
                         var hits = Physics.SphereCastAll(playerTr.position, distance, Vector3.up, 0.0f, m_SkillTargetLayer); // 공격범위안에 있는 콜리더 가져오기
                         if (hits.Length > 0) // 콜리더가 있다면
                         {
@@ -174,6 +176,7 @@ public class NormalAttack : Skill
                    
                     if (attack.Equals(true))
                     {
+                        SoundMgr.Inst.PlaySound("SWORD_03");
                         var hits = Physics.SphereCastAll(playerTr.position, distance, Vector3.up, 0.0f, m_SkillTargetLayer); // 공격범위안에 있는 콜리더 가져오기
                         if (hits.Length > 0) // 콜리더가 있다면
                         {

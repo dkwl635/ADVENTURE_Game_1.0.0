@@ -372,6 +372,7 @@ public class ItemMgr : MonoBehaviour
        
         if(a_Portion.m_PortionType == PortionType.HpPortion)  //Hp 회복 효과
         {
+            SoundMgr.Inst.PlaySound("Drink");
             player.m_PlayerStatus.m_CurHp += (int)a_Portion.m_Value;
             if (player.m_PlayerStatus.m_CurHp > player.m_PlayerStatus.m_MaxHp)
                 player.m_PlayerStatus.m_CurHp = player.m_PlayerStatus.m_MaxHp;

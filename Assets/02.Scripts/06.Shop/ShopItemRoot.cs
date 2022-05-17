@@ -95,6 +95,8 @@ public class ShopItemRoot : MonoBehaviour
         {
             ShopMgr.Inst.OnLogBox("인벤토리 창고가\n부족합니다.");          
         }
+
+        SoundMgr.Inst.PlaySound("LostCoin");
         m_Buyer.m_Coin -= m_Price * m_Count;
     }
 

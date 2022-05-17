@@ -5,7 +5,7 @@ using UnityEngine;
 public class Sk04WindMill : Skill
 {
    
-    private float m_radus = 1.5f;                //반지름
+    private float m_radus = 2.0f;                //반지름
     private Vector3 m_tempPos = Vector3.zero;    //계산용
    
     string m_AnimationName = "WindMill";
@@ -24,25 +24,28 @@ public class Sk04WindMill : Skill
 
     private float m_SkillDamage
     {
-        get { return (m_Damage  * m_Lv) + player.m_PlayerAttPw; }
+        get { return (m_Damage  * m_Lv) + player.m_PlayerAttPw * 0.4f; }
     }
 
     public override string SkillInfoTxt()
     {
-        return "\n기본 스킬데미지 : " + (m_Damage * m_Lv).ToString() 
-            + "\n총 스킬 데미지 : " + m_SkillDamage.ToString();
+        return "\n기본 스킬데미지 : " + m_SkillDamage.ToString()
+            + "\n총 7회 피격"
+            + "\n총 스킬 데미지 : " + (m_SkillDamage * 7).ToString();
     }
 
 
     public override IEnumerator SkillStart()
     {
+        player.bIsAttack = true ;
+
         m_SkillEffect.transform.SetParent(playerTr);
         m_SkillEffect.transform.localPosition = Vector3.zero;
         m_SkillEffect.gameObject.SetActive(true);
 
         playerTr.LookAt(SkillMgr.Inst.m_MousePos);
         animator.SetTrigger(m_SkillName);
-
+    
         while (!animator.GetCurrentAnimatorStateInfo(0).IsName(m_AnimationName))//교체 시간 대기                   
             yield return null;
 
@@ -53,7 +56,7 @@ public class Sk04WindMill : Skill
 
         animator.speed = 0.0f;
 
-        int Count = 0;
+        SoundMgr.Inst.PlaySound("Sk_04");
         while(timer < 3.5f)
         {
             yield return null;
@@ -77,6 +80,7 @@ public class Sk04WindMill : Skill
             }
         
         }
+        timer = 0.0f;
         animator.speed = 1.0f;
         m_SkillEffect.gameObject.SetActive(false);
 

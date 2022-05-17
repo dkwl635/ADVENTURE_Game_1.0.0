@@ -55,8 +55,10 @@ public class SkillRoot : MonoBehaviour
 
     }
 
-   public void Refresh() // Refresh 기능도 함
+   public void Refresh() // 
    {
+        if (!SkillMgr.Inst.m_SkillUIPanel.activeSelf)
+            return;
 
         if(SkillMgr.Inst.m_SkillPoint >= m_Skill.m_NeedSP)
         {   

@@ -41,8 +41,7 @@ public class Specter : NomalMonster
         m_Skin = GetComponentInChildren<SkinnedMeshRenderer>(); //스킨 머터리얼 적용을 위한
         m_OrginMtrl = m_Skin.material;                                             //원래 머터리얼
 
-        m_Target = GameObject.Find("Player").transform;           //타겟
-
+     
         if (navMeshAgent.speed == 0)
             navMeshAgent.speed = m_Speed;
     }
@@ -81,20 +80,15 @@ public class Specter : NomalMonster
                     
     }
     public override void Action_FixedUpdate()
-    {
-       
+    {       
         if (m_MonsterState == MonsterState.Idle)//가만히 있을때
-        {
-          
+        {        
             OnOffNav(false);    //네비 끄기
             animator.SetBool("IsMove", false);  //애니메이션 적용
         }
         else if (m_MonsterState == MonsterState.Trace)//추격 상태
         {
             OnOffNav(true); //내비 키기
-                                     
-          //transform.position = navMeshAgent.nextPosition;
-
             animator.SetBool("IsMove", true);
         }
         else if(m_MonsterState == MonsterState.GoBack)
@@ -212,6 +206,19 @@ public class Specter : NomalMonster
 
         OnOffNav(false);
 
+        int rand = Random.Range(0, 3);
+        switch(rand)
+        {
+            case 0: SoundMgr.Inst.PlaySound("Hit_01");
+                break;
+            case 1:
+                SoundMgr.Inst.PlaySound("Hit_02");
+                break;
+            case 2:
+                SoundMgr.Inst.PlaySound("Hit_03");
+                break;
+        }
+
         if (m_MonsterStatus.m_CurHp <= 0) // 체력 0 밑으로
         {
             Die();
@@ -220,7 +227,7 @@ public class Specter : NomalMonster
         else
         {
             animator.SetTrigger("Hit");                 //데미지 애니메이션 적용
-            m_MonsterState = MonsterState.Hit;  //상태 전환
+            //m_MonsterState = MonsterState.Hit;  //상태 전환
             m_HitDelay = 0.5f;
             StartCoroutine(SetHitMtrl());              //히트 코루틴 시작
         }
@@ -245,6 +252,7 @@ public class Specter : NomalMonster
         if (DieEvent != null)
             DieEvent();
 
+        SoundMgr.Inst.PlaySound("SpecterDie");
         m_MonsterState = MonsterState.Die;  //상태 전환
         m_HpBarCtrl.gameObject.SetActive(false);     //체력바 끄기
         animator.SetTrigger("Die");         //애니메이션 적용      
@@ -258,9 +266,7 @@ public class Specter : NomalMonster
         {           
             int itemnum = Random.Range(0, m_DropList.Count);
             ItemMgr.Inst.SpawnDropItem(transform.position, m_DropList[itemnum], 1); //아이템 떨구기
-          
-
-
+         
             int coin = Random.Range(m_MinCoin, m_MaxCoin);              //코인
             m_Attacker.m_PlayerInventory.AddCoin(coin);   //돈주기
             m_Attacker.AddExp(m_MonsterStatus.m_CurExp);
@@ -291,8 +297,7 @@ public class Specter : NomalMonster
     }
 
     public override void ObjDestory()   //오브젝트 제거용
-    {
-        //Destroy(m_HpBarObj);
+    {        
         Destroy(this.gameObject);
     }
 }

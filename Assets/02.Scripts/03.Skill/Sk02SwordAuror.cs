@@ -18,8 +18,7 @@ public class Sk02SwordAuror : Skill
 
     public override string SkillInfoTxt()
     {
-        return "\n기본 스킬데미지 : " + (m_Damage * m_Lv).ToString()
-            + "\n총 스킬 데미지 : " + m_SkillDamage.ToString();
+        return  "\n총 스킬 데미지 : " + m_SkillDamage.ToString();
     }
 
     public override void ShowSkillMark(Vector3 a_MouesDir)
@@ -52,6 +51,7 @@ public class Sk02SwordAuror : Skill
         while (!animator.GetCurrentAnimatorStateInfo(0).IsName(m_SkillName))//교체 시간 대기                   
             yield return null;
 
+        SoundMgr.Inst.PlaySound("Sk_02");
         GameObject effect = (GameObject)Instantiate(m_SkillSwordAfterimagePrefab);
         effect.transform.SetPositionAndRotation(playerTr.position + Vector3.up, playerTr.rotation);
         SkillEffect skilleffect = effect.GetComponent<SkillEffect>();

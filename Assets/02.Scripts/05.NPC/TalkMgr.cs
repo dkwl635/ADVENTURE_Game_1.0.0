@@ -119,7 +119,7 @@ public class TalkMgr : MonoBehaviour
 
         m_TalkTable.Add(130 + 0, "안녕하세요.:0/Luna 입니다..:2/여기는 시작의 마을입니다.:2/여기에는 상점과 강화소가 있습니다.:1");
         m_TalkTable.Add(130 + 2, "안녕하세요.:0/상점에서 무기를 구입해주세요:2/저기 상점에서 아이템을 구매할 수 있어요:2/퀘스트 성공후 다음 퀘스트를 드리겠습니다.:2");
-        m_TalkTable.Add(130 + 3, "안녕하세요.:0/부탁이있습니다..:2/저기 있는 유령몬스터 10마리만 잡아 주세요:2/감사합니다.:2");
+        m_TalkTable.Add(130 + 3, "안녕하세요.:0/무기는 가방(I키)에서 드래그하여 장착할 수 있습니다.:1/그리고 스킬창(K키)에서 스킬또한 장착할 수 있습니다.:2/저기 있는 포탈로 가서 유령몬스터 10마리만 잡아 주세요:2/감사합니다.:2");
         m_TalkTable.Add(130 + 4, "안녕하세요.:0/이번에는 좀더 강한..:2/유령들의 왕을 잡아주세요:2/부탁드리겠습니다.:2");
        
     }
@@ -328,6 +328,7 @@ public class TalkMgr : MonoBehaviour
     //다음 대화 버튼 함수
     void NextTalk()
     {
+        SoundMgr.Inst.PlaySound("TalkBtnSound");
         m_TalkIdx++;
         PrintMsg();    
     }
@@ -347,6 +348,8 @@ public class TalkMgr : MonoBehaviour
     
     void QuestOkBtn()
     {
+        SoundMgr.Inst.PlaySound("TalkBtnSound");
+
         if (QuestMgr.Inst.AddQuest(m_QuestID))
             NextTalk();
         else  //이미 받으 퀘스트
@@ -357,6 +360,7 @@ public class TalkMgr : MonoBehaviour
 
     void EndTalk()
     {
+
         m_BackBtn.gameObject.SetActive(true);
         m_QuestOkBtn.gameObject.SetActive(false);
         m_NexTalkBtn.gameObject.SetActive(false);
@@ -371,6 +375,7 @@ public class TalkMgr : MonoBehaviour
 
     void BackBtn()
     {
+        SoundMgr.Inst.PlaySound("TalkBtnSound");
         OffTalkBox();
         m_Talker.bIsMove = true;
     }

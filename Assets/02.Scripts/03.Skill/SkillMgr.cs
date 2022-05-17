@@ -145,11 +145,14 @@ public class SkillMgr : MonoBehaviour
   
     public void OnSkillUI()
     {
+        SoundMgr.Inst.PlaySound("Slide");       
         m_SkillUIPanel.SetActive(true);
+        RefershSkillRoot?.Invoke();
         m_SkillUIPanel.transform.SetAsLastSibling();
     }
     void OffSkillUI()
     {
+        SoundMgr.Inst.PlaySound("Slide");
         m_SkillUIPanel.SetActive(false);
     }
     void KeyDown_Update()

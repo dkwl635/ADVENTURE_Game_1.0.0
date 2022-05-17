@@ -15,12 +15,15 @@ public class MeumUIMgr : MonoBehaviour
     public Button m_SkillBtn = null;
     public Button m_QuestBtn = null;
     public Button m_MiniMapBtn = null;
+    public Button m_ConfigBtn = null;
 
     public GameObject m_MiniMapObj;
+    public GameObject m_ConfigBoxPanel;
 
     public GameObject m_Skillmark;
     public GameObject m_Quesmark;
     public GameObject m_Mainmark;
+    
 
 
     private void Awake()
@@ -42,6 +45,7 @@ public class MeumUIMgr : MonoBehaviour
         m_SkillBtn.onClick.AddListener(() => { SkillMgr.Inst.OnSkillUI(); m_Skillmark.SetActive(false); });
         m_QuestBtn.onClick.AddListener(() => { QuestMgr.Inst.OnQuestUI(); m_Quesmark.SetActive(false); });
         m_MiniMapBtn.onClick.AddListener(OnMiniMap);
+        m_ConfigBtn.onClick.AddListener(OnConfigBox);
 
         FindObjectOfType<Player>().LevelUpEvent += () => { m_Skillmark.SetActive(true); };
         QuestMgr.Inst.QuestEvent += () => { m_Quesmark.SetActive(true); };
@@ -88,8 +92,7 @@ public class MeumUIMgr : MonoBehaviour
     // 체인을 걸어서 이 함수는 매 씬마다 호출된다.
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        SetMiniMap();
-       
+        SetMiniMap();       
     }
 
     void SetMiniMap()
@@ -97,23 +100,33 @@ public class MeumUIMgr : MonoBehaviour
         m_MiniMapObj = GameObject.Find("MiniCanvas").transform.GetChild(0).gameObject;
         if (m_MiniMapObj)
         {
-            m_MiniMapObj.GetComponentInChildren<Button>().onClick.AddListener(OffMiniMap);
-            
+            m_MiniMapObj.GetComponentInChildren<Button>().onClick.AddListener(OffMiniMap);      
         }
           
     }
 
     void OffMiniMap()
     {
+        SoundMgr.Inst.PlaySound("Slide");
         m_MiniMapObj.SetActive(false);
     }
 
     void OnMiniMap()
     {
+        SoundMgr.Inst.PlaySound("Slide");
         m_MiniMapObj.SetActive(true);
     }
 
-   
+   void OnConfigBox()
+    {
+        m_ConfigBoxPanel.SetActive(true);
+        Time.timeScale = 0.0f;
 
+    }
+
+    void OffConfigBox()
+    {
+        m_ConfigBoxPanel.SetActive(false);
+    }
 
 }

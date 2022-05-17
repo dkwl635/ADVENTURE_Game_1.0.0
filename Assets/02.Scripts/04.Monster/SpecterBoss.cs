@@ -103,7 +103,7 @@ public class SpecterBoss : BossMonster
                 else if (rand > 80 && rand <= 100)
                     m_BossAttackType = BossAttackType.Attack03;
 
-                m_BossAttackType = BossAttackType.Attack04;
+              
                 transform.LookAt(m_Target);
 
                 if (m_BossAttackType == BossAttackType.Attack01)         //1번 공격 기본공격
@@ -116,14 +116,14 @@ public class SpecterBoss : BossMonster
                     Attack01RangeEff.SetActive(false);          //공격범위 숨기기
                     yield return new WaitForSeconds(0.3f);
 
+                    SoundMgr.Inst.PlaySound("SpecterBossAttack_01");
                     //공격
                     RaycastHit[] hits = Physics.BoxCastAll(Attack01RangeEff.transform.position, Attack01Size.size * 0.5f, Vector3.up, transform.rotation, 0.5f, 1 << LayerMask.NameToLayer("PLAYER"));
-                    Debug.Log(Attack01Size.size);
                     if (hits.Length > 0) // 타겟 충돌체 찾기
-                    {
-                        Debug.Log("1");
-                        Player player = hits[0].collider.GetComponent<Player>();                      
-                        player.OnDamge(100);  //데미지적용
+                    {                     
+                        Player player = hits[0].collider.GetComponent<Player>();
+                        float damagme = m_MonsterStatus.m_AttPw *Random.Range(0.9f, 1.4f);
+                        player.OnDamge((int)damagme);  //데미지적용
                     }
 
 
@@ -139,24 +139,29 @@ public class SpecterBoss : BossMonster
                     for (int i = 0; i < Attack02ShineEffs.Length; i++)
                     {
                         yield return new WaitForSeconds(0.05f);
-                        Attack02ShineEffs[i].Play();
+                        if (!Attack02ShineEffs[i].gameObject.activeSelf)
+                            Attack02ShineEffs[i].gameObject.SetActive(true);
 
-                        if(i == Attack02ShineEffs.Length /2)
+                        Attack02ShineEffs[i].Play();
+                        SoundMgr.Inst.PlaySound("SpecterBossAttack_02");
+                        if (i == Attack02ShineEffs.Length / 2)
                         {
-                             //공격
-                    RaycastHit[] hits = Physics.BoxCastAll(Attack02RangeEff.transform.position, Attack02Size.size * 0.5f, Vector3.up, transform.rotation, 0.5f, 1 << LayerMask.NameToLayer("PLAYER"));
-                    Debug.Log(Attack01Size.size);
-                    if (hits.Length > 0) // 타겟 충돌체 찾기
-                    {
-                        Debug.Log("2");
-                        Player player = hits[0].collider.GetComponent<Player>();
-                        player.OnDamge(100);  //데미지적용
-                    }
+                            //공격
+                            RaycastHit[] hits = Physics.BoxCastAll(Attack02RangeEff.transform.position, Attack02Size.size * 0.5f, Vector3.up, transform.rotation, 0.5f, 1 << LayerMask.NameToLayer("PLAYER"));
+                            if (hits.Length > 0) // 타겟 충돌체 찾기
+                            {
+                                Player player = hits[0].collider.GetComponent<Player>();
+                                float damagme = m_MonsterStatus.m_AttPw * Random.Range(0.9f, 1.4f);
+                                player.OnDamge((int)damagme);  //데미지적용
+                            }
                         }
                     }
-               
 
-                    yield return new WaitForSeconds(1.0f);  //대기 후 끝
+                    yield return new WaitForSeconds(0.5f);
+                    for (int i = 0; i < Attack02ShineEffs.Length; i++)
+                    { Attack02ShineEffs[i].gameObject.SetActive(false); }
+
+                        yield return new WaitForSeconds(0.5f);  //대기 후 끝
                 }
                 else if (m_BossAttackType == BossAttackType.Attack03)       // 전방 돌격
                 {
@@ -172,9 +177,8 @@ public class SpecterBoss : BossMonster
                     animator.SetTrigger("Attack03");
                     while (temp < 1)    //목표 돌진 
                     {
+                        Collider.isTrigger = true;
                         transform.position = Vector3.Lerp(curVector, nextpos, temp);
-
-
                         temp += Time.deltaTime;
                         yield return null;
                     }
@@ -194,7 +198,7 @@ public class SpecterBoss : BossMonster
                         temp += Time.deltaTime;
                         yield return null;
                     }
-
+                    Collider.isTrigger = false;
                     bAttak03 = false;
                     yield return new WaitForSeconds(0.5f);  //대기 후 끝
 
@@ -284,8 +288,9 @@ public class SpecterBoss : BossMonster
     {
         if (other.gameObject.CompareTag("Player") && bAttak03)
         {
-            Player player = other.GetComponent<Player>();
-            player.OnDamge(100);  //데미지적용      
+            Player player = other.GetComponent<Player>();         
+            float damagme = m_MonsterStatus.m_AttPw * Random.Range(0.9f, 1.4f);
+            player.OnDamge((int)damagme);  //데미지적용
         }
     }
 

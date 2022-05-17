@@ -128,6 +128,8 @@ public class InventoryUIMgr : MonoBehaviour
 
         SetUserInfo();
         OpenBox(m_EquipmentUI);
+
+        
     }
 
     private void Update()
@@ -156,6 +158,7 @@ public class InventoryUIMgr : MonoBehaviour
             OpenBox(m_EquipmentUI);
         }
 
+        SoundMgr.Inst.PlaySound("Slide");
         m_InventoryUI_Panel.SetActive(true);
         m_InventoryUI_Panel.transform.SetAsLastSibling();
         SetUserInfo();       
@@ -163,6 +166,7 @@ public class InventoryUIMgr : MonoBehaviour
 
     void OffInvenUI()
     {
+        SoundMgr.Inst.PlaySound("Slide");
         m_InventoryUI_Panel.SetActive(false);
     }
 

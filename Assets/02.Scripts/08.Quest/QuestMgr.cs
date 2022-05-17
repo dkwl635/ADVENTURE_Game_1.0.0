@@ -115,11 +115,11 @@ public class QuestMgr : MonoBehaviour
         CollectQuest collectQues2 = new CollectQuest();
         collectQues2.m_QuestId = 5;
         collectQues2.m_QuestType = QuestType.Collection;
-        collectQues2.m_GoalItemName = "유령의 옷깃 모으기";
+        collectQues2.m_GoalItemName = "유령의 옷조각 모으기";
         collectQues2.m_GoalCount = 15;
         collectQues2.m_GoalItem = 701;     //미정
-        collectQues2.m_QuestName = "상점에서 물건 구매 하기";
-        collectQues2.m_QuestInfo = "상점에서 강철소드를 하나 구매하세요";
+        collectQues2.m_QuestName = "Specter를 잡아 옷조각을 모으자";
+        collectQues2.m_QuestInfo = "몬스터 Specter를 잡아 나오는 옷조각 15개를 모아주세요";
         collectQues2.m_RewardCoin = 1000;
         collectQues2.m_RewardExp = 100;
         collectQues2.m_RewardItemCount = 0;
@@ -263,6 +263,8 @@ public class QuestMgr : MonoBehaviour
 
     public void OnQuestUI()
     {
+        SoundMgr.Inst.PlaySound("Slide");
+
         m_QuestPanel.SetActive(true);
         m_QuestPanel.transform.SetAsLastSibling();
 
@@ -274,6 +276,7 @@ public class QuestMgr : MonoBehaviour
 
     void OffQuestUI()
     {
+        SoundMgr.Inst.PlaySound("Slide");
         m_QuestPanel.SetActive(false);       
     }
 
@@ -323,8 +326,8 @@ public class QuestMgr : MonoBehaviour
     void RewardQuest(Quest a_Quest)
     {
         //아이템 보상 -> 아이템창고 부족시 실패
-        if (!ReferenceEquals(a_Quest.m_RewardItemData, null))//   !a_Quest.m_RewardItemData.Equals(null))
-       // if (a_Quest.m_RewardItemData != null)
+       // if (!ReferenceEquals(a_Quest.m_RewardItemData, null))//   !a_Quest.m_RewardItemData.Equals(null))
+        if (a_Quest.m_RewardItemData != null)
             if (m_Player.m_PlayerInventory.AddNewItem(a_Quest.m_RewardItemData).Equals(false))
             {
                 Debug.Log("아이템 창고 부족");

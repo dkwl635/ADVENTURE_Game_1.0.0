@@ -131,6 +131,8 @@ public class ShopMgr : MonoBehaviour
     //상점 UI 오픈
     public void OpenShop()
     {
+        SoundMgr.Inst.PlaySound("Slide");
+
         m_ShopPanel.SetActive(true);
         m_PlayerInventoryUI.SetActive(true);
         m_PlayerInventoryUI.transform.SetAsLastSibling();
@@ -182,8 +184,7 @@ public class ShopMgr : MonoBehaviour
     //유저가 판매하는 아이템 박스 삭제 함수
     public void OffSellItemBox(ItemData a_ItemData)
     {
-        
-        Debug.Log(m_UserSellRoots.Count);
+             
         //기존에 연결된 판매아이템 박스를 삭제
         if (m_UserSellRoots.ContainsKey(a_ItemData))
         {
@@ -192,8 +193,7 @@ public class ShopMgr : MonoBehaviour
 
             Destroy(m_UserSellRoots[a_ItemData].gameObject);
             m_UserSellRoots.Remove(a_ItemData);
-        }
-        Debug.Log("삭제후 " + m_UserSellRoots.Count);
+        }     
 
         //기존에 연결된 슬롯의 잠금장치 풀기
         if (m_UserSellSlot.ContainsKey(a_ItemData))
@@ -228,6 +228,7 @@ public class ShopMgr : MonoBehaviour
    
         //UI 끄기
         m_ShopPanel.SetActive(false);
+        SoundMgr.Inst.PlaySound("Slide");
         InventoryUIMgr.Inst.m_InventoryUI_Panel.SetActive(false);
 
         //플레이어 움직이게

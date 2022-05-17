@@ -199,8 +199,7 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(m_MousePos, out hitInfo, Mathf.Infinity, m_LayerMask.value))
             {
                
-                MousePicking(hitInfo);
-                
+                MousePicking(hitInfo);                         
             }
         }
     }
@@ -349,7 +348,9 @@ public class Player : MonoBehaviour
             m_LvUpTxt.SetActive(true);
 
             LevelUpEvent?.Invoke();
-        }                 
+            SoundMgr.Inst.PlaySound("LevelUp");
+        }      
+        
         SetExpUI();
       
     }
@@ -362,10 +363,13 @@ public class Player : MonoBehaviour
         {
             m_HitTimer -= Time.deltaTime;
 
-            if (m_HitTimer <= 0)
-            {
+            if(m_HitTimer <= 0.3f)
                 if (bIsHit)
                     bIsHit = false;
+
+            if (m_HitTimer <= 0)
+            {
+               
 
                 m_MeshOutline.OutlineColor = Color.white;
             }

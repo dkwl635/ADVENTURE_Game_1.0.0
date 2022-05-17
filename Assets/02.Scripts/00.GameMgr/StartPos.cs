@@ -5,7 +5,7 @@ using UnityEngine;
 public class StartPos : MonoBehaviour
 {
     public Player player;
-   
+    public string m_BGM_Name;
     void Start()
     { 
 
@@ -25,6 +25,8 @@ public class StartPos : MonoBehaviour
 
             Camera.main.GetComponent<CameraCtrl>().InitCamera();
         }
+
+        SoundMgr.Inst.ChangeBGM(m_BGM_Name);
 
     }
 

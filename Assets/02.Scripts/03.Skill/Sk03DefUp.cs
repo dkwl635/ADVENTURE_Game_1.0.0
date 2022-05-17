@@ -36,6 +36,7 @@ public class Sk03DefUp : Skill
 
     public override IEnumerator SkillStart()
     {
+        SoundMgr.Inst.PlaySound("Sk_03");
         //버프 시작
         m_OrginDefPower = player.m_PlayerStatus.m_DefPw;
         player.m_PlayerStatus.m_DefPw += m_AddDefPw;

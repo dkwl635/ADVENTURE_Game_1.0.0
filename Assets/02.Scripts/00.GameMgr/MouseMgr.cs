@@ -80,6 +80,12 @@ public class MouseMgr : MonoBehaviour
         m_Screen_Width = Screen.width;
     }
 
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(0) && InGameMgr.IsPointerOverUIObject())
+            SoundMgr.Inst.PlaySound("Click");
+    }
+
     private void LateUpdate()
     {
         SetSizeRectTr();
@@ -88,7 +94,6 @@ public class MouseMgr : MonoBehaviour
  
     public void OnMouesEnterSlot(Slot slot) //슬롯 위에 마우스 가 있으면
     {
-  
         if (bIsDrag == false)
         {
             m_OnSlot = slot;
@@ -332,7 +337,7 @@ public class MouseMgr : MonoBehaviour
             if (equipment.m_SlotItemType != equipmentItemData.m_PartType)
                 return;         
             InventoryUIMgr.Inst.PlayerInventory.EquipItem(a_BeginSlot.m_SlotNum);
-            //a_BeginSlot.SetSlot(null);
+            a_BeginSlot.SetSlot(null);
 
         }
         //장착장비 -> 장비

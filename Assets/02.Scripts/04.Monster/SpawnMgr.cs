@@ -107,6 +107,7 @@ public class SpawnMgr : MonoBehaviour
     void SpawnMonster()
     {
         m_KillGageObj.SetActive(true);
+        m_BackImg.SetActive(false);
         m_MonseterKillCount = 0;
         m_KillGage.fillAmount = (float)m_MonseterKillCount / (float)m_BossSpawnCount;
 
@@ -156,7 +157,9 @@ public class SpawnMgr : MonoBehaviour
     }
 
     IEnumerator SpwnBossCo()
-    {
+    {     
+        SoundMgr.Inst.ChangeBGM("BossSpawn");
+
         yield return null;
         m_Boss.Collider.enabled = false;
         m_Boss.navMeshAgent.enabled = false;
@@ -175,18 +178,22 @@ public class SpawnMgr : MonoBehaviour
             {
                 camera.Shake = false;
                 m_Boss.Spawn();     //움직여라
-                yield break;
+                break;
             }
                
 
             m_Boss.transform.position += Vector3.up * Time.deltaTime;        
              
         }
+        
+
+        SoundMgr.Inst.ChangeBGM("BossBattle");
     }
 
 
     void DieBoss()
-    {      
+    {
+        SoundMgr.Inst.ChangeBGM("DongenBGM");
         bSpawnBoss = false;    
         m_Boss = null;
 

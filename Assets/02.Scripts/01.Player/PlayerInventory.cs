@@ -477,6 +477,8 @@ public class PlayerInventory : MonoBehaviour
         if (m_OnceCoin == 0)
             m_CoinMsgAnim.Play();
 
+        SoundMgr.Inst.PlaySound("GetCoin");
+
         m_Coin += a_Coin;
         m_OnceCoin += a_Coin;
         m_TimeColorA = 3.0f;
