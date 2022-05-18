@@ -16,7 +16,9 @@ public class LogBoxCtrl : MonoBehaviour
 
     private void Awake()
     {
-        Inst = this ;
+        if (Inst == null)
+            Inst = this;
+
         m_LogMsg = GetComponent<Text>();
     }
 

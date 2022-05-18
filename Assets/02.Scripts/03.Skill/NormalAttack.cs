@@ -31,8 +31,9 @@ public class NormalAttack : Skill
    
     public override void UseSkill()
     {     
-        if (m_CurrTime < 0.0f && player.bIsAttack == false)
-        {      
+        if (m_CurrTime <= 0.0f && player.bIsAttack == false)
+        {
+            Debug.Log("기본 공격");
             player.bIsAttack = true;
             m_CurrTime = m_CoolTime;
             StartCoroutine(SkillStart());
@@ -88,11 +89,10 @@ public class NormalAttack : Skill
                                 }
                             }
                         }
-                        attack = false;
 
+                        attack = false;
                     }
-                }
-                
+                }                
 
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.3f && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.95f)  // 특정 구간 전까지 반복   
                 {
@@ -107,12 +107,11 @@ public class NormalAttack : Skill
                     break;
             }                           
         }
-        yield return null;
+     
         if (combo.Equals(1))
         {
             attack = true;
-
-   
+  
             while (true)
             {
                 yield return null;
@@ -158,7 +157,7 @@ public class NormalAttack : Skill
             }   
           
         }
-        yield return null;
+    
         if (combo.Equals(2))
         {
             attack = true;
@@ -200,11 +199,9 @@ public class NormalAttack : Skill
             }
           
         }
-        m_CurrTime = m_CoolTime;
-        eff.SetActive(false);
-        
-        yield return null;
 
+        m_CurrTime = m_CoolTime;
+        eff.SetActive(false);    
         player.bIsAttack = false;
         yield break;
     }

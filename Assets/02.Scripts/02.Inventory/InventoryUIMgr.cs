@@ -19,8 +19,8 @@ public class InventoryUIMgr : MonoBehaviour
     public List<Slot> m_ItemSlots = new List<Slot>();           //일반아이템 슬롯
 
     public GameObject m_EquiqPartSlot; //장착슬롯이 모여있는 곳
-    public Dictionary<PartType, EquipmentSlot> m_PartSlot = new Dictionary<PartType, EquipmentSlot>();    //장착장비 슬롯
-    public GameObject m_UseItemSlot;    //아이템 퀵슬롯이 모여있는곳
+    public Dictionary<PartType, EquipmentSlot> m_PartSlot = new Dictionary<PartType, EquipmentSlot>();    //장착장비 슬롯  
+    public UseItemSlot[] m_UseItemSlots; 
     public Dictionary<ItemData, UseItemSlot> DicUseItemSlots = new Dictionary<ItemData, UseItemSlot>(); //사용아이템 퀵슬롯
 
 
@@ -96,7 +96,8 @@ public class InventoryUIMgr : MonoBehaviour
             {
                 m_PartSlot.Add(equipmentSlots[i].m_SlotItemType, equipmentSlots[i]);                
             }
-        }  
+        }
+
 
         m_EquipLable = m_EquipBtn.GetComponentInChildren<Text>();
         m_ItemLable = m_ItemBtn.GetComponentInChildren<Text>();
@@ -118,13 +119,11 @@ public class InventoryUIMgr : MonoBehaviour
 
 
         //아이템 퀵슬롯 초기화
-        UseItemSlot[] useItemSlots = m_UseItemSlot.GetComponentsInChildren<UseItemSlot>();
+        for (int i = 0; i < m_UseItemSlots.Length; i++)
         {
-            for(int i = 0; i < useItemSlots.Length; i++)
-            {
-                useItemSlots[i].SetSlot( null );
-            }
+            m_UseItemSlots[i].SetSlot(null);
         }
+
 
         SetUserInfo();
         OpenBox(m_EquipmentUI);

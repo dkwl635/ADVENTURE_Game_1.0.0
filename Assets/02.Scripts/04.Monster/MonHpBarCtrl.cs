@@ -22,10 +22,9 @@ public class MonHpBarCtrl : MonoBehaviour
     {
         if(bBlibord)
         {
-            transform.localRotation = Quaternion.identity;
-           transform.LookAt(cam);
+            transform.LookAt(cam);
         }
-        //transform.LookAt(cam);
+
     }
 
 

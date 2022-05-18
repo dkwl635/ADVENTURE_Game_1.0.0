@@ -4,11 +4,11 @@ int,int,string,string,int,float,float,float,int,int,string,int,int,int,int ,int
 2,2,오거 벨트,오거가 사용했던 벨트,200,0.0,-0.7,0.0,belts,Belt2,BodyParts,5,0,0,7,5
 3,2,가벼운 벨트,가변운 벨트,300,0.0,-0.7,0.0,belts,Belt3,BodyParts,5,0,0,5,5
 4,2,가죽상의,가죽으로 만든 상의,400,0.0,-0.9,0.0,armor,Cloth1,Costumes,4,0,0,8,5
-5,2,가죽상의(개조),가죽상의를 개조한 상의,500,0.0,-0.9,0.0,armor,Cloth2,Costumes,4,0,0,6,5
+5,2,유령가죽 상의,유령가죽으로 만든 상의,500,0.0,-0.9,0.0,armor,Cloth2,Costumes,4,0,0,20,5
 6,2,후드,기본적인 후드,100,0.0,-0.9,0.0,cloaks,Cloth3,Costumes,4,0,0,5,5
 7,2,후드(진),힘을 개방한 후드,200,0.0,-0.9,0.0,cloaks,Cloth4,Costumes,4,0,0,5,5
 8,2,갑옷,기본적인 갑옷,300,0.0,-0.9,0.0,plate_armor,Cloth5,Costumes,4,0,0,6,5
-9,2,판금갑옷,판금으로 만든 갑옷,400,0.0,-0.9,0.0,plate_armor,Cloth6,Costumes,4,0,0,5,5
+9,2,꽃개 갑옷,꽃개으로 만든 갑옷,400,0.0,-0.9,0.0,plate_armor,Cloth6,Costumes,4,0,0,30,5
 10,2,짱짱쎈 갑옷,짱짱쎈 갑옷,500,0.0,-0.9,0.0,plate_armor,Cloth7,Costumes,4,0,0,10,5
 11,2,머리장식1,머리장식1,100,0.0,-1.5,0.0,helmets,Crown1,HeadParts,2,0,0,3,5
 12,2,머리장식2,머리장식2,200,0.0,-1.5,0.0,helmets,Crown2,HeadParts,2,0,0,4,5

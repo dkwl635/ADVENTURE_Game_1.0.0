@@ -9603,6 +9603,7 @@ GameObject:
   - component: {fileID: 7656781597308373176}
   - component: {fileID: 4455028416318149022}
   - component: {fileID: 1621351020533005413}
+  - component: {fileID: 3550600378422728423}
   m_Layer: 10
   m_Name: DropItem
   m_TagString: Untagged
@@ -9687,6 +9688,49 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &3550600378422728423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7656781597308373177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 311c9c6fa8318b5449a604c4326044bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Collider: {fileID: 0}
+  animator: {fileID: 0}
+  navMeshAgent: {fileID: 0}
+  mesh: {fileID: 0}
+  m_Target: {fileID: 0}
+  m_MonsterId: -1
+  m_MonsterState: 0
+  m_HpBarCtrl: {fileID: 0}
+  m_MonsterStatus:
+    m_Lv: 0
+    m_CurExp: 0
+    m_NextExp: 0
+    m_CurHp: 0
+    m_MaxHp: 0
+    m_AttPw: 0
+    m_DefPw: 0
+    m_Critical: 0
+  m_Attacker: {fileID: 0}
+  m_Speed: 3
+  m_AttackDist: 1
+  m_TraceDist: 8
+  m_AttackPower: 10
+  m_Dist: 0
+  m_SpawnPos: {x: 0, y: 0, z: 0}
+  m_MinCoin: 0
+  m_MaxCoin: 0
+  m_Skin: {fileID: 0}
+  m_OrginMtrl: {fileID: 0}
+  m_HitMtrl: {fileID: 0}
+  m_AttackEff: {fileID: 0}
+  m_DropList: 
 --- !u!1 &7656781598872864811
 GameObject:
   m_ObjectHideFlags: 0

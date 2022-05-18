@@ -114,8 +114,7 @@ public class SpawnMgr : MonoBehaviour
         if (m_MonterList.Length > 0)
             for (int i = 0; i < m_MonterList.Length; i++)
             {
-                m_MonterList[i].gameObject.SetActive(true);               
-                m_MonterList[i].Spawn();
+                m_MonterList[i].gameObject.SetActive(true);              
             }
     }
 

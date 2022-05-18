@@ -6,10 +6,11 @@ using UnityEngine.EventSystems;
 
 public class UseItemSlot : Slot
 {
+    //슬롯에 등록된 키값
     public KeyCode m_KeyCode;
+    //대상자
     Player player;
-
-
+   
     public override void Awake()
     {
         base.Awake();

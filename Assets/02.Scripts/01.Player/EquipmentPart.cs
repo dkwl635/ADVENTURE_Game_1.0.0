@@ -5,7 +5,12 @@ using UnityEngine;
 public class EquipmentPart : MonoBehaviour
 {
     public PartType m_PartType; //파츠가 어떤 타입인지
-    public EquipmentItemData m_Equipment; //착용중인 장비 아이템 정보
+    EquipmentItemData m_Equipment; //착용중인 장비 아이템 정보
+    public EquipmentItemData Equipment
+    {
+        get { return m_Equipment; }
+        set { m_Equipment = value;}
+    }//착용중인 장비 아이템 정보
     public SkinnedMeshRenderer m_SkinMesh; //보여주는 메쉬 정보
 
     public int m_EquipmentDef

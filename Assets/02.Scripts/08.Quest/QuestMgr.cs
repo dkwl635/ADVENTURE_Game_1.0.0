@@ -30,7 +30,7 @@ public class QuestMgr : MonoBehaviour
     public Transform QuestListScrollTr;
     public GameObject m_QuestItem = null;   //퀘스트 노드
 
-    [HideInInspector]public Quest m_CurQuest = null; //현재 퀘스트
+    Quest m_CurQuest = null; //현재 퀘스트
 
     public delegate void Event();
     public Event QuestEvent;
@@ -122,7 +122,8 @@ public class QuestMgr : MonoBehaviour
         collectQues2.m_QuestInfo = "몬스터 Specter를 잡아 나오는 옷조각 15개를 모아주세요";
         collectQues2.m_RewardCoin = 1000;
         collectQues2.m_RewardExp = 100;
-        collectQues2.m_RewardItemCount = 0;
+        collectQues2.m_RewardItem = 5;
+        collectQues2.m_RewardItemCount = 1;
         collectQues2.m_BeforeQuestId = 2;
 
 
@@ -269,6 +270,7 @@ public class QuestMgr : MonoBehaviour
         m_QuestPanel.transform.SetAsLastSibling();
 
         m_QuestDlgBox.SetActive(false);
+        
         if (m_CurQuest != null)
             OpenQuestDlgBox(m_CurQuest);
       
@@ -298,11 +300,14 @@ public class QuestMgr : MonoBehaviour
 
     void OpenQuestDlgBox(Quest a_Quest)
     {
-        m_QuestDlgBox.SetActive(true);
 
+        m_QuestDlgBox.SetActive(true);
+        
+       
         m_QuestName.text = a_Quest.m_QuestName;
         m_QuestInfo.text = a_Quest.m_QuestInfo;
         m_QuestStatus.text = a_Quest.m_QuestStatus;
+        m_QuestReward.text = "";
         m_QuestReward.text = "코인 : " + a_Quest.m_RewardCoin;
         m_QuestReward.text += "\n경험치 : " + a_Quest.m_RewardExp;
 
@@ -341,8 +346,7 @@ public class QuestMgr : MonoBehaviour
         //퀘스트 종료
         a_Quest.bEndQuest = true;
 
-        //퀘스트목록창UI 노드 삭제
-        //m_AllQuestList.Remove(a_Quest);
+        //퀘스트목록창UI 노드 삭제      
         DestoryQuestItem(a_Quest);
 
         m_QuestDlgBox.SetActive(false);

@@ -30,10 +30,13 @@ public class MouseMgr : MonoBehaviour
     Image m_DragImg;
     Text m_DragCount;
 
-    float m_Screen_Height;
-    float m_Screen_Width;
+    int m_Screen_Height;
+    int m_Screen_Width;
+    float m_test;
 
     bool bIsDrag = false;
+
+
 
     private void Awake()
     {
@@ -78,6 +81,9 @@ public class MouseMgr : MonoBehaviour
     {
         m_Screen_Height = Screen.height;
         m_Screen_Width = Screen.width;
+
+        m_test = Screen.height / 1080.0f;
+      
     }
 
     private void Update()
@@ -165,7 +171,7 @@ public class MouseMgr : MonoBehaviour
             else
                 m_ItemSlotUI.gameObject.SetActive(false);
 
-            Cursor.visible = false;
+            //Cursor.visible = false;
         }
        
     }
@@ -184,7 +190,7 @@ public class MouseMgr : MonoBehaviour
     //Drag  & Drop
     public void DragStartSlot(Slot slot)
     {
-        Cursor.visible = false;
+        //Cursor.visible = false;
         m_BeginSlot = slot;
 
         if (m_BeginSlot == null || m_BeginSlot.m_SlotImg.sprite == null)
@@ -214,7 +220,7 @@ public class MouseMgr : MonoBehaviour
         if (m_DragSlot.activeSelf)
         {
             
-                Cursor.visible = false;
+               // Cursor.visible = false;
             m_DragSlot.transform.position = Input.mousePosition;        
         }
     }
@@ -282,9 +288,8 @@ public class MouseMgr : MonoBehaviour
                 m_ItemSlotUI.SetActive(false);
                 return;
             }
-                
 
-
+          
             //패널 크기 조정
             m_TempSize = m_ItemSlotRectTr.sizeDelta;
             m_TempSize.y = 180 + m_ItemTxtTr.sizeDelta.y;
@@ -302,7 +307,7 @@ public class MouseMgr : MonoBehaviour
 
             if (m_TempSize.x + m_ItemSlotRectTr.rect.width > m_Screen_Width)
             {
-                m_TempSize.x = m_TempSize.x - m_ItemSlotRectTr.rect.width;
+                m_TempSize.x = m_TempSize.x - m_ItemSlotRectTr.rect.width * m_test;
             }
 
             m_ItemSlotRectTr.position = m_TempSize;

@@ -30,7 +30,7 @@ public class SkillMgr : MonoBehaviour
     [HideInInspector] public Skill[] m_SkillList;  
     //이름으로 찾을 스킬 딕셔너리
     public Dictionary<string, Skill> m_Skills;
-    [HideInInspector] public bool bIsPushSkill = false;
+    public bool bIsPushSkill = false;
 
 
     //마우스 위치 
@@ -120,19 +120,15 @@ public class SkillMgr : MonoBehaviour
     }
 
     private void Update()
-    {
-        Skill_Update();
+    {    
         KeyDown_Update();
         KeyUp_Update();
 
+        Skill_Update();
 
         m_SkillPoint_Txt.text = "남은 스킬 포인트(SP) : " + m_SkillPoint.ToString();
 
-       
-
-
-
-        if (Input.GetKeyDown(KeyCode.K))
+       if (Input.GetKeyDown(KeyCode.K))
         {
             if (!m_SkillUIPanel.activeSelf)
                 OnSkillUI();
@@ -157,10 +153,7 @@ public class SkillMgr : MonoBehaviour
     }
     void KeyDown_Update()
     {             
-        if (player.bIsHit)
-            return;
-
-
+      
         if (m_SkillSlots.Length > 0)
             for (int i = 0; i < m_SkillSlots.Length; i++)
                 if (Input.GetKeyDown(m_SkillSlots[i].m_KeyCode))
@@ -171,6 +164,10 @@ public class SkillMgr : MonoBehaviour
                         return;
                     }
 
+                    if (bIsPushSkill)
+                        return;
+
+                    bIsPushSkill = true;
 
                     if (m_SkillSlots[i].m_Skill != null)
                         m_SkillSlots[i].m_Skill.BoolShowMark();
@@ -192,12 +189,7 @@ public class SkillMgr : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(m_MousePos, 1);
-    }
-
+   
     void Skill_Update()
     {
         //스킬 캔슬
@@ -235,7 +227,6 @@ public class SkillMgr : MonoBehaviour
 
 
 
-
         m_Skills["NormalAttack"].CoolTimeUpdate();
 
     }
@@ -243,13 +234,18 @@ public class SkillMgr : MonoBehaviour
     void KeyUp_Update()
     {
         if (!player.bIsWeapon)
+        {          
             return;
+        }
 
-            if (m_SkillSlots.Length > 0)
+        if (m_SkillSlots.Length > 0)
             for (int i = 0; i < m_SkillSlots.Length; i++)
                 if (Input.GetKeyUp(m_SkillSlots[i].m_KeyCode))
+                {                   
                     if (m_SkillSlots[i].m_Skill != null)
                         m_SkillSlots[i].m_Skill.UseSkill();
+                }
+        
     }
 
 

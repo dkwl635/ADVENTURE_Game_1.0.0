@@ -73,15 +73,16 @@ public class MeumUIMgr : MonoBehaviour
             if (m_MiniMapObj.activeSelf)
                 OffMiniMap();
             else OnMiniMap();
-
         }
-
 
         if (Input.GetKeyDown(KeyCode.A))
             m_Quesmark.SetActive(false);
 
         if (Input.GetKeyDown(KeyCode.K))
             m_Skillmark.SetActive(false);
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            OnConfigBox();
     }
 
     void OnOffMeum()

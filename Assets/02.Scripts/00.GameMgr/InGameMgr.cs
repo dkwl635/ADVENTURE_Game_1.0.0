@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InGameMgr : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class InGameMgr : MonoBehaviour
     public int m_ObjPoolInit = 20; //오브젝트 풀 첫 생성 갯수
 
     Stack<DamageTxt> m_DamageTxtPool = new Stack<DamageTxt>();
+
+    bool bNewUser = false;
+    public Text m_StartMsg;
 
     private void Awake()
     {
@@ -53,12 +57,12 @@ public class InGameMgr : MonoBehaviour
     }
 
     private void Start()
-    {
-        Debug.Log("테스트 무기 떨구기");
+    {       
         ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f, 0, -18.68f), 104, 1); //아이템 떨구기
         ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f, 0, -18.68f), 501, 1); //아이템 떨구기
 
-
+        if (bNewUser)
+            StartCoroutine(FirstStartMsg());
 
     }
 
@@ -70,30 +74,7 @@ public class InGameMgr : MonoBehaviour
                 DamageTxt txtObj = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform).GetComponent<DamageTxt>();
                 txtObj.gameObject.SetActive(false);
                 m_DamageTxtPool.Push(txtObj);
-
-                //GameObject textObj = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform);
-                //textObj.SetActive(false);
-                //ObjPoolStacks[m_DamageTxt].Push(textObj);
-            }
-
-        //FX ObjectPool
-        //for (int i = 0; i < FX_PrefabList.Count; i++)
-        //{
-        //    DicFxPrefab.Add(FX_PrefabList[i].name, FX_PrefabList[i]);
-
-        //    for (int j = 0; j < m_ObjPoolInit; j++)
-        //    {
-        //        GameObject fx = Instantiate(FX_PrefabList[i],this.transform);
-
-        //        fx.SetActive(false);
-
-        //        string str = FX_PrefabList[i].name;
-        //        ObjPoolStacks[str].Push(fx);
-        //    }
-        //}
-
-
-
+          }     
     }
 
     public GameObject SetHpBarObj()
@@ -142,13 +123,102 @@ public class InGameMgr : MonoBehaviour
         m_DamageTxtPool.Push(a_text);
     }
 
+    IEnumerator FirstStartMsg()
+    {
+        yield return new WaitForEndOfFrame();
+        float timer = 3.0f;
+        Color color = m_StartMsg.color;
+        if (bNewUser)
+        {
+            m_StartMsg.gameObject.SetActive(true);
+            Player player = GameObject.FindObjectOfType<Player>();
+            player.bIsMove = false;
+            while (true)
+            {
+                yield return null;
+                if (timer > 0)
+                {
+                    color.a = Mathf.PingPong(Time.time, 1);
+                    m_StartMsg.color = color;
+
+                    timer -= Time.deltaTime;
+                    if (timer <= 0)
+                    {
+                        m_StartMsg.gameObject.SetActive(false);
+                        break;
+                    }
+                      
+                }
+            }
+            yield return new WaitForSeconds(0.5f);
+
+            timer = 2.0f;
+            m_StartMsg.text = "앞에 있는 NPC에게\n퀘스트를 받으세요.";
+            color = Color.cyan;
+            m_StartMsg.gameObject.SetActive(true);
+            while (true)
+            {
+                yield return null;
+                if (timer > 0)
+                {
+                    color.a = Mathf.PingPong(Time.time, 1);
+                    m_StartMsg.color = color;
+
+                    timer -= Time.deltaTime;
+                    if (timer <= 0)
+                    {
+                        m_StartMsg.gameObject.SetActive(false);
+                        break;
+                    }
+
+                }
+            }
+
+            player.bIsMove = true;
+        }
+
+
+    }
+
+
+
+
+
+
+
+
     public void SaveData()
     {
         string itemdata = "";
         Player player = FindObjectOfType<Player>();
-        testSave test = new testSave();
+        SaveData test = new SaveData();
 
-        test.testItem = player.m_PlayerInventory.PlayerItemInven;
+        //장비 아이템 
+        //test.EqItemData = player.m_PlayerInventory.PlayerEquipmentItemInven;
+        ////일반 아이템
+        //test.ItemData = player.m_PlayerInventory.PlayerItemInven;
+        //장착중인 아이템
+        int idx = 0;
+        foreach (var Item in player.m_PlayerPartItem.Values)
+        {
+            if (Item.Equipment != null)
+            {
+                test.equipmentParts[idx] = Item.Equipment;
+            }
+            idx++;
+        }
+        idx = 0;
+        //퀵슬롯에 장착된 아이템 정보
+        //for (int i = 0; i < InventoryUIMgr.Inst.m_UseItemSlots.Length; i++)
+        //{
+        //    if (InventoryUIMgr.Inst.m_UseItemSlots[i].m_ItemData != null)
+        //        test.useItemSlotData[i] = InventoryUIMgr.Inst.m_UseItemSlots[i].m_ItemData.m_SlotNum;
+        //    else
+        //        test.useItemSlotData[i] = -1;
+        //}
+
+
+
         itemdata = JsonUtility.ToJson(test);
 
         Debug.Log(itemdata);
@@ -158,7 +228,12 @@ public class InGameMgr : MonoBehaviour
 
 }
 
-public class testSave
+public class SaveData
 {
-    public ItemData[] testItem;
+    //public ItemData[] ItemData;
+    //public ItemData[] EqItemData;
+    //
+    public ItemData[] equipmentParts = new ItemData[7];
+    //public int[] useItemSlotData = new int[4];
+
 }

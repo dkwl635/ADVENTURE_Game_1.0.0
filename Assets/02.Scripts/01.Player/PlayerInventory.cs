@@ -89,16 +89,27 @@ public class PlayerInventory : MonoBehaviour
         if(newItem != null)
         {
             if (newItem.m_ItemData == null)
-                return;
-            Debug.Log("드롭 아이템 접근");
+                return;         
             if (AddNewItem(newItem.m_ItemData))
-            {
-                
+            {           
                 Destroy(other.gameObject);
             }
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        DropItem newItem = collision.gameObject.GetComponent<DropItem>();
+        if (newItem != null)
+        {
+            if (newItem.m_ItemData == null)
+                return;
+            if (AddNewItem(newItem.m_ItemData))
+            {
+                Destroy(collision.gameObject);
+            }
+        }
+    }
 
     public bool AddNewItem(ItemData a_NewItemData) //아이템을 추가할수 있는지 판단 하고 결과 리턴
     {
@@ -328,7 +339,7 @@ public class PlayerInventory : MonoBehaviour
         }
         else
         {
-            if (player.m_PlayerPartItem[beginItemData.m_PartType].m_Equipment == null)
+            if (player.m_PlayerPartItem[beginItemData.m_PartType].Equipment == null)
             {
                 player.m_PlayerPartItem[beginItemData.m_PartType].ChangeEquipment(beginItemData);
 
@@ -339,7 +350,7 @@ public class PlayerInventory : MonoBehaviour
             }
             else//장비창에 무언가 있을때
             {
-                EquipmentItemData endItemData = player.m_PlayerPartItem[beginItemData.m_PartType].m_Equipment;
+                EquipmentItemData endItemData = player.m_PlayerPartItem[beginItemData.m_PartType].Equipment;
 
                 player.m_PlayerPartItem[beginItemData.m_PartType].ChangeEquipment(beginItemData);
                 m_PlayerEquipmentItemInven[a_Idx] = endItemData;
@@ -356,11 +367,11 @@ public class PlayerInventory : MonoBehaviour
                 m_Face.SetActive(true);
                 m_HairMesh.sharedMesh = m_Hair;
 
-                if (player.m_PlayerPartItem[beginItemData.m_PartType].m_Equipment.m_AddType == EquipmentAddType.HairHalf)
+                if (player.m_PlayerPartItem[beginItemData.m_PartType].Equipment.m_AddType == EquipmentAddType.HairHalf)
                 {
                     m_HairMesh.sharedMesh = m_HairHalf;
                 }
-                else if (player.m_PlayerPartItem[beginItemData.m_PartType].m_Equipment.m_AddType == EquipmentAddType.NoFace)
+                else if (player.m_PlayerPartItem[beginItemData.m_PartType].Equipment.m_AddType == EquipmentAddType.NoFace)
                 {
                     m_HairMesh.gameObject.SetActive(false);
                     m_Face.SetActive(false);
@@ -396,8 +407,8 @@ public class PlayerInventory : MonoBehaviour
             }
             else
             {
-                m_PlayerEquipmentItemInven[a_EndIdx] = player.m_PlayerPartItem[a_PartType].m_Equipment;
-                InventoryUIMgr.Inst.SetEquipSlot(a_EndIdx, player.m_PlayerPartItem[a_PartType].m_Equipment);
+                m_PlayerEquipmentItemInven[a_EndIdx] = player.m_PlayerPartItem[a_PartType].Equipment;
+                InventoryUIMgr.Inst.SetEquipSlot(a_EndIdx, player.m_PlayerPartItem[a_PartType].Equipment);
                 player.m_PlayerPartItem[a_PartType].OffEquipment();
             }
 
@@ -421,7 +432,7 @@ public class PlayerInventory : MonoBehaviour
             }
             else
             {
-                EquipmentItemData beginItemData = player.m_PlayerPartItem[a_PartType].m_Equipment;
+                EquipmentItemData beginItemData = player.m_PlayerPartItem[a_PartType].Equipment;
                 EquipmentItemData endItemData = m_PlayerEquipmentItemInven[a_EndIdx] as EquipmentItemData;
 
                 if (endItemData == null)
@@ -436,11 +447,11 @@ public class PlayerInventory : MonoBehaviour
                     m_Face.SetActive(true);
                     m_HairMesh.sharedMesh = m_Hair;
 
-                    if (player.m_PlayerPartItem[a_PartType].m_Equipment.m_AddType == EquipmentAddType.HairHalf)
+                    if (player.m_PlayerPartItem[a_PartType].Equipment.m_AddType == EquipmentAddType.HairHalf)
                     {
                         m_HairMesh.sharedMesh = m_HairHalf;
                     }
-                    else if (player.m_PlayerPartItem[a_PartType].m_Equipment.m_AddType == EquipmentAddType.NoFace)
+                    else if (player.m_PlayerPartItem[a_PartType].Equipment.m_AddType == EquipmentAddType.NoFace)
                     {
                         m_HairMesh.gameObject.SetActive(false);
                         m_Face.SetActive(false);
@@ -515,12 +526,17 @@ public class PlayerInventory : MonoBehaviour
     public void DestroyItem(int a_Idx, int a_Count = 0)
     {
         m_PlayerItemInven[a_Idx].m_CurCount -= a_Count;
+
         if (m_PlayerItemInven[a_Idx].m_CurCount <= 0)
-        {           
+        {
             m_PlayerItemInven[a_Idx] = null;
             InventoryUIMgr.Inst.SetItemSlot(a_Idx, null);
         }
-   }
+        else
+            InventoryUIMgr.Inst.m_ItemSlots[a_Idx].RefreshSlot();
+
+
+    }
     public void DestoryEquipmentItem(int a_Idx)
     {
         m_PlayerEquipmentItemInven[a_Idx] = null;

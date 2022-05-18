@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
 
     //장착중인 장비 아이템
     [HideInInspector] public Dictionary<PartType, EquipmentPart> m_PlayerPartItem = new Dictionary<PartType, EquipmentPart>();
-    [HideInInspector] public Weapon weapon = null;                                 //지니고 있는 무기 정보 
+    [HideInInspector] public Weapon weapon = null; //지니고 있는 무기 정보 
 
     //능력치
     public Status m_PlayerStatus;

@@ -48,18 +48,17 @@ public class Skill : MonoBehaviour
     }
 
     public virtual void BoolShowMark()  //사거리를 보여줄지 체크
-    {
-       
-        if (m_CurrTime < 0.0f && player.bIsAttack == false) //쿨타임 및 플레이가 공격 중인지 체크
-        {
-            if (SkillMgr.Inst.bIsPushSkill == true) //다른 스킬을 누루고 있으면
-                return;
-            else //SkillMgr.Inst.bIsPushSkill == false
-                SkillMgr.Inst.bIsPushSkill = true;
-
+    {     
+        if (m_CurrTime < 0.0f) //쿨타임
+        {          
             m_Show = true;  //스킬 범위 및 사거리 보여주기
         }
+        else
+        {
+            SkillMgr.Inst.bIsPushSkill = false;
+        }
     }
+
     public virtual void ShowSkillMark(Vector3 a_MouesDir)
     {
         if (SkillMgr.Inst.bIsPushSkill == false)
@@ -91,6 +90,7 @@ public class Skill : MonoBehaviour
         else
         {
             m_Show = false;
+            SkillMgr.Inst.bIsPushSkill = false;
             return;
         }
        

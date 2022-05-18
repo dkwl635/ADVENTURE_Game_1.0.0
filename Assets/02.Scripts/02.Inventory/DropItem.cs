@@ -29,6 +29,11 @@ public class DropItem : MonoBehaviour
         m_Rigidbody.AddForce(m_Force);
     }
 
+    private void Start()
+    {
+        Destroy(this.gameObject, 15.0f);
+
+    }
     private void OnCollisionEnter(Collision collision)
     {
        if(collision.gameObject.CompareTag("GROUND"))

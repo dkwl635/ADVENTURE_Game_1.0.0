@@ -15,6 +15,7 @@ public class MouseCursorCtrl : MonoBehaviour
     {
         StartCoroutine(MyCursor());
     }
+
     IEnumerator MyCursor()
     {
         //모든 렌더링이 완료될 때까지 대기할테니 렌더링이 완료되면

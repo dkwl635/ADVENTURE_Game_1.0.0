@@ -41,8 +41,8 @@ public class SoundMgr : MonoBehaviour
             DicEffectClip.Add(Effect_Clip[i].name, Effect_Clip[i]);
         }
 
-        m_BgmAudio.volume = 0.2f;
-        m_Volume = 0.2f;
+        m_BgmAudio.volume = 0.02f;
+        m_Volume = 0.02f;
     }
 
     private void Start()
@@ -69,19 +69,18 @@ public class SoundMgr : MonoBehaviour
         if (!DicEffectClip.ContainsKey(a_Name))
             return;
 
-
         m_EffectAudio.PlayOneShot(DicEffectClip[a_Name], m_Volume);
     }
 
     public void ChangeBGMVolume(float Volume)
     {
        // m_Volume = Volume;
-        m_BgmAudio.volume = Volume;
+        m_BgmAudio.volume = Volume * 0.1f;
 
     }
 
     public void ChangeEffectVolume(float Volume)
     {
-        m_Volume = Volume;    
-    }
+        m_Volume = Volume * 0.1f;    
+    }   
 }
