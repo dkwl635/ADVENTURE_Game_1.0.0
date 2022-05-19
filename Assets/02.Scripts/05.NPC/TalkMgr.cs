@@ -13,6 +13,7 @@ public class TalkMgr : MonoBehaviour
         Upgrade,
         Quest,
     }
+
     TalkType m_CurrTalkType = TalkType.Talk;
 
     public static TalkMgr Inst;
@@ -90,9 +91,9 @@ public class TalkMgr : MonoBehaviour
 
         if (m_ShopBtn != null) m_ShopBtn.onClick.AddListener(() => { TalkStart(TalkType.Shop); });
 
-        if (m_UpgradeBtn != null) m_UpgradeBtn.onClick.AddListener(() => { TalkStart(TalkType.Upgrade); });
+        if (m_UpgradeBtn != null) m_UpgradeBtn.onClick.AddListener(() => { TalkStart(TalkType.Upgrade);});
 
-        if (m_QuestBtn != null)      m_QuestBtn.onClick.AddListener(() => { TalkStart(TalkType.Quest); });
+        if (m_QuestBtn != null)m_QuestBtn.onClick.AddListener(() => { TalkStart(TalkType.Quest); });
 
 
 

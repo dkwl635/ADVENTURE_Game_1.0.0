@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/01.Scenes/TitleScene.unity
+    guid: bf2f8190f3459a948b868e07ce458224
+  - enabled: 1
     path: Assets/01.Scenes/rpgpp_lt_scene_1.0 1.unity
     guid: 6990d1bca5501be459b60e3abb21c4ee
   - enabled: 1

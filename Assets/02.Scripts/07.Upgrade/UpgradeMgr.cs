@@ -107,9 +107,8 @@ public class UpgradeMgr : MonoBehaviour
     }
     public void OpenUpgrade(Player a_Player)
     {
-        m_UpgradeUI_Panel.SetActive(true);
-        InventoryUIMgr.Inst.m_InventoryUI_Panel.SetActive(true);
-        InventoryUIMgr.Inst.m_InventoryUI_Panel.transform.SetAsLastSibling();
+        m_UpgradeUI_Panel.SetActive(true);     
+        InventoryUIMgr.Inst.OnInvenUI();
         m_UpgradeUI_Panel.transform.SetAsLastSibling();
 
         if (m_Player == null)
@@ -122,8 +121,7 @@ public class UpgradeMgr : MonoBehaviour
     public void OnUpgradeUI()
     {
         m_UpgradeUI_Panel.SetActive(true);
-        InventoryUIMgr.Inst.m_InventoryUI_Panel.SetActive(true);
-        InventoryUIMgr.Inst.m_InventoryUI_Panel.transform.SetAsLastSibling();
+        InventoryUIMgr.Inst.OnInvenUI();
         m_UpgradeUI_Panel.transform.SetAsLastSibling();
     }
     

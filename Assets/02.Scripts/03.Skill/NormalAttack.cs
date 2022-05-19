@@ -33,7 +33,7 @@ public class NormalAttack : Skill
     {     
         if (m_CurrTime <= 0.0f && player.bIsAttack == false)
         {
-            Debug.Log("기본 공격");
+           
             player.bIsAttack = true;
             m_CurrTime = m_CoolTime;
             StartCoroutine(SkillStart());

@@ -26,7 +26,8 @@ public class UseItemSlot : Slot
     }
 
     public override void SetSlot( ItemData a_ItemData )
-    {    
+    {
+    
         if(a_ItemData == null)   // 빈칸으로 초기화 되는 경우
         {       
             m_ItemData = null;

@@ -233,7 +233,6 @@ MonoBehaviour:
   m_Skin: {fileID: 0}
   m_OrginMtrl: {fileID: 0}
   m_HitMtrl: {fileID: 2100000, guid: faf36bdb15d219745885e691cccfb44e, type: 2}
-  m_AttackEff: {fileID: 3446893904801947268}
   m_DropList: f5010000
 --- !u!114 &1150408648
 MonoBehaviour:
@@ -266,7 +265,7 @@ MonoBehaviour:
     m_Critical: 0
   m_Attacker: {fileID: 0}
   m_Speed: 4
-  m_AttackDist: 2
+  m_AttackDist: 1.5
   m_TraceDist: 10
   m_AttackPower: 10
   m_Dist: 0
@@ -276,7 +275,6 @@ MonoBehaviour:
   m_Skin: {fileID: 0}
   m_OrginMtrl: {fileID: 0}
   m_HitMtrl: {fileID: 2100000, guid: faf36bdb15d219745885e691cccfb44e, type: 2}
-  m_AttackEff: {fileID: 3446893904801947268}
   m_DropList: 
 --- !u!1 &4485532753235064353
 GameObject:
@@ -2315,11 +2313,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3446893903753472460, guid: 623c3865caeb4144db8e21475d307c80, type: 3}
   m_PrefabInstance: {fileID: 1099311340}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3446893904801947268 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3446893903753246312, guid: 623c3865caeb4144db8e21475d307c80, type: 3}
-  m_PrefabInstance: {fileID: 1099311340}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1872892164
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2473,6 +2466,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c868bc7fa73f86847be4b58953226e2d, type: 3}
+--- !u!224 &3770781140318231803 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3770781138630151679, guid: c868bc7fa73f86847be4b58953226e2d, type: 3}
+  m_PrefabInstance: {fileID: 1872892164}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3770781140318231804 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3770781138630151672, guid: c868bc7fa73f86847be4b58953226e2d, type: 3}
@@ -2484,8 +2482,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59e027b01628c1b4eb17a5f36d127415, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &3770781140318231803 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3770781138630151679, guid: c868bc7fa73f86847be4b58953226e2d, type: 3}
-  m_PrefabInstance: {fileID: 1872892164}
-  m_PrefabAsset: {fileID: 0}

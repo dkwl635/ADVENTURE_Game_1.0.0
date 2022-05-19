@@ -15,8 +15,9 @@ public class Skill : MonoBehaviour
     public Sprite m_SkillImg;                           //스킬 UI 이미지
     public string m_SkillName = "빈 스킬";    //스킬이름
     public int m_Lv = 1;                                 //스킬 레벨
-    public int m_NeedSP = 5;            //레벨 업 필요 스킬 포인트
+    public int m_NeedSP = 5;   //레벨 업 필요 스킬 포인트
     public int m_Damage = 10;   //기본 데미지
+    
     public string m_SkillInfo; //스킬 설명
     public string SKillInfo
     {
@@ -31,12 +32,13 @@ public class Skill : MonoBehaviour
 
 
     public virtual void Init(Player a_player)   //기본 셋팅
-    {
+    {    
         player = a_player;
         animator = a_player.animator;
         rigidbody = a_player.rigidbody;
         playerTr = a_player.transform;
 
+        
        
         //타겟 레이어 셋팅
         m_SkillTargetLayer = 1 << LayerMask.NameToLayer("MONSTER");

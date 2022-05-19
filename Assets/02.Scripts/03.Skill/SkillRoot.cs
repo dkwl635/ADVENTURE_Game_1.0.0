@@ -25,8 +25,7 @@ public class SkillRoot : MonoBehaviour
         m_NeedSP_Txt = transform.Find("NeedSkillPointTxt").GetComponent<Text>();
         m_Up_Btn = transform.Find("UpBtn").GetComponent<Button>();
         m_Down_Btn = transform.Find("DownBtn").GetComponent<Button>();
-
-       
+    
     }
 
     // Start is called before the first frame update

@@ -10,7 +10,6 @@ public class NomalMonster : MonsterCtrl
     float m_HitDelay = 0.0f;    //0.5f;
     float m_SpawnTime = -10.0f;   //5.0f
 
-    public GameObject m_AttackEff;
     public List<int> m_DropList;
 
     protected bool bInvincibility = false;
@@ -155,16 +154,14 @@ public class NomalMonster : MonsterCtrl
                 RaycastHit[] hits = Physics.BoxCastAll(transform.position, Vector3.one * 0.5f, transform.forward, transform.rotation, 1.0f, 1 << LayerMask.NameToLayer("PLAYER"));
                 if (hits.Length > 0) // 타겟 충돌체 찾기
                 {
-                    Player player = hits[0].collider.GetComponent<Player>();
-                    m_AttackEff.SetActive(true);
+                    Player player = hits[0].collider.GetComponent<Player>();                 
                     player.OnDamge(m_MonsterStatus.m_AttPw);  //데미지적용
                 }
             }
         }
 
         if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
-        {
-            m_AttackEff.SetActive(false);
+        {          
             m_AttackDelay = 1.5f;
             m_MonsterState = MonsterState.Idle; //상태 전환
         }
@@ -253,7 +250,7 @@ public class NomalMonster : MonsterCtrl
         OnOffNav(true); //네비 켜기   
         navMeshAgent.nextPosition = m_SpawnPos; //네비 위치 정보 초기화
         m_MonsterState = MonsterState.Idle;   //상태 전화
-        m_AttackEff.SetActive(false);
+       
     }
 
    

@@ -34,7 +34,6 @@ public class QuestHelp : MonoBehaviour
             if (!QuestMgr.Inst.ClearCheckQuest(m_Quest_IdList[i]))//선행퀘 확인                    
                 continue;
            
-
             if (QuestMgr.Inst.CheckQuest(m_Quest_IdList[i]))//받은 퀘스트인지 확인                          
                 continue;
 

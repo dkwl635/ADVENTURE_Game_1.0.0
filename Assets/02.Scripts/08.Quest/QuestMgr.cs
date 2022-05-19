@@ -9,9 +9,11 @@ public class QuestMgr : MonoBehaviour
 
     Player m_Player;
 
-    Dictionary<int, Quest> DicQuest = new Dictionary<int, Quest>(); //모든 퀘스트가 있는 사전
-    Dictionary<Quest, GameObject> DicQuestItem = new Dictionary<Quest, GameObject>(); //퀘스트 목록를 보여주는 오브젝트
-    List<Quest> m_AllQuestList = new List<Quest>(); //내가 받은 퀘스트 목록
+    [HideInInspector] public Dictionary<int, Quest> DicQuest = new Dictionary<int, Quest>(); //모든 퀘스트가 있는 사전
+
+    [HideInInspector] public Dictionary<Quest, GameObject> DicQuestItem = new Dictionary<Quest, GameObject>(); //퀘스트 목록를 보여주는 오브젝트
+
+    [HideInInspector] public List<Quest> m_AllQuestList = new List<Quest>(); //내가 받은 퀘스트 목록
 
     List<TalkQuest> m_TalkQuestList = new List<TalkQuest>();    //대화로 하는 퀘스트
     List<KillQuest> m_KillQuestList = new List<KillQuest>();    //잡아야 하는 퀘스트
@@ -282,10 +284,9 @@ public class QuestMgr : MonoBehaviour
         m_QuestPanel.SetActive(false);       
     }
 
-    void InstantiateQuestItem(Quest quest)
-    {
+   public void InstantiateQuestItem(Quest quest)
+    {        
         GameObject questItemObj =  GameObject.Instantiate(m_QuestItem, QuestListScrollTr);
-
         QuestItem questItem = questItemObj.GetComponent<QuestItem>();
         questItem.m_Quest = quest;
         questItem.m_QuestInfoBtn .onClick.AddListener(() => { OpenQuestDlgBox(quest); });
@@ -300,10 +301,7 @@ public class QuestMgr : MonoBehaviour
 
     void OpenQuestDlgBox(Quest a_Quest)
     {
-
-        m_QuestDlgBox.SetActive(true);
-        
-       
+        m_QuestDlgBox.SetActive(true);         
         m_QuestName.text = a_Quest.m_QuestName;
         m_QuestInfo.text = a_Quest.m_QuestInfo;
         m_QuestStatus.text = a_Quest.m_QuestStatus;
@@ -352,13 +350,18 @@ public class QuestMgr : MonoBehaviour
         m_QuestDlgBox.SetActive(false);
         m_CurQuest = null;
 
+
+        QuestNPCRefresh();
+    }
+
+    public void QuestNPCRefresh()
+    {
         //씬에 있는 모든 QuestHelp를 돌며 퀘스트상태 갱신
-        QuestHelp[]  questHelps= FindObjectsOfType<QuestHelp>();
+        QuestHelp[] questHelps = FindObjectsOfType<QuestHelp>();
         for (int i = 0; i < questHelps.Length; i++)
-        {         
+        {
             questHelps[i].QuestSet();
         }
-
     }
 
     //이미 받은 퀘스트 라면 
@@ -368,7 +371,6 @@ public class QuestMgr : MonoBehaviour
         {            
             return true;
         }
-
         return false; 
     }
 
@@ -381,6 +383,7 @@ public class QuestMgr : MonoBehaviour
         {             
             int beQuId = DicQuest[a_Id].m_BeforeQuestId;
 
+        
             if (DicQuest[beQuId].bEndQuest)
                 return true;
 

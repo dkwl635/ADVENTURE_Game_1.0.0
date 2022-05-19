@@ -19,8 +19,7 @@ public class ShopMgr : MonoBehaviour
     public static ShopMgr Inst;
 
     //상점 UI
-    public GameObject m_ShopPanel;
-    public GameObject m_PlayerInventoryUI;
+    public GameObject m_ShopPanel;   
     PlayerInventory m_PlayerInventory;
     Player m_Player;
 
@@ -133,9 +132,8 @@ public class ShopMgr : MonoBehaviour
     {
         SoundMgr.Inst.PlaySound("Slide");
 
-        m_ShopPanel.SetActive(true);
-        m_PlayerInventoryUI.SetActive(true);
-        m_PlayerInventoryUI.transform.SetAsLastSibling();
+        m_ShopPanel.SetActive(true);       
+        InventoryUIMgr.Inst.OnInvenUI();      
         m_ShopPanel.transform.SetAsLastSibling();
 
         //플레이어 못 움직이게

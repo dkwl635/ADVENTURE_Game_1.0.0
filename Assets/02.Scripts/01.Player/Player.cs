@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
     //이펙트
 
     public ParticleSystem m_LevelEffect = null;
-
+    public ParticleSystem m_HitEffect = null;
     float m_HitTimer = -1.0f;
 
     public GameObject m_NpcObj = null; //지금 보고 있는 NPC
@@ -117,15 +117,16 @@ public class Player : MonoBehaviour
     public  delegate void Event();
     public Event LevelUpEvent;
 
+   
     private void Awake()
     {       
         weapon = gameObject.GetComponentInChildren<Weapon>();
         rigidbody = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
        
+       
         nv = GetComponent<NavMeshAgent>();
   
-
         m_HpBarImg = m_HpBarObj.GetComponentsInChildren<Image>()[1];
         m_HpBarText = m_HpBarObj.GetComponentInChildren<Text>();
 
@@ -291,7 +292,7 @@ public class Player : MonoBehaviour
         m_HpBarText.text = m_PlayerStatus.m_CurHp.ToString() + " / " + m_PlayerStatus.m_MaxHp.ToString();
     }
 
-    void SetExpUI()
+    public void SetExpUI()
     {
         m_ExpImg.fillAmount = (float)m_PlayerStatus.m_CurExp / (float)m_PlayerStatus.m_NextExp;
         m_LvText.text = "Lv " +  m_PlayerStatus.m_Lv;
@@ -315,15 +316,17 @@ public class Player : MonoBehaviour
 
         InGameMgr.Inst.SpanwDamageTxt(pos, TxtType.PlayerDamage, m_BuffDamage ); //데미지 숫자 이펙트
         m_PlayerStatus.m_CurHp -= m_BuffDamage;//데미지 적용
-
-        if(m_PlayerStatus.m_CurHp <= 0)
-        {
-            // 죽음
-        }
-
         SetHpUI();
 
+        m_HitEffect.Play();
 
+        if (m_PlayerStatus.m_CurHp <= 0)
+        {
+            // 죽음
+            return;
+        }
+
+        
         m_MeshOutline.OutlineColor = Color.red;
         m_HitTimer = 0.5f;
         if (!bIsAttack && !bIsHit)

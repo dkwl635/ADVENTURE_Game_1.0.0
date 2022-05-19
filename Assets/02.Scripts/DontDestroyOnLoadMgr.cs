@@ -16,20 +16,31 @@ public class DontDestroyOnLoadMgr : MonoBehaviour
     {
         if(inst == null)
         {
+           
             inst = this;
-            DontDestroyOnLoad(UI);
-            DontDestroyOnLoad(Player);
-            DontDestroyOnLoad(PlayerMark);
-            DontDestroyOnLoad(Cam);
             DontDestroyOnLoad(this.gameObject);
+            if (UI || Player || PlayerMark || Cam)
+            {
+                DontDestroyOnLoad(UI);
+                DontDestroyOnLoad(Player);
+                DontDestroyOnLoad(PlayerMark);
+                DontDestroyOnLoad(Cam);
+            }
+
+      
+        
         }
         else
         {
-            Destroy(UI);
-            Destroy(Player);
-            Destroy(PlayerMark);
-            Destroy(Cam);          
             Destroy(this.gameObject);
+            if (UI || Player || PlayerMark || Cam)
+            {
+                Destroy(UI);
+                Destroy(Player);
+                Destroy(PlayerMark);
+                Destroy(Cam);
+   
+            }
             
         }
         

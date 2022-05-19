@@ -94,7 +94,8 @@ public class InventoryUIMgr : MonoBehaviour
         {
             for (int i = 0; i < equipmentSlots.Length; i++)
             {
-                m_PartSlot.Add(equipmentSlots[i].m_SlotItemType, equipmentSlots[i]);                
+                m_PartSlot.Add(equipmentSlots[i].m_SlotItemType, equipmentSlots[i]);
+                equipmentSlots[i].Awake();
             }
         }
 
@@ -103,6 +104,8 @@ public class InventoryUIMgr : MonoBehaviour
         m_ItemLable = m_ItemBtn.GetComponentInChildren<Text>();
         m_UserInfoLable = m_UserInfoBtn.GetComponentInChildren<Text>();
 
+
+     
     }
 
     private void Start()
@@ -118,11 +121,11 @@ public class InventoryUIMgr : MonoBehaviour
         m_EqSortBtn.onClick.AddListener(SortEquipItem);
 
 
-        //아이템 퀵슬롯 초기화
-        for (int i = 0; i < m_UseItemSlots.Length; i++)
-        {
-            m_UseItemSlots[i].SetSlot(null);
-        }
+        ////아이템 퀵슬롯 초기화
+        //for (int i = 0; i < m_UseItemSlots.Length; i++)
+        //{
+        //    m_UseItemSlots[i].SetSlot(null);
+        //}
 
 
         SetUserInfo();

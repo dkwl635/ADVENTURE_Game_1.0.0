@@ -80,9 +80,7 @@ public class ItemMgr : MonoBehaviour
 
     private void Start()
     {
-        if (m_UseItemSlots != null)
-            for (int i = 0; i < m_UseItemSlots.Length; i++)
-                m_UseItemSlots[i].SetSlot(null);
+       
     }
 
     private void Update()
@@ -381,9 +379,8 @@ public class ItemMgr : MonoBehaviour
 
             a_Portion.m_CurCount--;
             //effect
-            Vector2 pos = player.m_MsgBoxTr.position;
-            pos.x = pos.x - 200 + ( Random.Range( 0, 20.0f ) );
-            pos.y = pos.y - 50;
+            Vector2 pos = player.m_DamageTxtTr.position;
+            pos.x = pos.x + (Random.Range(-20.0f, 20.0f));
             InGameMgr.Inst.SpanwDamageTxt( pos ,TxtType.Heal, (int)a_Portion.m_Value);
         }
 

@@ -18,6 +18,7 @@ public class PlayerInventory : MonoBehaviour
         {
             return m_PlayerEquipmentItemInven;
         }
+        set { m_PlayerEquipmentItemInven = value; }
     }
 
     public ItemData[] PlayerItemInven
@@ -26,6 +27,7 @@ public class PlayerInventory : MonoBehaviour
         {
             return m_PlayerItemInven;
         }
+        set { m_PlayerItemInven = value; }
     }
 
 
@@ -124,7 +126,7 @@ public class PlayerInventory : MonoBehaviour
            
             //1, 빈 자리가 있는지
             idx = FindEquipmentEmptyIndex();
-            Debug.Log(idx);
+
             //2, 아이템 추가
             if (idx == -1)  //빈자리가 없다. 그러니 실패
                 return false;
@@ -213,7 +215,7 @@ public class PlayerInventory : MonoBehaviour
         return -1;
     }
     private int FindEmptyIndex()  //비어있는 일반아이템 인덱스 반환
-    {     
+    {      
         for(int i = 0; i < m_PlayerItemInven.Length; i++)
             if(m_PlayerItemInven[i] == null)
                 return i;
@@ -301,7 +303,7 @@ public class PlayerInventory : MonoBehaviour
         
 
     }
-    public void EquipItem(int  a_Idx)
+    public void EquipItem(int a_Idx)
     {
         if (player.bIsAttack)
             return;
@@ -381,14 +383,63 @@ public class PlayerInventory : MonoBehaviour
 
         outline.MeshUpdate();
     }
+
+    public void EquipItem(EquipmentItemData beginItemData)
+    {        
+        if (beginItemData == null)
+            return;
+
+        if (beginItemData.m_PartType == PartType.Weapon)
+        {
+            WeaponData newWeaponData = beginItemData as WeaponData;
+            if (newWeaponData == null)
+                return;
+
+            if (player.weapon.m_WeaponData == null)//비어 있다면
+            {
+                player.weapon.ChangeWeapon(newWeaponData);
+                InventoryUIMgr.Inst.SetPartSlot(beginItemData.m_PartType, beginItemData);            
+            }        
+            player.animator.SetBool("UseWeapon", true);
+
+        }
+        else
+        {
+            if (player.m_PlayerPartItem[beginItemData.m_PartType].Equipment == null)
+            {
+                player.m_PlayerPartItem[beginItemData.m_PartType].ChangeEquipment(beginItemData);
+                InventoryUIMgr.Inst.SetPartSlot(beginItemData.m_PartType, beginItemData);             
+            }
+           
+            //머리 장비는 특이사항
+            if (player.m_PlayerPartItem[beginItemData.m_PartType].m_PartType == PartType.Head)
+            {
+                m_HairMesh.gameObject.SetActive(true);
+                m_Face.SetActive(true);
+                m_HairMesh.sharedMesh = m_Hair;
+
+                if (player.m_PlayerPartItem[beginItemData.m_PartType].Equipment.m_AddType == EquipmentAddType.HairHalf)
+                {
+                    m_HairMesh.sharedMesh = m_HairHalf;
+                }
+                else if (player.m_PlayerPartItem[beginItemData.m_PartType].Equipment.m_AddType == EquipmentAddType.NoFace)
+                {
+                    m_HairMesh.gameObject.SetActive(false);
+                    m_Face.SetActive(false);
+                }
+            }
+        }
+
+        outline.MeshUpdate();
+    }
     public void OffEquipment(PartType a_PartType, int a_EndIdx)
     {
         if (player.bIsAttack)
             return;
 
         if (m_PlayerEquipmentItemInven[a_EndIdx] == null)//비어 있는 경우
-        {            
-            
+        {
+           
             if (a_PartType == PartType.Head)
             {
                 m_HairMesh.gameObject.SetActive(true);
@@ -416,7 +467,8 @@ public class PlayerInventory : MonoBehaviour
 
         }
         else// 뭔가 있는 경우
-        {                   
+        {
+          
             if (a_PartType == PartType.Weapon)
             {
                 WeaponData oldWeaponData = player.weapon.m_WeaponData;

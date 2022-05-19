@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum SkillTpye
-{
-    None,
-    NormalAttack,
-    Crash,
-    SwordAuror,
-}
 
 public class SkillMgr : MonoBehaviour
 {
@@ -84,15 +77,6 @@ public class SkillMgr : MonoBehaviour
         m_Skills = new Dictionary<string, Skill>();
 
         m_LayerMask = 1 << LayerMask.NameToLayer("GROUND");
-    }
-
-    void Start()
-    {
-
-        m_BackBtn.onClick.AddListener(OffSkillUI);
-
-        m_SkillPoint = 10;
-       
 
         //스킬 이름별로 딕셔너리로 저장
         for (int i = 0; i < m_SkillList.Length; i++)
@@ -101,12 +85,22 @@ public class SkillMgr : MonoBehaviour
             m_SkillList[i].Init(player);
         }
 
-        //UI 스킬슬롯 초기화 시키기
+        //UI 스킬슬롯
         if (m_SlotSkillRoot != null)
             m_SkillSlots = m_SlotSkillRoot.GetComponentsInChildren<SkillSlot>();
-        if (m_SkillSlots != null)
-            for (int i = 0; i < m_SkillSlots.Length; i++)
-                m_SkillSlots[i].SetSlot(null);
+
+        m_SkillPoint = 10;
+    }
+
+    void Start()
+    {
+
+        m_BackBtn.onClick.AddListener(OffSkillUI);
+       
+       
+        //if (m_SkillSlots != null)
+        //    for (int i = 0; i < m_SkillSlots.Length; i++)
+        //        m_SkillSlots[i].SetSlot(null);
 
         for (int i = 1; i < m_SkillList.Length; i++)
         {
