@@ -39,7 +39,7 @@ public class TownPotar : MonoBehaviour
 
         player.bIsMove = true;
         player.gameObject.SetActive(false);
-        SceneManager.LoadScene(m_SceneName);
+        LoadingSceneMgr.LoadScene(m_SceneName);
         SoundMgr.Inst.OffSound();    
     }
 

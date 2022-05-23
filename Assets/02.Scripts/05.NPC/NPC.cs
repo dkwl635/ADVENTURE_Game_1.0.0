@@ -31,7 +31,9 @@ public class NPC : MonoBehaviour
 
     //NPC 대화 시작
     void OpenTalk(Player a_Player)
-    {      
+    {
+        animator.SetTrigger("Hello");
+
         TalkMgr.Inst.SetTalkMgr(m_NpcId, m_NpcName, m_NpcSprite,a_Player);
         TalkMgr.Inst.OnTalkBtnGroup();
         TalkMgr.Inst.OnTalkBtn();

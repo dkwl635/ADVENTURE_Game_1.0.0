@@ -4,30 +4,79 @@ using UnityEngine;
 
 public class GlobalValue 
 {
-    public static string player01 = "";
-    public static SaveData player01Data;
-  
+    public static string player1 = "";
+    public static string player2 = "";
+    public static string player3 = "";
 
+
+    public static SaveData playerData1;
+    public static SaveData playerData2;
+    public static SaveData playerData3;
+
+    public static int playerNum;
+
+    public static float StartTimer;
+ 
    static public void LoadData()
     {
-        player01 =  PlayerPrefs.GetString("ItemData", "");
+        player1 =  PlayerPrefs.GetString("ItemData1", "");
+        player2 =  PlayerPrefs.GetString("ItemData2", "");
+        player3 =  PlayerPrefs.GetString("ItemData3", "");
     }
 
     static public string SetStartBtn(int num)
     {
+        string dataStr = "";
+        
+        switch (num)
+        {
+            case 1: dataStr = player1; break;
+            case 2: dataStr = player2; break;
+            case 3: dataStr = player3; break;
+        }
+
+      
 
         string str = "";
+        str += num + "번 슬롯  ";
 
-        player01Data = JsonUtility.FromJson<SaveData>(player01);
+        if(string.IsNullOrEmpty(dataStr))
+        {
+            str += " : 비어 있음 ";
+            return str;
+        }
 
-        str += "플레이어 레벨 : " + player01Data.m_PlayerStatus.m_Lv;
-        str+= "\n플레이어 코인 :" + player01Data.coin;
-        str+= "\n스킬 포인트 :" + player01Data.sk_point;
-        str+= "\n플레이 타임 :" + player01Data.playtime;
+        SaveData playerData = null;
+        playerData = JsonUtility.FromJson<SaveData>(dataStr);        
+        str += " : Lv " + playerData.m_PlayerStatus.m_Lv;   
+        
+        str+= "\n\n코인 :" + playerData.coin;
+
+        int minute = (int)playerData.playtime / 60;
+        int second = (int)playerData.playtime - (minute * 60);
+            
+        int second1 = second / 10;
+        int second2 = second % 10;
+        str += "\n플레이 타임 :" + minute.ToString() + "분 " + second1.ToString() + second2.ToString() +"초"; 
 
         return str;
     }
-    
+    static public void ResetData(int num)
+    {   
+        switch (num)
+        {
+            case 1: PlayerPrefs.SetString("ItemData1", ""); break;
+            case 2: PlayerPrefs.SetString("ItemData2", ""); break;
+            case 3: PlayerPrefs.SetString("ItemData3", ""); break;
+        }
+
+        switch (num)
+        {
+            case 1: player1 = PlayerPrefs.GetString("ItemData1", ""); break;
+            case 2: player2 = PlayerPrefs.GetString("ItemData2", ""); break;
+            case 3: player3 = PlayerPrefs.GetString("ItemData3", ""); break;
+        }
+    }
 }
 
 public class SaveData

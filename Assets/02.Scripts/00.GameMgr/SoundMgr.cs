@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundMgr : MonoBehaviour
 {
@@ -11,13 +12,15 @@ public class SoundMgr : MonoBehaviour
     Dictionary<string, AudioClip> DicEffectClip = new Dictionary<string, AudioClip>();
     Dictionary<string, AudioClip> DicBGMClip = new Dictionary<string, AudioClip>();
 
-    AudioSource m_BgmAudio = null;
-    AudioSource m_EffectAudio = null;
+    [HideInInspector] public AudioSource m_BgmAudio = null;
+    [HideInInspector] public AudioSource m_EffectAudio = null;
 
-    float m_Volume = 1.0f;
+    public float m_BgmVolume;
+    public float m_EffectVolume;
+
     private void Awake()
     {
-        if (!Inst)
+        if (Inst == null)
         {
             Inst = this;
             DontDestroyOnLoad(this.gameObject);
@@ -25,8 +28,9 @@ public class SoundMgr : MonoBehaviour
         else
         {
             Destroy(this.gameObject);
+            return;
         }
-         
+
 
         m_BgmAudio = Camera.main.GetComponents<AudioSource>()[0];
         m_EffectAudio = Camera.main.GetComponents<AudioSource>()[1];
@@ -42,12 +46,24 @@ public class SoundMgr : MonoBehaviour
         }
 
         m_BgmAudio.volume = 0.02f;
-        m_Volume = 0.02f;
+        m_BgmVolume = 0.02f;
+        m_EffectAudio.volume = 0.02f;
+        m_EffectVolume = 0.02f;
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void Start()
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-       
+        if (scene.name == "LoadingScene")
+            return;
+
+        m_BgmAudio = Camera.main.GetComponents<AudioSource>()[0];
+        m_EffectAudio = Camera.main.GetComponents<AudioSource>()[1];
+        
+        m_BgmAudio.volume = m_BgmVolume;
+        m_EffectAudio.volume = m_EffectVolume;
+
     }
 
     public void OffSound()
@@ -69,18 +85,21 @@ public class SoundMgr : MonoBehaviour
         if (!DicEffectClip.ContainsKey(a_Name))
             return;
 
-        m_EffectAudio.PlayOneShot(DicEffectClip[a_Name], m_Volume);
+        m_EffectAudio.PlayOneShot(DicEffectClip[a_Name]);
     }
 
     public void ChangeBGMVolume(float Volume)
     {
-       // m_Volume = Volume;
+ 
         m_BgmAudio.volume = Volume * 0.1f;
+        m_BgmVolume = m_BgmAudio.volume;
 
     }
 
     public void ChangeEffectVolume(float Volume)
     {
-        m_Volume = Volume * 0.1f;    
-    }   
+
+        m_EffectAudio.volume = Volume * 0.1f;
+        m_EffectVolume = m_EffectAudio.volume;
+    }
 }

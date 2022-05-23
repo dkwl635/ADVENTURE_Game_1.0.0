@@ -93,6 +93,9 @@ public class MeumUIMgr : MonoBehaviour
     // 체인을 걸어서 이 함수는 매 씬마다 호출된다.
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (scene.name == "TitleScene" || scene.name == "LoadingScene")
+            return;
+
         SetMiniMap();       
     }
 
@@ -120,9 +123,7 @@ public class MeumUIMgr : MonoBehaviour
 
    void OnConfigBox()
     {
-        m_ConfigBoxPanel.SetActive(true);
-        Time.timeScale = 0.0f;
-
+        m_ConfigBoxPanel.SetActive(true);      
     }
 
     void OffConfigBox()

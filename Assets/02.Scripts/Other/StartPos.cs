@@ -22,10 +22,19 @@ public class StartPos : MonoBehaviour
             player.transform.position = this.transform.position;
             player.gameObject.SetActive(true);
 
+            player.m_PlayerStatus.m_CurHp = player.m_PlayerStatus.m_MaxHp;
+            player.SetHpUI();
+            player.bIsAttack = false;
+            player.bIsMove = true;
+
+
             Camera.main.GetComponent<CameraCtrl>().InitCamera();
         }
 
         SoundMgr.Inst.ChangeBGM(m_BGM_Name);
+
+
+
 
     }
 

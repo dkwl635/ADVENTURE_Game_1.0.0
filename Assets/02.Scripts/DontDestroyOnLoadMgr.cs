@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DontDestroyOnLoadMgr : MonoBehaviour
 {
-    static DontDestroyOnLoadMgr inst;
+    static public DontDestroyOnLoadMgr inst;
 
     public GameObject Cam;
     public GameObject Player;
@@ -25,10 +25,7 @@ public class DontDestroyOnLoadMgr : MonoBehaviour
                 DontDestroyOnLoad(Player);
                 DontDestroyOnLoad(PlayerMark);
                 DontDestroyOnLoad(Cam);
-            }
-
-      
-        
+            }         
         }
         else
         {
@@ -42,10 +39,21 @@ public class DontDestroyOnLoadMgr : MonoBehaviour
    
             }
             
-        }
-        
-             
+        }          
     }
 
-   
+    public void AllDestory()
+    {
+       
+        if (UI || Player || PlayerMark || Cam)
+        {
+            Destroy(UI);
+            Destroy(Player);
+            Destroy(PlayerMark);
+            Destroy(Cam);
+
+        }
+
+        Destroy(this.gameObject);
+    }
 }

@@ -16,11 +16,15 @@ public class Sk03DefUp : Skill
         return "\n방어력 상승치 : " + m_AddDefPw + "\n지속시간 : " + m_DurationTime.ToString() + "초";
     }
 
+    public override void BoolShowMark()
+    {
+        return;
+    }
 
     public override void UseSkill()  //스킬 사용 
     {//이스킬은 스킬사용중에도 움직일 수 있음
 
-        if (m_CurrTime < 0.0f && !player.bIsAttack)
+        if (m_CurrTime < 0.0f)
         {         
           m_CurrTime = m_CoolTime;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 //using System;
 
 public class Player : MonoBehaviour
@@ -104,6 +105,8 @@ public class Player : MonoBehaviour
     public Transform m_DamageTxtTr = null;
     public GameObject m_MsgBoxPrefab = null;
     public GameObject m_LvUpTxt = null; //레벨업 전용 텍스트
+    public GameObject m_DieImg;
+    public Text m_DieMsg;
     //이펙트
 
     public ParticleSystem m_LevelEffect = null;
@@ -167,7 +170,6 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-     
         MouseInput();   //마우스 피킹
         CheckNpcUpdate();   //NPC 찾기
 
@@ -199,7 +201,7 @@ public class Player : MonoBehaviour
             m_MousePos = m_Camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(m_MousePos, out hitInfo, Mathf.Infinity, m_LayerMask.value))
             {
-               
+                SoundMgr.Inst.PlaySound("Point");
                 MousePicking(hitInfo);                         
             }
         }
@@ -323,6 +325,7 @@ public class Player : MonoBehaviour
         if (m_PlayerStatus.m_CurHp <= 0)
         {
             // 죽음
+            Die();
             return;
         }
 
@@ -336,7 +339,6 @@ public class Player : MonoBehaviour
         }
       
     }
-
     public void AddExp(int a_Exp)
     {
         m_PlayerStatus.m_CurExp += a_Exp;
@@ -356,10 +358,7 @@ public class Player : MonoBehaviour
         
         SetExpUI();
       
-    }
-
-    
-
+    }  
     void Hit_Update()
     {
         if (m_HitTimer > 0)
@@ -378,7 +377,6 @@ public class Player : MonoBehaviour
             }
         } 
     }
-
     void CheckNpcUpdate()
     {
         if (m_NpcObj != null  && m_Npc == null)
@@ -406,9 +404,33 @@ public class Player : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    
+    void Die()
     {
-        
+        animator.SetTrigger("Die");
+
+        bIsAttack = true;   
+        bIsMove = false;
+
+        StartCoroutine(Die_CO());
     }
 
+    IEnumerator Die_CO()
+    {
+        m_DieImg.SetActive(true);
+        float timer = 3.0f;
+        while(timer > 0.0f)
+        {
+            yield return null;
+            timer -= Time.deltaTime;
+            m_DieMsg.text = (int)timer + 1.0f +"초 뒤 \n마을로 귀환 합니다.";
+        }
+
+        m_DieImg.SetActive(false);
+        this.gameObject.SetActive(false);
+        LoadingSceneMgr.LoadScene("rpgpp_lt_scene_1.0 1");
+
+      
+       
+    }
 }

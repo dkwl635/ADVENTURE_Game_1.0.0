@@ -11,6 +11,7 @@ public class NomalMonster : MonsterCtrl
     float m_SpawnTime = -10.0f;   //5.0f
 
     public List<int> m_DropList;
+ 
 
     protected bool bInvincibility = false;
 
@@ -126,7 +127,8 @@ public class NomalMonster : MonsterCtrl
                 m_SpawnTime -= Time.fixedDeltaTime;
                
                 if (m_SpawnTime <= 0.0f)
-                {               
+                {
+                    animator.SetTrigger("Respawn");
                     Spawn();
                     m_SpawnTime = -10.0f;
                 }
@@ -227,8 +229,13 @@ public class NomalMonster : MonsterCtrl
         //만약 죽인 사람이 있으며 //보상
         if (m_Attacker != null)
         {
-            int itemnum = Random.Range(0, m_DropList.Count);
-            ItemMgr.Inst.SpawnDropItem(transform.position, m_DropList[itemnum], 1); //아이템 떨구기
+            int rnad = Random.Range(0, 4);
+            if(rnad != 3)
+            {
+                rnad = Random.Range(0, m_DropList.Count);
+                ItemMgr.Inst.SpawnDropItem(transform.position, m_DropList[rnad], 1); //아이템 떨구기
+            }
+         
 
             int coin = Random.Range(m_MinCoin, m_MaxCoin);              //코인
             m_Attacker.m_PlayerInventory.AddCoin(coin);   //돈주기
@@ -241,8 +248,9 @@ public class NomalMonster : MonsterCtrl
 
     public override void Spawn()
     {      
-        animator.SetTrigger("Respawn");
-        transform.position = m_SpawnPos;        //스폰위치적용       
+        transform.position = m_SpawnPos;        //스폰위치적용
+        transform.Rotate(Vector3.up * (Random.Range(0.0f, 360.0f)));
+
         m_MonsterStatus.m_CurHp = m_MonsterStatus.m_MaxHp;      //체력회복
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //체력바 적용
         Collider.enabled = true; //충돌체 켜기
@@ -252,7 +260,9 @@ public class NomalMonster : MonsterCtrl
         m_MonsterState = MonsterState.Idle;   //상태 전화
        
     }
+    
 
+  
    
     public void OnOffNav(bool bOnOff)  //네비 OnOff
     {

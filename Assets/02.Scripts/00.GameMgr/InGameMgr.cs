@@ -57,15 +57,12 @@ public class InGameMgr : MonoBehaviour
     }
 
     private void Start()
-    {       
+    {
         ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f, 0, -18.68f), 104, 1); //아이템 떨구기
         ItemMgr.Inst.SpawnDropItem(new Vector3(-5.13f, 0, -18.68f), 501, 1); //아이템 떨구기
 
-        if (bNewUser)
-            StartCoroutine(FirstStartMsg());
-
-
         StartCoroutine(LoadData_Co());
+
     }
 
     void InitObjPool()
@@ -76,7 +73,7 @@ public class InGameMgr : MonoBehaviour
                 DamageTxt txtObj = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform).GetComponent<DamageTxt>();
                 txtObj.gameObject.SetActive(false);
                 m_DamageTxtPool.Push(txtObj);
-          }     
+            }
     }
 
     public GameObject SetHpBarObj()
@@ -128,7 +125,7 @@ public class InGameMgr : MonoBehaviour
     IEnumerator FirstStartMsg()
     {
         yield return new WaitForEndOfFrame();
-        float timer = 3.0f;
+        float timer = 2.0f;
         Color color = m_StartMsg.color;
         if (bNewUser)
         {
@@ -149,10 +146,10 @@ public class InGameMgr : MonoBehaviour
                         m_StartMsg.gameObject.SetActive(false);
                         break;
                     }
-                      
+
                 }
             }
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
 
             timer = 2.0f;
             m_StartMsg.text = "앞에 있는 NPC에게\n퀘스트를 받으세요.";
@@ -180,15 +177,19 @@ public class InGameMgr : MonoBehaviour
         }
 
 
+
+
     }
-
-
     public void SaveData()
     {
         string itemdata = "";
         Player player = FindObjectOfType<Player>(true);
         SaveData saveData = new SaveData();
         saveData.m_PlayerStatus = player.m_PlayerStatus;
+        saveData.coin = player.m_PlayerInventory.m_Coin;
+
+        saveData.playtime += (Time.time - GlobalValue.StartTimer);
+
         #region 아이템 정보
         //장비 아이템
         List<SaveEqItem> eqItems = new List<SaveEqItem>();
@@ -197,7 +198,7 @@ public class InGameMgr : MonoBehaviour
             for (int i = 0; i < eqdatas.Length; i++)
             {
                 EquipmentItemData equipmentItemData = eqdatas[i] as EquipmentItemData;
-                if(equipmentItemData != null && equipmentItemData.m_ItemCode != -1)
+                if (equipmentItemData != null && equipmentItemData.m_ItemCode != -1)
                 {
                     SaveEqItem saveEqItem = new SaveEqItem();
                     saveEqItem.m_ItemCode = equipmentItemData.m_ItemCode;
@@ -210,10 +211,10 @@ public class InGameMgr : MonoBehaviour
                 }
             }
         }
-        
+
 
         saveData.EqItemData = eqItems.ToArray();
-      
+
         //일반 아이템
         List<SaveNoItem> Items = new List<SaveNoItem>();
         {
@@ -244,13 +245,13 @@ public class InGameMgr : MonoBehaviour
                 SaveEqItem saveEqItem = new SaveEqItem();
                 saveEqItem.m_ItemCode = Item.Value.Equipment.m_ItemCode;
                 saveEqItem.m_InvenIdx = (int)Item.Key;
-     
+
                 saveEqItem.m_AttPw = Item.Value.Equipment.m_AttPw;
                 saveEqItem.m_DefPw = Item.Value.Equipment.m_DefPw;
                 saveEqItem.m_Star = Item.Value.Equipment.m_Star;
 
                 equipmentParts.Add(saveEqItem);
-            }        
+            }
         }
         //무기 별도 체크
         if (player.weapon.m_WeaponData != null && player.weapon.m_WeaponData.m_ItemCode != -1)
@@ -295,7 +296,7 @@ public class InGameMgr : MonoBehaviour
             if (SkillMgr.Inst.m_SkillSlots[i].m_Skill == null)
                 continue;
 
-            skillSlotData[i] = SkillMgr.Inst.m_SkillSlots[i].m_SkillName;           
+            skillSlotData[i] = SkillMgr.Inst.m_SkillSlots[i].m_SkillName;
         }
         saveData.skillSlotData = skillSlotData;
         #endregion
@@ -306,9 +307,9 @@ public class InGameMgr : MonoBehaviour
         {
             SaveQuest saveQuest = new SaveQuest();
             saveQuest.m_QuestID = QuestMgr.Inst.m_AllQuestList[i].m_QuestId;
-            saveQuest.bEndQuest = QuestMgr.Inst.m_AllQuestList[i].bEndQuest;      
-            saveQuest.bIsSuccess = QuestMgr.Inst.m_AllQuestList[i].bIsSuccess;      
-         
+            saveQuest.bEndQuest = QuestMgr.Inst.m_AllQuestList[i].bEndQuest;
+            saveQuest.bIsSuccess = QuestMgr.Inst.m_AllQuestList[i].bIsSuccess;
+
 
             if (QuestMgr.Inst.m_AllQuestList[i].m_QuestType.Equals(QuestType.Kill))
             {
@@ -327,14 +328,22 @@ public class InGameMgr : MonoBehaviour
 
 
         itemdata = JsonUtility.ToJson(saveData);
-        Debug.Log(itemdata);
-        PlayerPrefs.SetString("ItemData", itemdata);    
+      
+        PlayerPrefs.SetString("ItemData" + GlobalValue.playerNum.ToString(), itemdata);
     }
 
-    public void  LoadData()
+    public void LoadData()
     {
         //SaveData saveData = GlobalValue.player01Data;
-        string str = PlayerPrefs.GetString("ItemData", "");
+        string str = PlayerPrefs.GetString("ItemData" + GlobalValue.playerNum.ToString(), "");
+
+        if (string.IsNullOrEmpty(str))
+        {
+            bNewUser = true;
+            return;
+        }
+
+
         SaveData saveData = JsonUtility.FromJson<SaveData>(str);
         Player player = FindObjectOfType<Player>(true);
         player.m_PlayerStatus = saveData.m_PlayerStatus;
@@ -382,7 +391,7 @@ public class InGameMgr : MonoBehaviour
         {
             if (saveData.useItemSlotData[i] == -1)
                 continue;
-               
+
             InventoryUIMgr.Inst.m_UseItemSlots[i].SetSlot(player.m_PlayerInventory.PlayerItemInven[saveData.useItemSlotData[i]]);
         }
         #endregion
@@ -391,14 +400,14 @@ public class InGameMgr : MonoBehaviour
         for (int i = 0; i < SkillMgr.Inst.m_SkillList.Length; i++)
         {
             SkillMgr.Inst.m_SkillList[i].m_Lv = saveData.skillData[i].m_Lv;
-            SkillMgr.Inst.m_SkillList[i].m_NeedSP = saveData.skillData[i].m_NeedSP;                 
+            SkillMgr.Inst.m_SkillList[i].m_NeedSP = saveData.skillData[i].m_NeedSP;
         }
         //스킬 퀵슬롯
         for (int i = 0; i < SkillMgr.Inst.m_SkillSlots.Length; i++)
         {
             if (saveData.skillSlotData[i] == "")
                 continue;
-         
+
             SkillMgr.Inst.m_SkillSlots[i].SetSlot(SkillMgr.Inst.m_Skills[saveData.skillSlotData[i]]);
 
         }
@@ -408,7 +417,7 @@ public class InGameMgr : MonoBehaviour
         #region 퀘스트        
         for (int i = 0; i < saveData.saveQuests.Length; i++)
         {
-            Quest quest = QuestMgr.Inst.DicQuest[saveData.saveQuests[i].m_QuestID];     
+            Quest quest = QuestMgr.Inst.DicQuest[saveData.saveQuests[i].m_QuestID];
             quest.bEndQuest = saveData.saveQuests[i].bEndQuest;
             quest.bIsSuccess = saveData.saveQuests[i].bIsSuccess;
 
@@ -426,24 +435,33 @@ public class InGameMgr : MonoBehaviour
                 }
                 else if (quest.Equals(QuestType.Collection))
                 {
-                   (quest as CollectQuest).m_CurCount = saveData.saveQuests[i].count;           
+                    (quest as CollectQuest).m_CurCount = saveData.saveQuests[i].count;
                 }
 
-              
+
             }
-           
+
             QuestMgr.Inst.QuestNPCRefresh();
         }
-      
+
 
         #endregion
 
     }
-
     IEnumerator LoadData_Co()
     {
         yield return new WaitForEndOfFrame();
         LoadData();
+
+        if (bNewUser)
+            StartCoroutine(FirstStartMsg());
+
     }
+
+    public void DestorySaveData()
+    {
+        PlayerPrefs.SetString("ItemData" + GlobalValue.playerNum.ToString(), "");
+    }
+
 }
 

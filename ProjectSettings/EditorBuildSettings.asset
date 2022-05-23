@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01.Scenes/DesertStage.unity
     guid: 045c131302019b040929a92b606ec3aa
+  - enabled: 1
+    path: Assets/01.Scenes/LoadingScene.unity
+    guid: 18e16afe3cd54d44cabd76f59b3203a0
   m_configObjects: {}

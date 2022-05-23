@@ -21,7 +21,7 @@ public class CameraCtrl : MonoBehaviour
 
 
     //주인공을 기준으로 한 상대적인 구좌표계 기준의 초기값
-    private float m_DefaltRotH = 0.0f;  //평면 기준의 회전각도
+    private float m_DefaltRotH = -40.0f;  //평면 기준의 회전각도
     private float m_DefaltRotV = 45.0f; //높이 기준의 회전각도
     private float m_DefaltDist = 20.0f;  //타겟에서 카메라까지의 거리
 

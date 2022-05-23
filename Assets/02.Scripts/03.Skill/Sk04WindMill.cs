@@ -5,7 +5,7 @@ using UnityEngine;
 public class Sk04WindMill : Skill
 {
    
-    private float m_radus = 2.0f;                //반지름
+    private float m_radus = 3.0f;                //반지름
     private Vector3 m_tempPos = Vector3.zero;    //계산용
    
     string m_AnimationName = "WindMill";
