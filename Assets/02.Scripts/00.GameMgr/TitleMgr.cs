@@ -48,6 +48,8 @@ public class TitleMgr : MonoBehaviour
 
     public void StartBtn(int num)
     {
+        SoundMgr.Inst.PlaySound("Button");
+
         GlobalValue.StartTimer = Time.time;
         GlobalValue.playerNum = num;
     
@@ -58,6 +60,8 @@ public class TitleMgr : MonoBehaviour
 
     public void ResetData(int num)
     {
+        SoundMgr.Inst.PlaySound("Button");
+
         GlobalValue.ResetData(num);
         m_PlayerBtn[num -1].GetComponentInChildren<Text>().text = GlobalValue.SetStartBtn(num);
     }

@@ -10431,7 +10431,7 @@ MonoBehaviour:
   m_HpBarCtrl: {fileID: 0}
   m_MonsterStatus:
     m_Lv: 1
-    m_CurExp: 0
+    m_CurExp: 2000
     m_NextExp: 0
     m_CurHp: 3000
     m_MaxHp: 3000
@@ -10445,8 +10445,8 @@ MonoBehaviour:
   m_AttackPower: 10
   m_Dist: 0
   m_SpawnPos: {x: 0, y: 0, z: 0}
-  m_MinCoin: 0
-  m_MaxCoin: 0
+  m_MinCoin: 2000
+  m_MaxCoin: 2000
   m_Skin: {fileID: 0}
   m_OrginMtrl: {fileID: 0}
   m_HitMtrl: {fileID: 2100000, guid: faf36bdb15d219745885e691cccfb44e, type: 2}

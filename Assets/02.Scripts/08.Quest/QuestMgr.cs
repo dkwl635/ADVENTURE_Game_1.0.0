@@ -172,8 +172,7 @@ public class QuestMgr : MonoBehaviour
             {
                 m_TalkQuestList.RemoveAt(i);
 
-                QuestEvent?.Invoke();
-                Debug.Log("퀘스트 성공");
+                QuestEvent?.Invoke();       
             }
                 
         }

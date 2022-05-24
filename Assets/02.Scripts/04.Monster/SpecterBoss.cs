@@ -246,6 +246,10 @@ public class SpecterBoss : BossMonster
         if (m_MonsterStatus.m_CurHp <= 0) //체력이 0이면
         {
             Die();
+
+            a_Attacker.AddExp(m_MonsterStatus.m_CurExp);
+            a_Attacker.m_PlayerInventory.AddCoin(2000);
+
         }
         else
         {

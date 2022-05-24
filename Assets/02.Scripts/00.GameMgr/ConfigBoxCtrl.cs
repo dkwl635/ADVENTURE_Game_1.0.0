@@ -107,23 +107,28 @@ public class ConfigBoxCtrl : MonoBehaviour
 
     void Save()
     {
+        SoundMgr.Inst.PlaySound("Button");
         InGameMgr.Inst.SaveData();
     }
 
     void SceneBack()
     {
+        SoundMgr.Inst.PlaySound("Button");
         DontDestroyOnLoadMgr.inst.AllDestory();
         LoadingSceneMgr.LoadScene("TitleScene");
     }
 
     void DestoryBtn()
     {
+        SoundMgr.Inst.PlaySound("Button");
         m_DestoryLogBox.SetActive(true);
     }
 
     void SelectDestory(bool sel)
     {
-        if(sel)
+        SoundMgr.Inst.PlaySound("Button");
+
+        if (sel)
         {
             InGameMgr.Inst.DestorySaveData();
             DontDestroyOnLoadMgr.inst.AllDestory();

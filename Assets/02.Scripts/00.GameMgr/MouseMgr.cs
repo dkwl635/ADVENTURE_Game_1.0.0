@@ -32,7 +32,7 @@ public class MouseMgr : MonoBehaviour
 
     int m_Screen_Height;
     int m_Screen_Width;
-    float m_test;
+    float m_ratiot;
 
     bool bIsDrag = false;
 
@@ -82,7 +82,7 @@ public class MouseMgr : MonoBehaviour
         m_Screen_Height = Screen.height;
         m_Screen_Width = Screen.width;
 
-        m_test = Screen.height / 1080.0f;
+        m_ratiot = Screen.height / 1080.0f;
       
     }
 
@@ -296,18 +296,18 @@ public class MouseMgr : MonoBehaviour
             m_ItemSlotRectTr.sizeDelta = m_TempSize;
 
             m_TempSize = (Vector2)Input.mousePosition;
-            if (m_TempSize.y - m_ItemSlotRectTr.rect.height < 0)
+            if (m_TempSize.y - m_ItemSlotRectTr.rect.height * m_ratiot < 0)
             {
-                m_TempSize.y = m_ItemSlotRectTr.rect.height;
+                m_TempSize.y = m_ItemSlotRectTr.rect.height * m_ratiot;
             }
             else if (m_TempSize.y > m_Screen_Height)
             {
-                m_TempSize.y = m_Screen_Height;
+                m_TempSize.y = m_Screen_Height * m_ratiot;
             }
 
             if (m_TempSize.x + m_ItemSlotRectTr.rect.width > m_Screen_Width)
             {
-                m_TempSize.x = m_TempSize.x - m_ItemSlotRectTr.rect.width * m_test;
+                m_TempSize.x = m_TempSize.x - m_ItemSlotRectTr.rect.width * m_ratiot;
             }
 
             m_ItemSlotRectTr.position = m_TempSize;

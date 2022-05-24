@@ -347,6 +347,7 @@ public class InGameMgr : MonoBehaviour
         SaveData saveData = JsonUtility.FromJson<SaveData>(str);
         Player player = FindObjectOfType<Player>(true);
         player.m_PlayerStatus = saveData.m_PlayerStatus;
+        player.m_PlayerStatus.m_CurHp = saveData.m_PlayerStatus.m_MaxHp;
         player.SetHpUI();
         player.SetExpUI();
 
@@ -427,15 +428,18 @@ public class InGameMgr : MonoBehaviour
             else
                 QuestMgr.Inst.m_AllQuestList.Add(quest);
 
+
             if (!quest.bIsSuccess)
             {
-                if (quest.Equals(QuestType.Kill))
+              
+                if (quest.m_QuestType.Equals(QuestType.Kill))
                 {
                     (quest as KillQuest).m_CurCount = saveData.saveQuests[i].count;
                 }
-                else if (quest.Equals(QuestType.Collection))
-                {
-                    (quest as CollectQuest).m_CurCount = saveData.saveQuests[i].count;
+                else if (quest.m_QuestType.Equals(QuestType.Collection))
+                {            
+                    CollectQuest collectQuest = quest as CollectQuest;
+                    collectQuest.m_CurCount = saveData.saveQuests[i].count;               
                 }
 
 

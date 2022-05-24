@@ -17000,6 +17000,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 15533c8139699ce41bf757dd6f50e9e1, type: 3}
   - {fileID: 8300000, guid: dd4abf3fd235e404891322a2c2b190d1, type: 3}
   - {fileID: 8300000, guid: a3716c7c522326f4ebc06d46e22eb5ed, type: 3}
+  - {fileID: 8300000, guid: 6843e57b4d9629e40898c314aa671667, type: 3}
   m_BgmAudio: {fileID: 0}
   m_EffectAudio: {fileID: 0}
   m_BgmVolume: 0
