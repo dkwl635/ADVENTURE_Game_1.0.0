@@ -51,14 +51,14 @@ public class Sk02SwordAuror : Skill
         while (!animator.GetCurrentAnimatorStateInfo(0).IsName(m_SkillName))//교체 시간 대기                   
             yield return null;
 
-        SoundMgr.Inst.PlaySound("Sk_02");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Sk_02");
         GameObject effect = (GameObject)Instantiate(m_SkillSwordAfterimagePrefab);
         effect.transform.SetPositionAndRotation(playerTr.position + Vector3.up, playerTr.rotation);
         SkillEffect skilleffect = effect.GetComponent<SkillEffect>();
         if (skilleffect != null)
         {
             skilleffect.InitSkillEffect((int)m_SkillDamage, player, 0.4f);
-            skilleffect.rigidbody.velocity = skilleffect.transform.forward * 20.0f;
+            skilleffect.rigidbody.linearVelocity = skilleffect.transform.forward * 20.0f;
         }
 
         while (animator.GetCurrentAnimatorStateInfo(0).IsName(m_SkillName))//종료 까지 대기                   

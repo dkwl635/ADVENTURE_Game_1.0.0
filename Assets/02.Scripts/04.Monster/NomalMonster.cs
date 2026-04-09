@@ -181,7 +181,7 @@ public class NomalMonster : MonsterCtrl
 
         m_MonsterStatus.m_CurHp -= a_Damage; //데미지 적용
         Vector2 canvaspos = Camera.main.WorldToScreenPoint(m_HpBarCtrl.gameObject.transform.position);
-        InGameMgr.Inst.SpanwDamageTxt(canvaspos, TxtType.Damage, a_Damage); //데미지 텍스트 출력
+        ServiceLocator.Get<IDamageTextService>()?.SpanwDamageTxt(canvaspos, TxtType.Damage, a_Damage);
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //체력바 적용
 
         OnOffNav(false);
@@ -190,13 +190,13 @@ public class NomalMonster : MonsterCtrl
         switch (rand)
         {
             case 0:
-                SoundMgr.Inst.PlaySound("Hit_01");
+                ServiceLocator.Get<IAudioService>()?.PlaySound("Hit_01");
                 break;
             case 1:
-                SoundMgr.Inst.PlaySound("Hit_02");
+                ServiceLocator.Get<IAudioService>()?.PlaySound("Hit_02");
                 break;
             case 2:
-                SoundMgr.Inst.PlaySound("Hit_03");
+                ServiceLocator.Get<IAudioService>()?.PlaySound("Hit_03");
                 break;
         }
 
@@ -217,7 +217,7 @@ public class NomalMonster : MonsterCtrl
         if (DieEvent != null)
             DieEvent();
 
-        SoundMgr.Inst.PlaySound("SpecterDie");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("SpecterDie");
         m_MonsterState = MonsterState.Die;  //상태 전환
         m_HpBarCtrl.gameObject.SetActive(false);     //체력바 끄기
         animator.SetTrigger("Die");         //애니메이션 적용      

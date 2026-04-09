@@ -116,7 +116,7 @@ public class SpecterBoss : BossMonster
                     Attack01RangeEff.SetActive(false);          //공격범위 숨기기
                     yield return new WaitForSeconds(0.3f);
 
-                    SoundMgr.Inst.PlaySound("SpecterBossAttack_01");
+                    ServiceLocator.Get<IAudioService>()?.PlaySound("SpecterBossAttack_01");
                     //공격
                     RaycastHit[] hits = Physics.BoxCastAll(Attack01RangeEff.transform.position, Attack01Size.size * 0.5f, Vector3.up, transform.rotation, 0.5f, 1 << LayerMask.NameToLayer("PLAYER"));
                     if (hits.Length > 0) // 타겟 충돌체 찾기
@@ -143,7 +143,7 @@ public class SpecterBoss : BossMonster
                             Attack02ShineEffs[i].gameObject.SetActive(true);
 
                         Attack02ShineEffs[i].Play();
-                        SoundMgr.Inst.PlaySound("SpecterBossAttack_02");
+                        ServiceLocator.Get<IAudioService>()?.PlaySound("SpecterBossAttack_02");
                         if (i == Attack02ShineEffs.Length / 2)
                         {
                             //공격
@@ -236,7 +236,7 @@ public class SpecterBoss : BossMonster
     {
         m_MonsterStatus.m_CurHp -= a_Damage; //데미지 적용
         Vector2 canvaspos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-        InGameMgr.Inst.SpanwDamageTxt(canvaspos, TxtType.Damage, a_Damage); //데미지 숫자 이펙트
+        ServiceLocator.Get<IDamageTextService>()?.SpanwDamageTxt(canvaspos, TxtType.Damage, a_Damage);
 
         m_HpBarCtrl.SetHpBar(m_MonsterStatus.m_CurHp, m_MonsterStatus.m_MaxHp);    //hpbar 적용
 

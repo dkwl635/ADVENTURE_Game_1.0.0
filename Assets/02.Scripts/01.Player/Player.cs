@@ -186,7 +186,7 @@ public class Player : MonoBehaviour
     #region ---------------MouseMode---------------
     public void MouseInput()
     {
-        m_Vec = rigidbody.velocity;
+        m_Vec = rigidbody.linearVelocity;
         m_Vec.x = 0;
         m_Vec.z = 0;
 
@@ -201,7 +201,7 @@ public class Player : MonoBehaviour
             m_MousePos = m_Camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(m_MousePos, out hitInfo, Mathf.Infinity, m_LayerMask.value))
             {
-                SoundMgr.Inst.PlaySound("Point");
+                ServiceLocator.Get<IAudioService>()?.PlaySound("Point");
                 MousePicking(hitInfo);                         
             }
         }
@@ -315,8 +315,7 @@ public class Player : MonoBehaviour
             
         Vector2 pos = m_DamageTxtTr.position;
         pos.x = pos.x +(Random.Range(-20.0f,20.0f));
-
-        InGameMgr.Inst.SpanwDamageTxt(pos, TxtType.PlayerDamage, m_BuffDamage ); //데미지 숫자 이펙트
+        ServiceLocator.Get<IDamageTextService>()?.SpanwDamageTxt(pos, TxtType.PlayerDamage, m_BuffDamage); //데미지 숫자 이펙트
         m_PlayerStatus.m_CurHp -= m_BuffDamage;//데미지 적용
         SetHpUI();
 
@@ -353,7 +352,7 @@ public class Player : MonoBehaviour
             m_LvUpTxt.SetActive(true);
 
             LevelUpEvent?.Invoke();
-            SoundMgr.Inst.PlaySound("LevelUp");
+            ServiceLocator.Get<IAudioService>()?.PlaySound("LevelUp");
         }      
         
         SetExpUI();

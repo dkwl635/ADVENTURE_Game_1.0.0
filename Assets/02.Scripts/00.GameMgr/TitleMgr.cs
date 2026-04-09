@@ -32,7 +32,7 @@ public class TitleMgr : MonoBehaviour
 
         m_GameSetting.onClick.AddListener(() => { m_GameSettingObj.SetActive(true); });
 
-        SoundMgr.Inst.ChangeBGM("TitleBGM");
+        ServiceLocator.Get<IAudioService>()?.ChangeBGM("TitleBGM");
     }
 
     private void Update()
@@ -41,14 +41,14 @@ public class TitleMgr : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            SoundMgr.Inst.PlaySound("Click");
+            ServiceLocator.Get<IAudioService>()?.PlaySound("Click");
         }
 
     }
 
     public void StartBtn(int num)
     {
-        SoundMgr.Inst.PlaySound("Button");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Button");
 
         GlobalValue.StartTimer = Time.time;
         GlobalValue.playerNum = num;
@@ -60,7 +60,7 @@ public class TitleMgr : MonoBehaviour
 
     public void ResetData(int num)
     {
-        SoundMgr.Inst.PlaySound("Button");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Button");
 
         GlobalValue.ResetData(num);
         m_PlayerBtn[num -1].GetComponentInChildren<Text>().text = GlobalValue.SetStartBtn(num);

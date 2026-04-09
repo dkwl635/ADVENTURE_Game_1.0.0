@@ -4,18 +4,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InGameMgr : MonoBehaviour
+public class InGameMgr : MonoBehaviour , ISaveLoadService
 {
-    static public InGameMgr Inst;
-
     public GameObject m_HpBarPrefab = null;
     public Canvas m_HpBarCanvas = null;
 
-
-    [Header("DamageTxt_ObjectFool")]
-    public Canvas m_DamageCanvas = null;
-    string m_DamageTxt = "DamageTxt";
-    public GameObject m_DamageTxtObj;
 
 
 
@@ -24,36 +17,35 @@ public class InGameMgr : MonoBehaviour
     Dictionary<string, GameObject> DicFxPrefab = new Dictionary<string, GameObject>();
 
     //Dictionary<string, Stack<GameObject>> ObjPoolStacks = new Dictionary<string, Stack<GameObject>>();        
-    public int m_ObjPoolInit = 20; //오브젝트 풀 첫 생성 갯수
-
-    Stack<DamageTxt> m_DamageTxtPool = new Stack<DamageTxt>();
+   
 
     bool bNewUser = false;
     public Text m_StartMsg;
 
     private void Awake()
     {
-        if (Inst != null)
+        //등록된 서비스가 있다면 파괴
+        if (ServiceLocator.IsRegistered<ISaveLoadService>())
         {
             Destroy(this.gameObject);
             return;
         }
-        else
-        {
-            Inst = this;
-            DontDestroyOnLoad(this.gameObject);
-            this.gameObject.transform.SetParent(GameObject.FindObjectOfType<DontDestroyOnLoadMgr>().gameObject.transform);
-        }
 
+        DontDestroyOnLoad(this.gameObject);
+        ServiceLocator.Register<ISaveLoadService>(this);
 
 
         Application.targetFrameRate = 60;
+     
+    }
 
-
-        //ObjPoolStacks[m_DamageTxt] = new Stack<GameObject>();    //데미지 텍스트 이펙트 관련
-        //ObjPoolStacks["FX_BloodSplatter"] = new Stack<GameObject>();    //데미지 텍스트 이펙트 관련
-
-        InitObjPool();
+    private void OnDestroy()
+    {
+        if (ServiceLocator.IsRegistered<ISaveLoadService>() &&
+            ServiceLocator.Get<ISaveLoadService>() == (ISaveLoadService)this)
+        {
+            ServiceLocator.Unregister<ISaveLoadService>();
+        }
     }
 
     private void Start()
@@ -63,17 +55,6 @@ public class InGameMgr : MonoBehaviour
 
         StartCoroutine(LoadData_Co());
 
-    }
-
-    void InitObjPool()
-    {
-        if (m_DamageTxtObj != null)
-            for (int i = 0; i < m_ObjPoolInit; i++)
-            {
-                DamageTxt txtObj = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform).GetComponent<DamageTxt>();
-                txtObj.gameObject.SetActive(false);
-                m_DamageTxtPool.Push(txtObj);
-            }
     }
 
     public GameObject SetHpBarObj()
@@ -103,25 +84,7 @@ public class InGameMgr : MonoBehaviour
 #endif
     }//public bool IsPointerOverUIObject() 
 
-    public void SpanwDamageTxt(Vector2 a_Pos, TxtType a_TxtType, int a_Value = 0)
-    {
-        DamageTxt text = null;
-        if (m_DamageTxtPool.Count > 0)
-            text = m_DamageTxtPool.Pop().GetComponent<DamageTxt>();
-        else
-        {
-            text = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform).GetComponent<DamageTxt>();
-        }
-
-        text.transform.position = a_Pos;
-        text.OnDamageText(a_Value, a_TxtType);
-    }
-
-    public void PushBackDamageTxt(DamageTxt a_text)
-    {
-        m_DamageTxtPool.Push(a_text);
-    }
-
+   
     IEnumerator FirstStartMsg()
     {
         yield return new WaitForEndOfFrame();

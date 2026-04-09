@@ -4,22 +4,43 @@ using UnityEngine;
 
 public class EffectPoolMgr : MonoBehaviour
 {
-    static public EffectPoolMgr Inst;
+    [Header("DamageTxt_ObjectPool")]
+    public Canvas m_DamageCanvas = null;
+    public GameObject m_DamageTxtObj;
+    public int m_ObjPoolInit = 20;
+    private Stack<DamageTxt> m_DamageTxtPool = new Stack<DamageTxt>();
 
-    public int m_EffectCount = 20;  //처음 생성 오브젝트
-    public GameObject m_HitEffectPrefab = null;   //맞을때 나오는 이펙트 프리팹
-
-    Dictionary<string, Stack<GameObject>> m_EffectPool = new Dictionary<string, Stack<GameObject>>();
-   
 
     private void Awake()
     {
-        if (Inst != null)
-            return;
-        else
-            Inst = this;
-
-
-        m_EffectPool["HitEffect"] = new Stack<GameObject>();
+            
     }
+
+    void InitObjPool()
+    {
+        if (m_DamageTxtObj != null)
+        {
+            for (int i = 0; i < m_ObjPoolInit; i++)
+            {
+                DamageTxt txtObj = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform).GetComponent<DamageTxt>();
+                txtObj.gameObject.SetActive(false);
+                m_DamageTxtPool.Push(txtObj);
+            }
+        }
+    }
+    public void SpanwDamageTxt(Vector2 a_Pos, TxtType a_TxtType, int a_Value = 0)
+    {
+        DamageTxt text = null;
+        if (m_DamageTxtPool.Count > 0)
+            text = m_DamageTxtPool.Pop();
+        else
+            text = Instantiate(m_DamageTxtObj, m_DamageCanvas.transform).GetComponent<DamageTxt>();
+        text.transform.position = a_Pos;
+        text.OnDamageText(a_Value, a_TxtType);
+    }
+    public void PushBackDamageTxt(DamageTxt a_text)
+    {
+        m_DamageTxtPool.Push(a_text);
+    }
+
 }

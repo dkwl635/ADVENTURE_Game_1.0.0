@@ -38,7 +38,7 @@ public class DropItem : MonoBehaviour
     {
        if(collision.gameObject.CompareTag("GROUND"))
         {
-            m_Rigidbody.velocity = Vector3.zero;
+            m_Rigidbody.linearVelocity = Vector3.zero;
             m_SphereCollider.isTrigger = true;
             m_Rigidbody.useGravity = false;
         }

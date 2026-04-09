@@ -111,13 +111,13 @@ public class MeumUIMgr : MonoBehaviour
 
     void OffMiniMap()
     {
-        SoundMgr.Inst.PlaySound("Slide");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Slide");
         m_MiniMapObj.SetActive(false);
     }
 
     void OnMiniMap()
     {
-        SoundMgr.Inst.PlaySound("Slide");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Slide");
         m_MiniMapObj.SetActive(true);
     }
 

@@ -370,7 +370,7 @@ public class ItemMgr : MonoBehaviour
        
         if(a_Portion.m_PortionType == PortionType.HpPortion)  //Hp 회복 효과
         {
-            SoundMgr.Inst.PlaySound("Drink");
+            ServiceLocator.Get<IAudioService>()?.PlaySound("Drink");
             player.m_PlayerStatus.m_CurHp += (int)a_Portion.m_Value;
             if (player.m_PlayerStatus.m_CurHp > player.m_PlayerStatus.m_MaxHp)
                 player.m_PlayerStatus.m_CurHp = player.m_PlayerStatus.m_MaxHp;
@@ -381,7 +381,7 @@ public class ItemMgr : MonoBehaviour
             //effect
             Vector2 pos = player.m_DamageTxtTr.position;
             pos.x = pos.x + (Random.Range(-20.0f, 20.0f));
-            InGameMgr.Inst.SpanwDamageTxt( pos ,TxtType.Heal, (int)a_Portion.m_Value);
+            ServiceLocator.Get<IDamageTextService>()?.SpanwDamageTxt(pos, TxtType.Heal, (int)a_Portion.m_Value);
         }
 
     }

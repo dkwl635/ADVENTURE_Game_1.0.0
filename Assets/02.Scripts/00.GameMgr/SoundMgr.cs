@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SoundMgr : MonoBehaviour
+public class SoundMgr : MonoBehaviour, IAudioService
 {
-    static public SoundMgr Inst;
-
     public AudioClip[] BGM_Clips = null;
     public AudioClip[] Effect_Clip = null;
     Dictionary<string, AudioClip> DicEffectClip = new Dictionary<string, AudioClip>();
@@ -15,22 +13,20 @@ public class SoundMgr : MonoBehaviour
     [HideInInspector] public AudioSource m_BgmAudio = null;
     [HideInInspector] public AudioSource m_EffectAudio = null;
 
-    public float m_BgmVolume;
-    public float m_EffectVolume;
+    private float m_BgmVolume;
+    private float m_EffectVolume;
 
     private void Awake()
     {
-        if (Inst == null)
-        {
-            Inst = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-            return;
-        }
+        //등록된 서비스가 있다면 파괴
+       if(ServiceLocator.IsRegistered<IAudioService>())
+       {
+           Destroy(this.gameObject);
+           return;
+       }
 
+        DontDestroyOnLoad(this.gameObject);
+        ServiceLocator.Register<IAudioService>(this);
 
         m_BgmAudio = Camera.main.GetComponents<AudioSource>()[0];
         m_EffectAudio = Camera.main.GetComponents<AudioSource>()[1];
@@ -51,6 +47,15 @@ public class SoundMgr : MonoBehaviour
         m_EffectVolume = 0.02f;
 
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        if (ServiceLocator.IsRegistered<IAudioService>() && 
+            ServiceLocator.Get<IAudioService>() == (IAudioService)this)
+        {
+            ServiceLocator.Unregister<IAudioService>();
+        }
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -86,6 +91,8 @@ public class SoundMgr : MonoBehaviour
             return;
 
         m_EffectAudio.PlayOneShot(DicEffectClip[a_Name]);
+
+        Debug.Log($"PlaySound_ {a_Name}");
     }
 
     public void ChangeBGMVolume(float Volume)
@@ -101,5 +108,15 @@ public class SoundMgr : MonoBehaviour
 
         m_EffectAudio.volume = Volume * 0.1f;
         m_EffectVolume = m_EffectAudio.volume;
+    }
+
+    public float GetBGMVolume()
+    {
+        return m_BgmVolume;
+    }
+
+    public float GetEffectVolume()
+    {
+        return m_EffectVolume;
     }
 }

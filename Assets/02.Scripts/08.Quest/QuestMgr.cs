@@ -265,7 +265,7 @@ public class QuestMgr : MonoBehaviour
 
     public void OnQuestUI()
     {
-        SoundMgr.Inst.PlaySound("Slide");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Slide");
 
         m_QuestPanel.SetActive(true);
         m_QuestPanel.transform.SetAsLastSibling();
@@ -279,7 +279,7 @@ public class QuestMgr : MonoBehaviour
 
     void OffQuestUI()
     {
-        SoundMgr.Inst.PlaySound("Slide");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Slide");
         m_QuestPanel.SetActive(false);       
     }
 

@@ -56,7 +56,7 @@ public class Sk04WindMill : Skill
 
         animator.speed = 0.0f;
 
-        SoundMgr.Inst.PlaySound("Sk_04");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Sk_04");
         while(timer < 3.5f)
         {
             yield return null;

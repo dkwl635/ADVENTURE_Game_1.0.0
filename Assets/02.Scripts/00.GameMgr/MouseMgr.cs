@@ -89,7 +89,7 @@ public class MouseMgr : MonoBehaviour
     private void Update()
     {
         if(Input.GetMouseButtonDown(0) && InGameMgr.IsPointerOverUIObject())
-            SoundMgr.Inst.PlaySound("Click");
+            ServiceLocator.Get<IAudioService>()?.PlaySound("Click");
     }
 
     private void LateUpdate()

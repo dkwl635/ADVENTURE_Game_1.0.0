@@ -15,7 +15,8 @@ public class StartPos : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
-        player =  FindObjectOfType<Player>(true);
+        player = FindAnyObjectByType<Player>(FindObjectsInactive.Include);
+        
 
         if (player)
         {
@@ -31,11 +32,7 @@ public class StartPos : MonoBehaviour
             Camera.main.GetComponent<CameraCtrl>().InitCamera();
         }
 
-        SoundMgr.Inst.ChangeBGM(m_BGM_Name);
-
-
-
-
+        ServiceLocator.Get<IAudioService>()?.ChangeBGM(m_BGM_Name);
     }
 
 

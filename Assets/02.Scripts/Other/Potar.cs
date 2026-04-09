@@ -12,7 +12,8 @@ public class Potar : MonoBehaviour
         other.gameObject.SetActive(false);
         LoadingSceneMgr.LoadScene(m_SceneName);
 
-        SoundMgr.Inst.OffSound();
+        ServiceLocator.Get<IAudioService>().OffSound();
+  
         //StartCoroutine(LoadScene("rpgpp_lt_scene_1.0 1"));
     }
 

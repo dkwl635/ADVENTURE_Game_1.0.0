@@ -40,8 +40,10 @@ public class ConfigBoxCtrl : MonoBehaviour
         m_OkBtn.onClick.AddListener(() => { SelectDestory(true); });
         m_CancelBtn.onClick.AddListener(() => { SelectDestory(false); });
 
-        m_BGM_Slider.value = SoundMgr.Inst.m_BgmVolume * 10;
-        m_Eff_Slider.value = SoundMgr.Inst.m_EffectVolume * 10;
+        float bgm = ServiceLocator.Get<IAudioService>()?.GetBGMVolume() ?? 0f;
+        float eff = ServiceLocator.Get<IAudioService>()?.GetEffectVolume() ?? 0f;
+        m_BGM_Slider.value = bgm * 10;
+        m_Eff_Slider.value = eff * 10;
     }
 
    void OffPanel()
@@ -51,7 +53,7 @@ public class ConfigBoxCtrl : MonoBehaviour
 
     void ChangeBGMVolume(float a_Volume)
     {
-        SoundMgr.Inst.ChangeBGMVolume(a_Volume);
+        ServiceLocator.Get<IAudioService>()?.ChangeBGMVolume(a_Volume);
         if (a_Volume <= 0.0f)
         {
             m_BGM_Toggle.isOn = true;
@@ -65,12 +67,12 @@ public class ConfigBoxCtrl : MonoBehaviour
     {
         if (sel)
         {
-            SoundMgr.Inst.ChangeBGMVolume(0.0f);
+            ServiceLocator.Get<IAudioService>()?.ChangeBGMVolume(0.0f);
             m_BGM_Slider.value = 0;
         }
         else
         {
-            SoundMgr.Inst.ChangeBGMVolume(0.2f);
+            ServiceLocator.Get<IAudioService>()?.ChangeBGMVolume(0.2f);
             m_BGM_Slider.value = 0.2f;
         }
 
@@ -79,7 +81,7 @@ public class ConfigBoxCtrl : MonoBehaviour
 
     void ChangeEffectVolume(float a_Volume)
     {
-        SoundMgr.Inst.ChangeEffectVolume(a_Volume);
+        ServiceLocator.Get<IAudioService>()?.ChangeEffectVolume(a_Volume);
         if (a_Volume <= 0.0f)
         {
             m_Eff_Toggle.isOn = true;
@@ -93,12 +95,12 @@ public class ConfigBoxCtrl : MonoBehaviour
     {
         if (sel)
         {
-            SoundMgr.Inst.ChangeEffectVolume(0.0f);
+            ServiceLocator.Get<IAudioService>()?.ChangeEffectVolume(0.0f);
             m_Eff_Slider.value = 0;
         }
         else
         {
-            SoundMgr.Inst.ChangeEffectVolume(0.2f);
+            ServiceLocator.Get<IAudioService>()?.ChangeEffectVolume(0.2f);
             m_Eff_Slider.value = 0.2f;
         }
 
@@ -107,30 +109,30 @@ public class ConfigBoxCtrl : MonoBehaviour
 
     void Save()
     {
-        SoundMgr.Inst.PlaySound("Button");
-        InGameMgr.Inst.SaveData();
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Button");
+        ServiceLocator.Get<ISaveLoadService>()?.SaveData();
     }
 
     void SceneBack()
     {
-        SoundMgr.Inst.PlaySound("Button");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Button");
         DontDestroyOnLoadMgr.inst.AllDestory();
         LoadingSceneMgr.LoadScene("TitleScene");
     }
 
     void DestoryBtn()
     {
-        SoundMgr.Inst.PlaySound("Button");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Button");
         m_DestoryLogBox.SetActive(true);
     }
 
     void SelectDestory(bool sel)
     {
-        SoundMgr.Inst.PlaySound("Button");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Button");
 
         if (sel)
-        {
-            InGameMgr.Inst.DestorySaveData();
+        {     
+            ServiceLocator.Get<ISaveLoadService>()?.DestorySaveData();
             DontDestroyOnLoadMgr.inst.AllDestory();
             LoadingSceneMgr.LoadScene("TitleScene");
         }

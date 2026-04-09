@@ -77,7 +77,7 @@ public class Sk01Crash : Skill
         m_Wave.transform.position = playerTr.position + (playerTr.forward * m_Distance);     //웨이브 이펙트 위치 잡기
         m_Wave.SetActive(true);    //웨이브 이펙트 보여주기
         playerColl.isTrigger = false;
-        SoundMgr.Inst.PlaySound("Sk_01");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Sk_01");
 
         // 공격범위안에 있는 콜리더 가져오기
         RaycastHit[] hits = Physics.SphereCastAll(m_Wave.transform.position, m_radus,Vector3.up, 0, m_SkillTargetLayer);     

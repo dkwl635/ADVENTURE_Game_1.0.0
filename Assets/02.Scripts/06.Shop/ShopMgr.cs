@@ -130,7 +130,7 @@ public class ShopMgr : MonoBehaviour
     //상점 UI 오픈
     public void OpenShop()
     {
-        SoundMgr.Inst.PlaySound("Slide");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Slide");
 
         m_ShopPanel.SetActive(true);       
         InventoryUIMgr.Inst.OnInvenUI();      
@@ -226,7 +226,7 @@ public class ShopMgr : MonoBehaviour
    
         //UI 끄기
         m_ShopPanel.SetActive(false);
-        SoundMgr.Inst.PlaySound("Slide");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("Slide");
         InventoryUIMgr.Inst.m_InventoryUI_Panel.SetActive(false);
 
         //플레이어 움직이게

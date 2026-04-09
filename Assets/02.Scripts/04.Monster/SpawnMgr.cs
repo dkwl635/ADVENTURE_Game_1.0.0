@@ -159,7 +159,7 @@ public class SpawnMgr : MonoBehaviour
 
     IEnumerator SpwnBossCo()
     {     
-        SoundMgr.Inst.ChangeBGM("BossSpawn");
+        ServiceLocator.Get<IAudioService>()?.ChangeBGM("BossSpawn");
 
         yield return null;
         m_Boss.Collider.enabled = false;
@@ -188,13 +188,13 @@ public class SpawnMgr : MonoBehaviour
         }
         
 
-        SoundMgr.Inst.ChangeBGM("BossBattle");
+        ServiceLocator.Get<IAudioService>()?.ChangeBGM("BossBattle");
     }
 
 
     void DieBoss()
     {
-        SoundMgr.Inst.ChangeBGM("DongenBGM");
+        ServiceLocator.Get<IAudioService>()?.ChangeBGM("DongenBGM");
         bSpawnBoss = false;    
         m_Boss = null;
 

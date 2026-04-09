@@ -32,8 +32,11 @@ public class TitleConfigBoxCtrl : MonoBehaviour
         m_Eff_Slider.onValueChanged.AddListener(ChangeEffectVolume);
         m_Eff_Toggle.onValueChanged.AddListener(ChangeEffToggle);
 
-        m_BGM_Slider.value = SoundMgr.Inst.m_BgmAudio.volume * 10.0f;
-        m_Eff_Slider.value = SoundMgr.Inst.m_EffectAudio.volume * 10.0f;
+        float bgm = ServiceLocator.Get<IAudioService>()?.GetBGMVolume() ?? 0;
+        float eff = ServiceLocator.Get<IAudioService>()?.GetEffectVolume() ?? 0;
+
+        m_BGM_Slider.value = bgm * 10.0f;
+        m_Eff_Slider.value = eff * 10.0f;
 
         m_GameEscBtn.onClick.AddListener(GameEscBtn);
         m_OkBtn.onClick.AddListener(GameEsc);
@@ -52,7 +55,7 @@ public class TitleConfigBoxCtrl : MonoBehaviour
 
     void ChangeBGMVolume(float a_Volume)
     {
-        SoundMgr.Inst.ChangeBGMVolume(a_Volume);
+        ServiceLocator.Get<IAudioService>()?.ChangeBGMVolume(a_Volume);
         if (a_Volume <= 0.0f)
         {
             m_BGM_Toggle.isOn = true;
@@ -66,12 +69,12 @@ public class TitleConfigBoxCtrl : MonoBehaviour
     {
         if (sel)
         {
-            SoundMgr.Inst.ChangeBGMVolume(0.0f);
+            ServiceLocator.Get<IAudioService>()?.ChangeBGMVolume(0.0f);
             m_BGM_Slider.value = 0;
         }
         else
         {
-            SoundMgr.Inst.ChangeBGMVolume(0.2f);
+            ServiceLocator.Get<IAudioService>()?.ChangeBGMVolume(0.2f);
             m_BGM_Slider.value = 0.2f;
         }
 
@@ -80,7 +83,7 @@ public class TitleConfigBoxCtrl : MonoBehaviour
 
     void ChangeEffectVolume(float a_Volume)
     {
-        SoundMgr.Inst.ChangeEffectVolume(a_Volume);
+        ServiceLocator.Get<IAudioService>()?.ChangeEffectVolume(a_Volume);
         if (a_Volume <= 0.0f)
         {
             m_Eff_Toggle.isOn = true;
@@ -94,12 +97,12 @@ public class TitleConfigBoxCtrl : MonoBehaviour
     {
         if (sel)
         {
-            SoundMgr.Inst.ChangeEffectVolume(0.0f);
+            ServiceLocator.Get<IAudioService>()?.ChangeEffectVolume(0.0f);
             m_Eff_Slider.value = 0;
         }
         else
         {
-            SoundMgr.Inst.ChangeEffectVolume(0.2f);
+            ServiceLocator.Get<IAudioService>()?.ChangeEffectVolume(0.2f);
             m_Eff_Slider.value = 0.2f;
         }
 

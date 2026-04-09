@@ -329,7 +329,7 @@ public class TalkMgr : MonoBehaviour
     //다음 대화 버튼 함수
     void NextTalk()
     {
-        SoundMgr.Inst.PlaySound("TalkBtnSound");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("TalkBtnSound");
         m_TalkIdx++;
         PrintMsg();    
     }
@@ -349,7 +349,7 @@ public class TalkMgr : MonoBehaviour
     
     void QuestOkBtn()
     {
-        SoundMgr.Inst.PlaySound("TalkBtnSound");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("TalkBtnSound");
 
         if (QuestMgr.Inst.AddQuest(m_QuestID))
             NextTalk();
@@ -376,7 +376,7 @@ public class TalkMgr : MonoBehaviour
 
     void BackBtn()
     {
-        SoundMgr.Inst.PlaySound("TalkBtnSound");
+        ServiceLocator.Get<IAudioService>()?.PlaySound("TalkBtnSound");
         OffTalkBox();
         m_Talker.bIsMove = true;
     }
